@@ -1,0 +1,16 @@
+.navbar {
+  background-color: #3b2578;
+  height: 80px;
+  width: 100%;
+}
+
+.navbar-link {
+  text-decoration: none;
+  color: #272727;
+}
+
+.navbar-link-desktop {
+  text-decoration: none;
+  color: white;
+}
+/*# sourceMappingURL=Navbar.css.map */
