@@ -106,7 +106,7 @@ function Navbar() {
   return (
     <ThemeProvider theme={theme}>
       {!loading && (
-        <AppBar position="static" enableColorOnDark color="secondary">
+        <AppBar position="static" enableColorOnDark color="primary">
           <Container maxWidth="xl">
             <Toolbar disableGutters>
               <HailIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />

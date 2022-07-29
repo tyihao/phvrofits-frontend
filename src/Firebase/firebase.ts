@@ -64,18 +64,19 @@ const submitEntryToFirebase = async (
   gojekEarnings: number,
   tadaEarnings: number,
   grabEarnings: number,
+  rydeEarnings: number,
   date: number,
   distance: number
 ) => {
   try {
-    console.log('is this the error?');
     await addDoc(collection(db, 'users/' + id + '/logs'), {
       gojekEarnings,
       tadaEarnings,
       grabEarnings,
+      rydeEarnings,
       date,
       distance,
-      totalEarnings: gojekEarnings + tadaEarnings + grabEarnings,
+      totalEarnings: gojekEarnings + tadaEarnings + grabEarnings + rydeEarnings,
     });
   } catch (err) {
     console.error(err);
