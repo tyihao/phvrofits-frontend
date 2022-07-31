@@ -1,13 +1,13 @@
 {
   "main.css": "/phvrofits-frontend/static/css/main.f64d8969.chunk.css",
-  "main.js": "/phvrofits-frontend/static/js/main.9babdee3.chunk.js",
-  "main.js.map": "/phvrofits-frontend/static/js/main.9babdee3.chunk.js.map",
+  "main.js": "/phvrofits-frontend/static/js/main.e60f6f12.chunk.js",
+  "main.js.map": "/phvrofits-frontend/static/js/main.e60f6f12.chunk.js.map",
   "runtime~main.js": "/phvrofits-frontend/static/js/runtime~main.b482606a.js",
   "runtime~main.js.map": "/phvrofits-frontend/static/js/runtime~main.b482606a.js.map",
-  "static/js/2.ede0cddf.chunk.js": "/phvrofits-frontend/static/js/2.ede0cddf.chunk.js",
-  "static/js/2.ede0cddf.chunk.js.map": "/phvrofits-frontend/static/js/2.ede0cddf.chunk.js.map",
+  "static/js/2.1b1f3b1c.chunk.js": "/phvrofits-frontend/static/js/2.1b1f3b1c.chunk.js",
+  "static/js/2.1b1f3b1c.chunk.js.map": "/phvrofits-frontend/static/js/2.1b1f3b1c.chunk.js.map",
   "index.html": "/phvrofits-frontend/index.html",
-  "precache-manifest.992ea9a66e15b282a3c5e7f0bbd96732.js": "/phvrofits-frontend/precache-manifest.992ea9a66e15b282a3c5e7f0bbd96732.js",
+  "precache-manifest.b693925763695e40c64499926ce9e0f4.js": "/phvrofits-frontend/precache-manifest.b693925763695e40c64499926ce9e0f4.js",
   "service-worker.js": "/phvrofits-frontend/service-worker.js",
   "static/css/main.f64d8969.chunk.css.map": "/phvrofits-frontend/static/css/main.f64d8969.chunk.css.map"
 }
