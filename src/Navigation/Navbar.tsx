@@ -100,24 +100,25 @@ function Navbar() {
       <AppBar position="static" enableColorOnDark color="primary">
         <Container maxWidth="xl">
           <Toolbar disableGutters>
-            <HailIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
-            <Typography
-              variant="h6"
-              noWrap
-              component="a"
-              href="/"
-              sx={{
-                mr: 2,
-                display: { xs: 'none', md: 'flex' },
-                fontFamily: 'monospace',
-                fontWeight: 700,
-                letterSpacing: '.3rem',
-                color: 'inherit',
-                textDecoration: 'none',
-              }}
-            >
-              PHVrofits
-            </Typography>
+            <Link to="/">
+              <HailIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
+              <Typography
+                variant="h6"
+                noWrap
+                component="a"
+                sx={{
+                  mr: 2,
+                  display: { xs: 'none', md: 'flex' },
+                  fontFamily: 'monospace',
+                  fontWeight: 700,
+                  letterSpacing: '.3rem',
+                  color: 'inherit',
+                  textDecoration: 'none',
+                }}
+              >
+                PHVrofits
+              </Typography>
+            </Link>
             <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
               {user
                 ? user_pages.map((page) => (
