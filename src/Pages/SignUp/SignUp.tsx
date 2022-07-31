@@ -29,6 +29,7 @@ function Register() {
       petrolStation
     );
   };
+
   useEffect(() => {
     if (loading) return;
     if (user) navigate('/dashboard');

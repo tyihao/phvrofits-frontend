@@ -1,11 +1,13 @@
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
+import { useNavigate } from 'react-router-dom';
 import { auth, db } from '../Firebase';
 
 const useUsername = () => {
   const [name, setName] = useState('');
   const [user, loading, error] = useAuthState(auth);
+  const navigate = useNavigate();
 
   const fetchUserName = async () => {
     try {
@@ -22,8 +24,10 @@ const useUsername = () => {
   };
 
   useEffect(() => {
+    if (loading) return console.info('Data is loading, please wait.');
+    if (!user) return navigate('/');
     fetchUserName();
-  });
+  }, [loading, user]);
 
   return name;
 };

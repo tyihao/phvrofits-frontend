@@ -4,7 +4,12 @@ import SignIn from './SignIn';
 import SignUp from './SignUp';
 import Error from './Error';
 import ResetPassword from './ResetPassword';
-import { AccountPage, DashboardPage, SubmitLogPage } from './UserPages';
+import {
+  AccountPage,
+  DashboardPage,
+  SubmitLogPage,
+  LogListPage,
+} from './UserPages';
 
 export {
   Home,
@@ -16,4 +21,5 @@ export {
   AccountPage,
   DashboardPage,
   SubmitLogPage,
+  LogListPage,
 };

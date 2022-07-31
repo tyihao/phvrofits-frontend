@@ -15,6 +15,7 @@ const AccountPage = () => {
     if (loading) return;
     if (!user) return navigate('/');
   }, [user, loading]);
+
   return (
     <div className="account">
       <div className="account__container">

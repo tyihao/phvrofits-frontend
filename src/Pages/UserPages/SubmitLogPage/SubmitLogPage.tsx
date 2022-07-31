@@ -1,3 +1,4 @@
+import React from 'react';
 import {
   Backdrop,
   Box,
@@ -7,25 +8,22 @@ import {
   InputAdornment,
   TextField,
 } from '@mui/material';
-import React, { useState } from 'react';
-import { useEffect } from 'react';
+import { collection, getDocs, query, where } from 'firebase/firestore';
+import { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import {
-  auth,
-  registerWithEmailAndPassword,
-  signInWithGoogle,
-  db,
-  submitEntryToFirebase,
-} from '../../../Firebase/firebase';
-import { query, collection, getDocs, where } from 'firebase/firestore';
+import { auth, db, submitEntryToFirebase } from '../../../Firebase/firebase';
+import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
+import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import './Styles/styles.css';
+import moment from 'moment';
+import { LocalizationProvider } from '@mui/x-date-pickers';
 
 const SubmitLogPage = () => {
   const [gojekEarnings, setGojekEarnings] = useState<string>('');
   const [tadaEarnings, setTadaEarnings] = useState<string>('');
   const [grabEarnings, setGrabEarnings] = useState<string>('');
   const [rydeEarnings, setRydeEarnings] = useState<string>('');
-  const [date, setDate] = useState<number>(0);
+  const [date, setDate] = useState<moment.Moment>(moment());
   const [distance, setDistance] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
@@ -40,12 +38,12 @@ const SubmitLogPage = () => {
     const id = doc.id;
     await submitEntryToFirebase(
       id,
-      gojekEarnings !== '' ? parseInt(gojekEarnings) : 0,
-      tadaEarnings !== '' ? parseInt(tadaEarnings) : 0,
-      grabEarnings !== '' ? parseInt(grabEarnings) : 0,
-      rydeEarnings !== '' ? parseInt(rydeEarnings) : 0,
+      gojekEarnings !== '' ? parseFloat(gojekEarnings) : 0,
+      tadaEarnings !== '' ? parseFloat(tadaEarnings) : 0,
+      grabEarnings !== '' ? parseFloat(grabEarnings) : 0,
+      rydeEarnings !== '' ? parseFloat(rydeEarnings) : 0,
       date,
-      distance !== '' ? parseInt(distance) : 0
+      distance !== '' ? parseFloat(distance) : 0
     ).finally(() => setIsLoading(false));
     setGojekEarnings('');
     setRydeEarnings('');
@@ -54,122 +52,129 @@ const SubmitLogPage = () => {
     setDistance('');
   };
 
-  useEffect(() => {
-    const now = new Date();
-    const nowTimestamp = now.getTime();
-    setDate(nowTimestamp);
-  }, []);
+  console.log(date);
 
   return (
-    <div>
-      <div className="submit-log-form">
-        <h1> Submit Your Log </h1>
-        <Box>
-          <Grid direction="column" spacing={2} container>
-            <Grid item>
-              <TextField
-                type="number"
-                id="gojek-earnings"
-                label="Gojek Earnings"
-                onChange={(e) => setGojekEarnings(e.target.value)}
-                value={gojekEarnings}
-                placeholder={'0'}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">$</InputAdornment>
-                  ),
-                }}
-                fullWidth
-              />
+    <LocalizationProvider dateAdapter={AdapterMoment}>
+      <div>
+        <div className="submit-log-form">
+          <h1> Submit Your Log </h1>
+          <Box>
+            <Grid direction="column" spacing={2} container>
+              <Grid item>
+                <DesktopDatePicker
+                  label="Date"
+                  inputFormat="DD/MM/yyyy"
+                  value={date}
+                  onChange={(date) => date && setDate(date)}
+                  renderInput={(params) => <TextField {...params} fullWidth />}
+                />
+              </Grid>
+              <Grid item>
+                <TextField
+                  type="number"
+                  id="gojek-earnings"
+                  label="Gojek Earnings"
+                  onChange={(e) => setGojekEarnings(e.target.value)}
+                  value={gojekEarnings}
+                  placeholder={'0'}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">$</InputAdornment>
+                    ),
+                  }}
+                  fullWidth
+                />
+              </Grid>
+              <Grid item>
+                <TextField
+                  type="number"
+                  id="grab-earnings"
+                  label="Grab Earnings"
+                  placeholder={'0'}
+                  onChange={(e) => setGrabEarnings(e.target.value)}
+                  value={grabEarnings}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">$</InputAdornment>
+                    ),
+                  }}
+                  fullWidth
+                />
+              </Grid>
+              <Grid item>
+                <TextField
+                  type="number"
+                  id="tada-earnings"
+                  label="Tada Earnings"
+                  placeholder={'0'}
+                  onChange={(e) => setTadaEarnings(e.target.value)}
+                  value={tadaEarnings}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">$</InputAdornment>
+                    ),
+                  }}
+                  fullWidth
+                />
+              </Grid>
+              <Grid item>
+                <TextField
+                  type="number"
+                  id="ryde-earnings"
+                  placeholder={'0'}
+                  label="Ryde Earnings"
+                  onChange={(e) => setRydeEarnings(e.target.value)}
+                  value={rydeEarnings}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">$</InputAdornment>
+                    ),
+                  }}
+                  fullWidth
+                />
+              </Grid>
+              <Grid item>
+                <TextField
+                  required
+                  id="distance"
+                  label="Distance"
+                  onChange={(e) => setDistance(e.target.value)}
+                  fullWidth
+                  type="number"
+                  value={distance}
+                  placeholder={'0'}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">km</InputAdornment>
+                    ),
+                  }}
+                />
+              </Grid>
             </Grid>
-            <Grid item>
-              <TextField
-                type="number"
-                id="grab-earnings"
-                label="Grab Earnings"
-                placeholder={'0'}
-                onChange={(e) => setGrabEarnings(e.target.value)}
-                value={grabEarnings}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">$</InputAdornment>
-                  ),
-                }}
-                fullWidth
-              />
-            </Grid>
-            <Grid item>
-              <TextField
-                type="number"
-                id="tada-earnings"
-                label="Tada Earnings"
-                placeholder={'0'}
-                onChange={(e) => setTadaEarnings(e.target.value)}
-                value={tadaEarnings}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">$</InputAdornment>
-                  ),
-                }}
-                fullWidth
-              />
-            </Grid>
-            <Grid item>
-              <TextField
-                type="number"
-                id="ryde-earnings"
-                placeholder={'0'}
-                label="Ryde Earnings"
-                onChange={(e) => setRydeEarnings(e.target.value)}
-                value={rydeEarnings}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">$</InputAdornment>
-                  ),
-                }}
-                fullWidth
-              />
-            </Grid>
-            <Grid item>
-              <TextField
-                required
-                id="distance"
-                label="Distance"
-                onChange={(e) => setDistance(e.target.value)}
-                fullWidth
-                type="number"
-                value={distance}
-                placeholder={'0'}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">km</InputAdornment>
-                  ),
-                }}
-              />
-            </Grid>
-          </Grid>
-        </Box>
-        <Button
-          variant="contained"
-          style={{
-            margin: '15px 0 7px 0',
-            color: 'white',
-            backgroundColor: '216fb3',
-          }}
-          onClick={submitEntry}
-        >
-          Submit Entry
-        </Button>
+          </Box>
+          <Button
+            variant="contained"
+            style={{
+              margin: '15px 0 7px 0',
+              color: 'white',
+              backgroundColor: '216fb3',
+            }}
+            onClick={submitEntry}
+          >
+            Submit Entry
+          </Button>
+        </div>
+        {isLoading && (
+          <Backdrop
+            sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+            open={isLoading}
+          >
+            <CircularProgress color="inherit" />
+          </Backdrop>
+        )}
       </div>
-      {isLoading && (
-        <Backdrop
-          sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-          open={isLoading}
-        >
-          <CircularProgress color="inherit" />
-        </Backdrop>
-      )}
-    </div>
+    </LocalizationProvider>
   );
 };
 

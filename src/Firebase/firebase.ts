@@ -16,6 +16,7 @@ import {
   where,
   addDoc,
 } from 'firebase/firestore';
+import moment from 'moment';
 import { useAuthState } from 'react-firebase-hooks/auth';
 
 const firebaseConfig = {
@@ -65,7 +66,7 @@ const submitEntryToFirebase = async (
   tadaEarnings: number,
   grabEarnings: number,
   rydeEarnings: number,
-  date: number,
+  date: moment.Moment,
   distance: number
 ) => {
   try {
@@ -74,9 +75,12 @@ const submitEntryToFirebase = async (
       tadaEarnings,
       grabEarnings,
       rydeEarnings,
-      date,
+      date: date.toDate().getTime(),
       distance,
-      totalEarnings: gojekEarnings + tadaEarnings + grabEarnings + rydeEarnings,
+      totalEarnings:
+        Math.round(
+          (gojekEarnings + tadaEarnings + grabEarnings + rydeEarnings) * 100
+        ) / 100,
     });
   } catch (err) {
     console.error(err);
