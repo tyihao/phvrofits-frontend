@@ -1,12 +1,16 @@
 import React from 'react';
 import {
+  Alert,
+  AlertColor,
   Backdrop,
   Box,
   Button,
   CircularProgress,
   Grid,
   InputAdornment,
+  Snackbar,
   TextField,
+  Typography,
 } from '@mui/material';
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
@@ -17,6 +21,9 @@ import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import './Styles/styles.css';
 import moment from 'moment';
 import { LocalizationProvider } from '@mui/x-date-pickers';
+import useLogData from '../../../Utils/useLogData';
+import './Styles/styles.css';
+import { Link } from 'react-router-dom';
 
 const SubmitLogPage = () => {
   const [gojekEarnings, setGojekEarnings] = useState<string>('');
@@ -26,6 +33,13 @@ const SubmitLogPage = () => {
   const [date, setDate] = useState<moment.Moment>(moment());
   const [distance, setDistance] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [snackbar, setSnackbar] = useState<boolean>(false);
+  const [snackbarType, setSnackbarType] = useState<AlertColor>('success');
+  const [newlyLoggedDates, setNewlyLoggedDates] = useState<string[]>([]);
+  const [submitStatus, setSubmitStatus] = useState<boolean>(false);
+  const loggedDates = useLogData().reduce((a, b) => {
+    return [...a, getFormattedDate(b.date)];
+  }, [] as string[]);
 
   const [user, loading, error] = useAuthState(auth);
   const submitEntry = async () => {
@@ -44,15 +58,53 @@ const SubmitLogPage = () => {
       rydeEarnings !== '' ? parseFloat(rydeEarnings) : 0,
       date,
       distance !== '' ? parseFloat(distance) : 0
-    ).finally(() => setIsLoading(false));
+    )
+      .then((res) => {
+        setSnackbar(true);
+        setSubmitStatus(res);
+      })
+      .finally(() => setIsLoading(false));
+
     setGojekEarnings('');
     setRydeEarnings('');
     setGrabEarnings('');
     setTadaEarnings('');
     setDistance('');
   };
+  // const esso95Price = async () => {
+  //   const response = await fetch('https://www.motorist.sg/petrol-prices', {
+  //     method: 'POST',
+  //     mode: 'cors',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //   })
+  //     .then(function (response) {
+  //       return response.text();
+  //     })
+  //     .then(function (html) {
+  //       // Initialize the DOM parser
+  //       var parser = new DOMParser();
+  //       console.log(html);
+  //       // Parse the text
+  //       var doc = parser.parseFromString(html, 'text/html');
 
-  console.log(date);
+  //       var td = doc.querySelectorAll('div.fuel-tooltip');
+  //       return td;
+  //     })
+  //     .catch((err) => console.error(err));
+  //   return response;
+  // };
+  // console.log(esso95Price());
+
+  useEffect(() => {
+    if (submitStatus) {
+      setSnackbarType('success');
+      setNewlyLoggedDates((state) => [...state, date.format('DD/MM/YYYY')]);
+    } else {
+      setSnackbarType('error');
+    }
+  }, [submitStatus]);
 
   return (
     <LocalizationProvider dateAdapter={AdapterMoment}>
@@ -70,6 +122,18 @@ const SubmitLogPage = () => {
                   renderInput={(params) => <TextField {...params} fullWidth />}
                 />
               </Grid>
+              {[...loggedDates, ...newlyLoggedDates].includes(
+                date.format('DD/MM/YYYY')
+              ) && (
+                <Alert
+                  severity="error"
+                  className="alert_message"
+                  variant="outlined"
+                >
+                  Date already exists. Please choose another date or delete
+                  current entry {<Link to={`/loglist`}> here</Link>}.
+                </Alert>
+              )}
               <Grid item>
                 <TextField
                   type="number"
@@ -161,6 +225,9 @@ const SubmitLogPage = () => {
               backgroundColor: '216fb3',
             }}
             onClick={submitEntry}
+            disabled={[...loggedDates, ...newlyLoggedDates].includes(
+              date.format('DD/MM/YYYY')
+            )}
           >
             Submit Entry
           </Button>
@@ -173,9 +240,37 @@ const SubmitLogPage = () => {
             <CircularProgress color="inherit" />
           </Backdrop>
         )}
+        <Snackbar
+          open={snackbar}
+          autoHideDuration={6000}
+          onClose={() => setSnackbar(false)}
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+        >
+          <Alert
+            onClose={() => setSnackbar(false)}
+            severity={snackbarType}
+            sx={{ width: '100%' }}
+          >
+            {snackbarType === 'success'
+              ? 'Log successfully added.'
+              : 'Error uploading log. Please try again later or inform system administrator.'}
+          </Alert>
+        </Snackbar>
       </div>
     </LocalizationProvider>
   );
 };
 
 export default SubmitLogPage;
+
+const getFormattedDate = (date: Date) => {
+  const yyyy = date.getFullYear();
+  let mm = (date.getMonth() + 1) as unknown as string; // Months start at 0!
+  let dd = date.getDate() as unknown as string;
+
+  if (dd < '10') dd = '0' + dd;
+  if (mm < '10') mm = '0' + mm;
+
+  const formattedDate = dd + '/' + mm + '/' + yyyy;
+  return formattedDate;
+};

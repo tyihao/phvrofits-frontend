@@ -82,9 +82,12 @@ const submitEntryToFirebase = async (
           (gojekEarnings + tadaEarnings + grabEarnings + rydeEarnings) * 100
         ) / 100,
     });
+    1 / 0;
   } catch (err) {
     console.error(err);
+    return false;
   }
+  return true;
 };
 
 const registerWithEmailAndPassword = async (

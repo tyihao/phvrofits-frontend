@@ -100,7 +100,7 @@ function Navbar() {
       <AppBar position="static" enableColorOnDark color="primary">
         <Container maxWidth="xl">
           <Toolbar disableGutters>
-            <Link to="/">
+            <Link to="/" className="navbar-link">
               <HailIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
               <Typography
                 variant="h6"

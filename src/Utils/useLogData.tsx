@@ -41,7 +41,6 @@ const useLogData = () => {
       const id = doc.id;
 
       const q2 = query(collection(db, 'users/' + id + '/logs'));
-      console.log((await getDocs(q2)).docs);
       const logData = (await getDocs(q2)).docs.map((doc, index) => ({
         ...doc.data(),
         date: new Date(doc.data().date),
