@@ -15,9 +15,13 @@ import {
   collection,
   where,
   addDoc,
+  setDoc,
+  doc,
+  getDoc,
 } from 'firebase/firestore';
 import moment from 'moment';
 import { useAuthState } from 'react-firebase-hooks/auth';
+import { Log } from '../Utils/types';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyDkzczYXW6sCsTh1yzdDo1YSiGP9yd2KFw',
@@ -61,7 +65,6 @@ const logInWithEmailAndPassword = async (email: string, password: string) => {
 };
 
 const submitEntryToFirebase = async (
-  id: string,
   gojekEarnings: number,
   tadaEarnings: number,
   grabEarnings: number,
@@ -70,7 +73,8 @@ const submitEntryToFirebase = async (
   distance: number
 ) => {
   try {
-    await addDoc(collection(db, 'users/' + id + '/logs'), {
+    const userId = await fetchUserId();
+    await addDoc(collection(db, 'users/' + userId + '/logs'), {
       gojekEarnings,
       tadaEarnings,
       grabEarnings,
@@ -82,7 +86,46 @@ const submitEntryToFirebase = async (
           (gojekEarnings + tadaEarnings + grabEarnings + rydeEarnings) * 100
         ) / 100,
     });
-    1 / 0;
+  } catch (err) {
+    console.error(err);
+    return false;
+  }
+  return true;
+};
+
+const editEntryOnFirebase = async (log: Log) => {
+  const {
+    id,
+    gojekEarnings,
+    tadaEarnings,
+    grabEarnings,
+    rydeEarnings,
+    distance,
+  } = log;
+  try {
+    const userId = await fetchUserId();
+    console.log(userId);
+    const docsRef = doc(db, 'users/' + userId + '/logs', id);
+    const log = (await getDoc(docsRef)).data();
+    if (log) {
+      const date = log.date;
+      setDoc(docsRef, {
+        date,
+        gojekEarnings,
+        tadaEarnings,
+        grabEarnings,
+        rydeEarnings,
+        distance,
+        totalEarnings:
+          gojekEarnings + grabEarnings + rydeEarnings + rydeEarnings,
+      })
+        .then(() => {
+          console.log('Entire Document has been updated successfully');
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
   } catch (err) {
     console.error(err);
     return false;
@@ -114,6 +157,7 @@ const registerWithEmailAndPassword = async (
     console.error(err);
   }
 };
+
 const sendPasswordReset = async (email: string) => {
   try {
     await sendPasswordResetEmail(auth, email);
@@ -134,4 +178,20 @@ export {
   sendPasswordReset,
   logout,
   submitEntryToFirebase,
+  editEntryOnFirebase,
+};
+
+const fetchUserId = async () => {
+  try {
+    const user = auth.currentUser;
+    const q1 = query(
+      collection(db, 'users'),
+      where('uid', '==', user && user.uid)
+    );
+    const doc = (await getDocs(q1)).docs[0];
+    const id = doc.id;
+    return id;
+  } catch (err) {
+    console.error(err);
+  }
 };

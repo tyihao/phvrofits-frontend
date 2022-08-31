@@ -44,14 +44,7 @@ const SubmitLogPage = () => {
   const [user, loading, error] = useAuthState(auth);
   const submitEntry = async () => {
     setIsLoading(true);
-    const q1 = query(
-      collection(db, 'users'),
-      where('uid', '==', user && user.uid)
-    );
-    const doc = (await getDocs(q1)).docs[0];
-    const id = doc.id;
     await submitEntryToFirebase(
-      id,
       gojekEarnings !== '' ? parseFloat(gojekEarnings) : 0,
       tadaEarnings !== '' ? parseFloat(tadaEarnings) : 0,
       grabEarnings !== '' ? parseFloat(grabEarnings) : 0,
@@ -71,6 +64,7 @@ const SubmitLogPage = () => {
     setTadaEarnings('');
     setDistance('');
   };
+  // Create backend server to do this
   // const esso95Price = async () => {
   //   const response = await fetch('https://www.motorist.sg/petrol-prices', {
   //     method: 'POST',

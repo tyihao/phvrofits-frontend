@@ -3,32 +3,11 @@ import React, { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useNavigate } from 'react-router-dom';
 import { auth, db } from '../Firebase';
-
-type Log = {
-  date: Date;
-  distance: number;
-  gojekEarnings: number;
-  grabEarnings: number;
-  tadaEarnings: number;
-  totalEarnings: number;
-  rydeEarnings: number;
-  id: number;
-};
+import { Log } from './types';
 
 const useLogData = () => {
   const [user, loading, error] = useAuthState(auth);
-  const [logData, setLogData] = useState<Array<Log>>([
-    {
-      date: new Date(),
-      distance: 0,
-      gojekEarnings: 0,
-      grabEarnings: 0,
-      tadaEarnings: 0,
-      rydeEarnings: 0,
-      totalEarnings: 0,
-      id: 0,
-    },
-  ]);
+  const [logData, setLogData] = useState<Array<Log>>([]);
   const navigate = useNavigate();
 
   const fetchLogData = async () => {
@@ -44,20 +23,21 @@ const useLogData = () => {
       const logData = (await getDocs(q2)).docs.map((doc, index) => ({
         ...doc.data(),
         date: new Date(doc.data().date),
-        id: index,
+        id: doc.id,
       })) as Array<Log>;
-
       setLogData(logData);
     } catch (err) {
       console.error(err);
-      alert('An error occured while fetching user data!!!');
+      alert('An error occured while fetching user data!');
     }
   };
+
   useEffect(() => {
     if (loading) return console.info('Data is loading, please wait.');
     if (!user) return navigate('/');
     fetchLogData();
   }, [loading, user]);
+
   return logData;
 };
 

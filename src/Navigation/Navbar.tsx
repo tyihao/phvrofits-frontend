@@ -97,28 +97,26 @@ function Navbar() {
 
   return (
     <ThemeProvider theme={theme}>
-      <AppBar position="static" enableColorOnDark color="primary">
+      <AppBar position="static" enableColorOnDark>
         <Container maxWidth="xl">
           <Toolbar disableGutters>
-            <Link to="/" className="navbar-link">
-              <HailIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
-              <Typography
-                variant="h6"
-                noWrap
-                component="a"
-                sx={{
-                  mr: 2,
-                  display: { xs: 'none', md: 'flex' },
-                  fontFamily: 'monospace',
-                  fontWeight: 700,
-                  letterSpacing: '.3rem',
-                  color: 'inherit',
-                  textDecoration: 'none',
-                }}
-              >
-                PHVrofits
-              </Typography>
-            </Link>
+            <HailIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
+            <Typography
+              variant="h6"
+              noWrap
+              component="a"
+              sx={{
+                mr: 2,
+                display: { xs: 'none', md: 'flex' },
+                fontFamily: 'monospace',
+                fontWeight: 700,
+                letterSpacing: '.3rem',
+                color: 'inherit',
+                textDecoration: 'none',
+              }}
+            >
+              PHVrofits
+            </Typography>
             <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
               {user
                 ? user_pages.map((page) => (
