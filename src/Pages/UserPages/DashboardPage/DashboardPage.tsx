@@ -11,6 +11,18 @@ function Dashboard() {
   const name = useUsername();
   const logs = useLogData();
 
-  return <div className="dashboard">Dashboard Page</div>;
+  return (
+    <div
+      className="dashboard"
+      style={{
+        position: 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+      }}
+    >
+      <img src="work-in-progress.png" alt="Work in progress" />
+    </div>
+  );
 }
 export default Dashboard;

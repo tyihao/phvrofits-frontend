@@ -4,7 +4,6 @@ import {
   DataGrid,
   GridColDef,
   GridRenderCellParams,
-  GridToolbarColumnsButton,
   GridToolbarContainer,
   GridToolbarDensitySelector,
 } from '@mui/x-data-grid';
@@ -20,14 +19,18 @@ import {
   Toolbar,
   Typography,
 } from '@mui/material';
-import { auth, db, editEntryOnFirebase } from '../../../Firebase/firebase';
+import { editEntryOnFirebase } from '../../../Firebase/firebase';
 import InfoIcon from '@mui/icons-material/Info';
 import EditIcon from '@mui/icons-material/Edit';
 import CloseIcon from '@mui/icons-material/Close';
 import IconButton from '@mui/material/IconButton';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import { orderBy } from 'lodash';
 import { Log } from '../../../Utils/types';
 import { TransitionProps } from '@mui/material/transitions';
+import DateRangePicker from '../../../Components/DateRangePicker';
+import { DateRange, DayPicker } from 'react-day-picker';
+import 'react-day-picker/dist/style.css';
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -42,6 +45,11 @@ const LogListPage = () => {
   const [hide, setHide] = useState(true);
   const [openDialog, setOpenDialog] = useState(false);
   const [selectedLog, setSelectedLog] = useState<Log>({} as Log);
+  const [dateFilterDialog, setDateFilterDialog] = useState(false);
+  const [dateFilter, setDateFilter] = useState<DateRange | undefined>({
+    from: new Date(),
+    to: new Date(),
+  });
   const [logData, setLogData] = useState<Log[]>(
     orderBy(useLogData(), ['date'], ['desc'])
   );
@@ -76,13 +84,38 @@ const LogListPage = () => {
       <GridToolbarContainer>
         <Grid item>
           <Button
+            startIcon={<CalendarMonthIcon />}
+            onClick={() => setDateFilterDialog((state) => !state)}
+          >
+            Date
+          </Button>
+          <Dialog
+            fullScreen
+            open={dateFilterDialog}
+            onClose={() => setDateFilterDialog(false)}
+            TransitionComponent={Transition}
+          >
+            <DateRangePicker
+              dateRange={dateFilter}
+              handleDateRange={setDateFilter}
+            />
+            <Button onClick={() => setDateFilterDialog((state) => !state)}>
+              Close
+            </Button>
+            <Button onClick={() => setDateFilterDialog((state) => !state)}>
+              Save
+            </Button>
+          </Dialog>
+        </Grid>
+        <Grid item>
+          <Button
             startIcon={<InfoIcon />}
             onClick={() => setHide((state) => !state)}
           >
             Breakdown
           </Button>
         </Grid>
-        <GridToolbarColumnsButton />
+        {/* <GridToolbarColumnsButton /> */}
         <GridToolbarDensitySelector />
       </GridToolbarContainer>
     );
@@ -120,11 +153,17 @@ const LogListPage = () => {
     setOpenDialog((state) => !state);
   };
 
+  const handleSelectDateRange = (selectedDates: { from: Date; to: Date }) => {
+    setDateFilter(selectedDates);
+  };
+
   const Footer = () => {
     return (
       <Box sx={{ padding: '10px', display: 'flex' }}>Total: {totalTotal}</Box>
     );
   };
+
+  console.log(dateFilter);
 
   const totalTotal = logData.reduce((a, b) => a + b.totalEarnings, 0);
 
