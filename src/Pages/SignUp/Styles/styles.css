@@ -1,5 +1,5 @@
 .register {
-  height: 100vh;
+  height: 90vh;
   width: 100vw;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -21,8 +21,9 @@
       -ms-flex-direction: column;
           flex-direction: column;
   text-align: center;
-  background-color: #dcdcdc;
+  background-color: #dfebff2c;
   padding: 30px;
+  border-radius: 30px;
 }
 
 .register__textBox {
@@ -37,7 +38,7 @@
   margin-bottom: 10px;
   border: none;
   color: white;
-  background-color: black;
+  background-color: #030f2b;
 }
 
 .register__google {
@@ -46,5 +47,14 @@
 
 .register div {
   margin-top: 7px;
+}
+
+.register_input {
+  margin: '10px 10px 15px 10px';
+  border: 0;
+}
+
+.MuiInputBase-root-MuiFilledInput-root {
+  background-color: white;
 }
 /*# sourceMappingURL=styles.css.map */

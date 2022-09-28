@@ -1,3 +1,14 @@
+import {
+  Button,
+  FormControl,
+  Input,
+  InputLabel,
+  MenuItem,
+  OutlinedInput,
+  Select,
+  SelectChangeEvent,
+  TextField,
+} from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { Link, useNavigate } from 'react-router-dom';
@@ -15,19 +26,34 @@ function Register() {
   const [carModel, setCarModel] = useState('');
   const [fuelEfficiency, setFuelEfficiency] = useState('');
   const [petrolStation, setPetrolStation] = useState('');
+  const [fuelGrade, setFuelGrade] = useState('');
 
   const [user, loading, error] = useAuthState(auth);
   const navigate = useNavigate();
   const register = () => {
-    if (!name) alert('Please enter name');
-    registerWithEmailAndPassword(
-      name,
-      email,
-      password,
-      carModel,
-      fuelEfficiency,
-      petrolStation
-    );
+    if (
+      [
+        name,
+        email,
+        password,
+        carModel,
+        fuelEfficiency,
+        petrolStation,
+        fuelGrade,
+      ].find((ele) => ele === '') !== undefined
+    )
+      alert('Incomplete form');
+    else {
+      registerWithEmailAndPassword(
+        name,
+        email,
+        password,
+        carModel,
+        fuelEfficiency,
+        petrolStation,
+        fuelGrade
+      );
+    }
   };
 
   useEffect(() => {
@@ -38,51 +64,113 @@ function Register() {
   return (
     <div className="register">
       <div className="register__container">
-        <input
-          type="text"
-          className="register__textBox"
+        <TextField
+          id="name"
+          label="Name"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          placeholder="Full Name"
+          placeholder="John Appleseed"
+          className="register_input"
+          required
+          variant="standard"
+          sx={{ marginBottom: '7px' }}
         />
-        <input
-          type="text"
-          className="register__textBox"
+        <TextField
+          id="email"
+          label="E-mail Address"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          placeholder="E-mail Address"
+          placeholder="abc@xyz.com"
+          className="register_input"
+          required
+          sx={{ marginBottom: '7px' }}
+          variant="standard"
         />
-        <input
+        <TextField
+          id="password"
+          variant="standard"
+          label="Password"
           type="password"
-          className="register__textBox"
+          required
+          className="register_input"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
+          sx={{ marginBottom: '7px' }}
           placeholder="Password"
         />
-        <input
-          type="carModel"
-          className="register__textBox"
+        <TextField
+          id="car-model"
+          variant="standard"
+          label="Car Model"
+          required
+          className="register_input"
           value={carModel}
           onChange={(e) => setCarModel(e.target.value)}
-          placeholder="Car Model"
+          sx={{ marginBottom: '7px' }}
+          placeholder="Mazda 3"
         />
-        <input
-          type="fuelEfficiency"
-          className="register__textBox"
+        <TextField
+          id="fuel-efficiency"
+          variant="standard"
+          label="Fuel Efficiency"
+          required
+          className="register_input"
           value={fuelEfficiency}
           onChange={(e) => setFuelEfficiency(e.target.value)}
-          placeholder="Fuel Efficiency"
+          sx={{ marginBottom: '7px' }}
+          placeholder="8.3"
         />
-        <input
-          type="petrolStation"
-          className="register__textBox"
-          value={petrolStation}
-          onChange={(e) => setPetrolStation(e.target.value)}
-          placeholder="Petrol Station"
-        />
-        <button className="register__btn" onClick={register}>
+        <FormControl
+          variant="standard"
+          sx={{ marginTop: 5, marginBottom: '7px', textAlign: 'left' }}
+        >
+          <InputLabel id="demo-simple-select-standard-label">
+            Petrol Station *
+          </InputLabel>
+          <Select
+            variant="standard"
+            required
+            // labelId="petrol-station"
+            // label="Petrol Station"
+            value={petrolStation}
+            onChange={(e: SelectChangeEvent<string>) =>
+              setPetrolStation(e.target.value)
+            }
+          >
+            <MenuItem value="caltex">Caltex</MenuItem>
+            <MenuItem value="esso">Esso</MenuItem>
+            <MenuItem value="shell">Shell</MenuItem>
+            <MenuItem value="sinopec">Sinopec</MenuItem>
+            <MenuItem value="spc">SPC</MenuItem>
+          </Select>
+        </FormControl>
+        <FormControl
+          variant="standard"
+          sx={{ marginTop: 5, marginBottom: '20px', textAlign: 'left' }}
+        >
+          <InputLabel id="demo-simple-select-standard-label">
+            Fuel Grade *
+          </InputLabel>
+          <Select
+            variant="standard"
+            required
+            label="Fuel Grade"
+            labelId="fuel-grade"
+            value={fuelGrade}
+            onChange={(e: SelectChangeEvent<string>) =>
+              setFuelGrade(e.target.value)
+            }
+          >
+            <MenuItem value="92">92</MenuItem>
+            <MenuItem value="95">95</MenuItem>
+            <MenuItem value="98">98</MenuItem>
+            <MenuItem value="premium">Premium</MenuItem>
+            <MenuItem value="diesel">Diesel</MenuItem>
+          </Select>
+        </FormControl>
+        <Button className="register__btn" onClick={register} variant="outlined">
           Register
-        </button>
+        </Button>
         <div>
           Already have an account? <Link to="/signin">Login</Link> now.
         </div>

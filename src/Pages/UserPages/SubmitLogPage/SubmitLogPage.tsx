@@ -65,31 +65,31 @@ const SubmitLogPage = () => {
     setDistance('');
   };
   // Create backend server to do this
-  // const esso95Price = async () => {
-  //   const response = await fetch('https://www.motorist.sg/petrol-prices', {
-  //     method: 'POST',
-  //     mode: 'cors',
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //     },
-  //   })
-  //     .then(function (response) {
-  //       return response.text();
-  //     })
-  //     .then(function (html) {
-  //       // Initialize the DOM parser
-  //       var parser = new DOMParser();
-  //       console.log(html);
-  //       // Parse the text
-  //       var doc = parser.parseFromString(html, 'text/html');
+  const esso95Price = async () => {
+    const response = await fetch('https://www.motorist.sg/petrol-prices', {
+      method: 'POST',
+      mode: 'cors',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+      .then(function (response) {
+        return response.text();
+      })
+      .then(function (html) {
+        // Initialize the DOM parser
+        var parser = new DOMParser();
+        console.log(html);
+        // Parse the text
+        var doc = parser.parseFromString(html, 'text/html');
 
-  //       var td = doc.querySelectorAll('div.fuel-tooltip');
-  //       return td;
-  //     })
-  //     .catch((err) => console.error(err));
-  //   return response;
-  // };
-  // console.log(esso95Price());
+        var td = doc.querySelectorAll('div.fuel-tooltip');
+        return td;
+      })
+      .catch((err) => console.error(err));
+    return response;
+  };
+  console.log(esso95Price());
 
   useEffect(() => {
     if (submitStatus) {

@@ -139,7 +139,8 @@ const registerWithEmailAndPassword = async (
   password: string,
   carModel: string,
   fuelEfficiency: string,
-  petrolStation: string
+  petrolStation: string,
+  fuelGrade: string
 ) => {
   try {
     const res = await createUserWithEmailAndPassword(auth, email, password);
@@ -152,6 +153,7 @@ const registerWithEmailAndPassword = async (
       carModel,
       fuelEfficiency,
       petrolStation,
+      fuelGrade,
     });
   } catch (err) {
     console.error(err);
