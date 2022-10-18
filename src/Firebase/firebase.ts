@@ -21,7 +21,7 @@ import {
   DocumentData,
 } from 'firebase/firestore';
 import moment from 'moment';
-import { Log, UserInfo } from '../Utils/types';
+import { LogInfo, UserInfo } from '../Utils/types';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyDkzczYXW6sCsTh1yzdDo1YSiGP9yd2KFw',
@@ -75,6 +75,15 @@ const submitEntryToFirebase = async (
   try {
     const userId = await fetchUserId();
     const discountedLitrePetrol = await getPetrolPrice(date);
+    const userInfo = await fetchUserInfo();
+    const totalRevenue =
+      Math.round(
+        (gojekEarnings + tadaEarnings + grabEarnings + rydeEarnings) * 100
+      ) / 100;
+    const petrolCost =
+      discountedLitrePetrol *
+      (distance / 100) *
+      parseFloat(userInfo.fuelEfficiency);
     await addDoc(collection(db, 'users/' + userId + '/logs'), {
       gojekEarnings,
       tadaEarnings,
@@ -82,11 +91,10 @@ const submitEntryToFirebase = async (
       rydeEarnings,
       date: date.toDate().getTime(),
       distance,
-      totalEarnings:
-        Math.round(
-          (gojekEarnings + tadaEarnings + grabEarnings + rydeEarnings) * 100
-        ) / 100,
+      totalRevenue,
       discountedLitrePetrol,
+      petrolCost,
+      totalProfit: totalRevenue - petrolCost,
     });
   } catch (err) {
     console.error(err);
@@ -95,7 +103,7 @@ const submitEntryToFirebase = async (
   return true;
 };
 
-const editEntryOnFirebase = async (log: Log) => {
+const editEntryOnFirebase = async (log: LogInfo) => {
   const {
     id,
     gojekEarnings,
@@ -110,9 +118,9 @@ const editEntryOnFirebase = async (log: Log) => {
     const docsRef = doc(db, 'users/' + userId + '/logs', id);
     const log = (await getDoc(docsRef)).data();
     if (log) {
-      const date = log.date;
       setDoc(docsRef, {
-        date,
+        // TODO test this logic
+        ...log,
         gojekEarnings,
         tadaEarnings,
         grabEarnings,
@@ -174,16 +182,16 @@ const logout = () => {
   signOut(auth);
 };
 
-const fetchUserInfo = async (): Promise<UserInfo | undefined> => {
+const fetchUserInfo = async (): Promise<UserInfo> => {
   try {
     const user = await fetchUserId();
     const docsRef = doc(db, 'users/' + user);
     const userDoc = (await getDoc(docsRef)).data() as UserInfo;
-    console.log(userDoc);
     return userDoc;
   } catch (err) {
     console.error(err);
   }
+  return {} as UserInfo;
 };
 
 export {

@@ -23,7 +23,8 @@ export type UserInfo = {
 };
 
 export type LogInfo = {
-  date: Date | moment.Moment | number;
+  id: string;
+  date: Date;
   gojekEarnings: number;
   tadaEarnings: number;
   grabEarnings: number;
@@ -33,5 +34,5 @@ export type LogInfo = {
   discountedLitrePetrol: number;
   fuelEfficiency: number;
   petrolCost: number;
-  totalProfits: number;
+  totalProfit: number;
 };

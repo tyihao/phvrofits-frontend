@@ -3,11 +3,11 @@ import React, { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useNavigate } from 'react-router-dom';
 import { auth, db } from '../Firebase';
-import { Log } from './types';
+import { LogInfo } from './types';
 
 const useLogData = () => {
   const [user, loading, error] = useAuthState(auth);
-  const [logData, setLogData] = useState<Array<Log>>([]);
+  const [logData, setLogData] = useState<Array<LogInfo>>([]);
   const navigate = useNavigate();
 
   const fetchLogData = async () => {
@@ -20,11 +20,11 @@ const useLogData = () => {
       const id = doc.id;
 
       const q2 = query(collection(db, 'users/' + id + '/logs'));
-      const logData = (await getDocs(q2)).docs.map((doc, index) => ({
+      const logData = (await getDocs(q2)).docs.map((doc) => ({
         ...doc.data(),
         date: new Date(doc.data().date),
         id: doc.id,
-      })) as Array<Log>;
+      })) as Array<LogInfo>;
       setLogData(logData);
     } catch (err) {
       console.error(err);

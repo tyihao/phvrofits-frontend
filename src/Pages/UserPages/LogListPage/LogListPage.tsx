@@ -25,7 +25,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import IconButton from '@mui/material/IconButton';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import { orderBy } from 'lodash';
-import { Log } from '../../../Utils/types';
+import { LogInfo } from '../../../Utils/types';
 import DateRangePicker from '../../../Components/DateRangePicker';
 import { DateRange } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
@@ -36,13 +36,13 @@ import { format } from 'date-fns';
 const LogListPage = () => {
   const [hide, setHide] = useState(true);
   const [openDialog, setOpenDialog] = useState(false);
-  const [selectedLog, setSelectedLog] = useState<Log>({} as Log);
+  const [selectedLog, setSelectedLog] = useState<LogInfo>({} as LogInfo);
   const [dateFilterDialog, setDateFilterDialog] = useState(false);
   const [dateFilter, setDateFilter] = useState<DateRange | undefined>(
     undefined
   );
   const [customDate, setCustomDate] = useState(false);
-  const [logData, setLogData] = useState<Log[]>(
+  const [logData, setLogData] = useState<LogInfo[]>(
     orderBy(useLogData(), ['date'], ['desc'])
   );
 
@@ -56,10 +56,13 @@ const LogListPage = () => {
     { field: 'grabEarnings', headerName: 'Grab ($)', hide, width: 70 },
     { field: 'rydeEarnings', headerName: 'Ryde ($)', hide, width: 70 },
     { field: 'tadaEarnings', headerName: 'Tada ($)', hide, width: 70 },
-    { field: 'totalEarnings', headerName: 'Total ($)', width: 80 },
+    { field: 'totalRevenue', headerName: 'Revenue ($)', hide, width: 100 },
+    { field: 'petrolCost', headerName: 'Cost ($)', hide, width: 70 },
+    { field: 'totalProfit', headerName: 'Profit ($)', width: 70 },
+
     {
       field: 'Edit Action',
-      headerName: '',
+      headerName: 'Edit',
       width: 50,
       renderCell: (params) => renderDialog(params),
     },
@@ -222,7 +225,7 @@ const LogListPage = () => {
     );
   };
 
-  const handleEditDialog = (currentLog?: Log) => {
+  const handleEditDialog = (currentLog?: LogInfo) => {
     // If we are opening the edit dialog - select a log
     if (!openDialog && currentLog) {
       setSelectedLog(currentLog);
@@ -234,7 +237,7 @@ const LogListPage = () => {
             const log = {
               ...selectedLog,
               date: mappedLog.date,
-              totalEarnings:
+              totalRevenue:
                 selectedLog.gojekEarnings +
                 selectedLog.grabEarnings +
                 selectedLog.rydeEarnings +
@@ -264,7 +267,7 @@ const LogListPage = () => {
     );
   };
 
-  const totalTotal = logData.reduce((a, b) => a + b.totalEarnings, 0);
+  const totalTotal = logData.reduce((a, b) => a + b.totalRevenue, 0);
 
   return (
     <div style={{ height: '790px', width: '90%', margin: '20px' }}>
