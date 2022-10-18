@@ -74,7 +74,7 @@ const submitEntryToFirebase = async (
 ) => {
   try {
     const userId = await fetchUserId();
-    const discountedLitrePetrol = getPetrolPrice(date);
+    const discountedLitrePetrol = await getPetrolPrice(date);
     await addDoc(collection(db, 'users/' + userId + '/logs'), {
       gojekEarnings,
       tadaEarnings,
