@@ -92,6 +92,7 @@ const submitEntryToFirebase = async (
       date: date.toDate().getTime(),
       distance,
       totalRevenue,
+      fuelEfficiency: parseFloat(userInfo.fuelEfficiency),
       discountedLitrePetrol,
       petrolCost,
       totalProfit: totalRevenue - petrolCost,
@@ -111,6 +112,9 @@ const editEntryOnFirebase = async (log: LogInfo) => {
     grabEarnings,
     rydeEarnings,
     distance,
+    totalProfit,
+    totalRevenue,
+    petrolCost,
   } = log;
   try {
     const userId = await fetchUserId();
@@ -126,8 +130,9 @@ const editEntryOnFirebase = async (log: LogInfo) => {
         grabEarnings,
         rydeEarnings,
         distance,
-        totalEarnings:
-          gojekEarnings + grabEarnings + rydeEarnings + rydeEarnings,
+        totalRevenue,
+        petrolCost,
+        totalProfit,
       })
         .then(() => {
           console.log('Entire Document has been updated successfully');

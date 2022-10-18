@@ -59,7 +59,6 @@ const LogListPage = () => {
     { field: 'totalRevenue', headerName: 'Revenue ($)', hide, width: 100 },
     { field: 'petrolCost', headerName: 'Cost ($)', hide, width: 70 },
     { field: 'totalProfit', headerName: 'Profit ($)', width: 70 },
-
     {
       field: 'Edit Action',
       headerName: 'Edit',
@@ -67,7 +66,6 @@ const LogListPage = () => {
       renderCell: (params) => renderDialog(params),
     },
   ];
-  console.log(customDate);
 
   const renderDialog = (params: GridRenderCellParams<any, any, any>) => {
     return (
@@ -234,14 +232,21 @@ const LogListPage = () => {
       setLogData((state) => {
         const updatedData = state.map((mappedLog) => {
           if (mappedLog.id === selectedLog.id) {
+            const petrolCost =
+              mappedLog.discountedLitrePetrol *
+              (selectedLog.distance / 100) *
+              selectedLog.fuelEfficiency;
+            const totalRevenue =
+              selectedLog.gojekEarnings +
+              selectedLog.grabEarnings +
+              selectedLog.rydeEarnings +
+              selectedLog.rydeEarnings;
             const log = {
               ...selectedLog,
+              petrolCost,
+              totalProfit: totalRevenue - petrolCost,
               date: mappedLog.date,
-              totalRevenue:
-                selectedLog.gojekEarnings +
-                selectedLog.grabEarnings +
-                selectedLog.rydeEarnings +
-                selectedLog.rydeEarnings,
+              totalRevenue,
             };
             editEntryOnFirebase(log);
             return log;
