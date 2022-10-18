@@ -10,12 +10,9 @@ import {
   InputAdornment,
   Snackbar,
   TextField,
-  Typography,
 } from '@mui/material';
-import { collection, getDocs, query, where } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
-import { useAuthState } from 'react-firebase-hooks/auth';
-import { auth, db, submitEntryToFirebase } from '../../../Firebase/firebase';
+import { submitEntryToFirebase } from '../../../Firebase/firebase';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import './Styles/styles.css';
@@ -41,7 +38,6 @@ const SubmitLogPage = () => {
     return [...a, getFormattedDate(b.date)];
   }, [] as string[]);
 
-  const [user, loading, error] = useAuthState(auth);
   const submitEntry = async () => {
     setIsLoading(true);
     await submitEntryToFirebase(
@@ -64,32 +60,6 @@ const SubmitLogPage = () => {
     setTadaEarnings('');
     setDistance('');
   };
-  // Create backend server to do this
-  const esso95Price = async () => {
-    const response = await fetch('https://www.motorist.sg/petrol-prices', {
-      method: 'POST',
-      mode: 'cors',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    })
-      .then(function (response) {
-        return response.text();
-      })
-      .then(function (html) {
-        // Initialize the DOM parser
-        var parser = new DOMParser();
-        console.log(html);
-        // Parse the text
-        var doc = parser.parseFromString(html, 'text/html');
-
-        var td = doc.querySelectorAll('div.fuel-tooltip');
-        return td;
-      })
-      .catch((err) => console.error(err));
-    return response;
-  };
-  console.log(esso95Price());
 
   useEffect(() => {
     if (submitStatus) {

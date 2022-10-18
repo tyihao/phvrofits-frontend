@@ -13,26 +13,11 @@ interface DateRangePickerProps {
 export default function DateRangePicker(props: DateRangePickerProps) {
   const { dateRange, handleDateRange } = props;
 
-  let footer = <p>Please pick the first day.</p>;
-
-  if (dateRange && dateRange.from) {
-    if (!dateRange.to) {
-      footer = <p>{format(dateRange.from, 'PPP')}</p>;
-    } else if (dateRange.to) {
-      footer = (
-        <p>
-          {format(dateRange.from, 'PPP')}–{format(dateRange.to, 'PPP')}
-        </p>
-      );
-    }
-  }
-
   return (
     <DayPicker
       mode="range"
       defaultMonth={pastMonth}
       selected={dateRange}
-      footer={footer}
       onSelect={handleDateRange}
     />
   );

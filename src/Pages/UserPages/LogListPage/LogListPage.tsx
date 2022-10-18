@@ -14,7 +14,6 @@ import {
   Dialog,
   Grid,
   InputAdornment,
-  Slide,
   TextField,
   Toolbar,
   Typography,
@@ -27,29 +26,22 @@ import IconButton from '@mui/material/IconButton';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import { orderBy } from 'lodash';
 import { Log } from '../../../Utils/types';
-import { TransitionProps } from '@mui/material/transitions';
 import DateRangePicker from '../../../Components/DateRangePicker';
-import { DateRange, DayPicker } from 'react-day-picker';
+import { DateRange } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
-
-const Transition = React.forwardRef(function Transition(
-  props: TransitionProps & {
-    children: React.ReactElement;
-  },
-  ref: React.Ref<unknown>
-) {
-  return <Slide direction="up" ref={ref} {...props} />;
-});
+import Transition from './Components/Transition';
+import DateFilter from './Components/DateFilter';
+import { format } from 'date-fns';
 
 const LogListPage = () => {
   const [hide, setHide] = useState(true);
   const [openDialog, setOpenDialog] = useState(false);
   const [selectedLog, setSelectedLog] = useState<Log>({} as Log);
   const [dateFilterDialog, setDateFilterDialog] = useState(false);
-  const [dateFilter, setDateFilter] = useState<DateRange | undefined>({
-    from: new Date(),
-    to: new Date(),
-  });
+  const [dateFilter, setDateFilter] = useState<DateRange | undefined>(
+    undefined
+  );
+  const [customDate, setCustomDate] = useState(false);
   const [logData, setLogData] = useState<Log[]>(
     orderBy(useLogData(), ['date'], ['desc'])
   );
@@ -72,10 +64,36 @@ const LogListPage = () => {
       renderCell: (params) => renderDialog(params),
     },
   ];
+  console.log(customDate);
 
   const renderDialog = (params: GridRenderCellParams<any, any, any>) => {
     return (
       <EditIcon fontSize="small" onClick={() => handleEditDialog(params.row)} />
+    );
+  };
+
+  const DateRangeDisplay = () => {
+    return (
+      <Box component="div" sx={{ display: 'inline' }}>
+        <TextField
+          sx={{ width: '40%', margin: '15px 10px' }}
+          disabled
+          value={
+            dateFilter && dateFilter.from
+              ? format(dateFilter.from, 'dd-MM-yyyy')
+              : 'Start Date'
+          }
+        />
+        <TextField
+          sx={{ width: '40%', margin: '15px 10px' }}
+          disabled
+          value={
+            dateFilter && dateFilter.to
+              ? format(dateFilter.to, 'dd-MM-yyyy')
+              : 'End Date'
+          }
+        />
+      </Box>
     );
   };
 
@@ -89,22 +107,105 @@ const LogListPage = () => {
           >
             Date
           </Button>
+          {/* TODO Bug Fix: dialog keeps exiting custom date selection after selecting a date */}
+          {/* <DateFilter
+            filteredDate={dateFilter}
+            handleDateRange={setDateFilter}
+            handleFilterDateDialog={setDateFilterDialog}
+            open={dateFilterDialog}
+          /> */}
           <Dialog
             fullScreen
             open={dateFilterDialog}
             onClose={() => setDateFilterDialog(false)}
-            TransitionComponent={Transition}
+            transitionDuration={0}
           >
-            <DateRangePicker
-              dateRange={dateFilter}
-              handleDateRange={setDateFilter}
-            />
-            <Button onClick={() => setDateFilterDialog((state) => !state)}>
-              Close
-            </Button>
-            <Button onClick={() => setDateFilterDialog((state) => !state)}>
-              Save
-            </Button>
+            {!customDate ? (
+              <>
+                <AppBar sx={{ position: 'relative' }}>
+                  <Toolbar>
+                    <IconButton
+                      edge="start"
+                      color="inherit"
+                      onClick={() => setDateFilterDialog((state) => !state)}
+                      aria-label="close"
+                    >
+                      <CloseIcon />
+                    </IconButton>
+                    <Typography
+                      sx={{ ml: 2, flex: 1 }}
+                      variant="h6"
+                      component="div"
+                    >
+                      Set Date Filter
+                    </Typography>
+                    <Button
+                      autoFocus
+                      color="inherit"
+                      onClick={() => setDateFilter(undefined)}
+                    >
+                      RESET ALl
+                    </Button>
+                  </Toolbar>
+                </AppBar>
+                <DateRangeDisplay />
+                <Button
+                  variant="contained"
+                  style={{ margin: '10px 15px' }}
+                  onClick={() => setCustomDate((state) => !state)}
+                >
+                  Custom: Select Date
+                </Button>
+                <Button
+                  variant="contained"
+                  style={{ margin: '10px 15px' }}
+                  onClick={() => setDateFilterDialog((state) => !state)}
+                >
+                  APPLY FILTER
+                </Button>
+                <Button
+                  variant="outlined"
+                  style={{ margin: '10px 15px' }}
+                  onClick={() => setDateFilterDialog((state) => !state)}
+                >
+                  CLOSE
+                </Button>
+              </>
+            ) : (
+              <>
+                <AppBar sx={{ position: 'relative' }}>
+                  <Toolbar>
+                    <IconButton
+                      edge="start"
+                      color="inherit"
+                      onClick={() => setCustomDate((state) => !state)}
+                      aria-label="close"
+                    >
+                      <CloseIcon />
+                    </IconButton>
+                    <Typography
+                      sx={{ ml: 2, flex: 1 }}
+                      variant="h6"
+                      component="div"
+                    >
+                      Custom Date Range
+                    </Typography>
+                    <Button
+                      autoFocus
+                      color="inherit"
+                      onClick={() => setDateFilterDialog((state) => !state)}
+                    >
+                      Save
+                    </Button>
+                  </Toolbar>
+                </AppBar>
+                <DateRangeDisplay />
+                <DateRangePicker
+                  dateRange={dateFilter}
+                  handleDateRange={setDateFilter}
+                />
+              </>
+            )}
           </Dialog>
         </Grid>
         <Grid item>
@@ -163,25 +264,30 @@ const LogListPage = () => {
     );
   };
 
-  console.log(dateFilter);
-
   const totalTotal = logData.reduce((a, b) => a + b.totalEarnings, 0);
 
   return (
     <div style={{ height: '790px', width: '90%', margin: '20px' }}>
       <h1> Logs List </h1>
+      {dateFilter && <DateRangeDisplay />}
       <DataGrid
         components={{
           Toolbar: Header,
-          //   Footer: Footer,
+          Footer: Footer,
         }}
         componentsProps={{
           footer: {},
         }}
-        rows={logData.map((log) => ({
-          ...log,
-          date: log.date.toISOString().split('T')[0],
-        }))}
+        rows={logData
+          .filter((log) =>
+            dateFilter && dateFilter.from && dateFilter.to
+              ? log.date > dateFilter.from && log.date < dateFilter.to
+              : log.date
+          )
+          .map((log) => ({
+            ...log,
+            date: log.date.toISOString().split('T')[0],
+          }))}
         columns={columns}
       />
       <Dialog

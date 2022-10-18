@@ -18,10 +18,10 @@ import {
   setDoc,
   doc,
   getDoc,
+  DocumentData,
 } from 'firebase/firestore';
 import moment from 'moment';
-import { useAuthState } from 'react-firebase-hooks/auth';
-import { Log } from '../Utils/types';
+import { Log, UserInfo } from '../Utils/types';
 
 const firebaseConfig = {
   apiKey: 'AIzaSyDkzczYXW6sCsTh1yzdDo1YSiGP9yd2KFw',
@@ -74,6 +74,7 @@ const submitEntryToFirebase = async (
 ) => {
   try {
     const userId = await fetchUserId();
+    const discountedLitrePetrol = getPetrolPrice(date);
     await addDoc(collection(db, 'users/' + userId + '/logs'), {
       gojekEarnings,
       tadaEarnings,
@@ -85,6 +86,7 @@ const submitEntryToFirebase = async (
         Math.round(
           (gojekEarnings + tadaEarnings + grabEarnings + rydeEarnings) * 100
         ) / 100,
+      discountedLitrePetrol,
     });
   } catch (err) {
     console.error(err);
@@ -171,6 +173,19 @@ const sendPasswordReset = async (email: string) => {
 const logout = () => {
   signOut(auth);
 };
+
+const fetchUserInfo = async (): Promise<UserInfo | undefined> => {
+  try {
+    const user = await fetchUserId();
+    const docsRef = doc(db, 'users/' + user);
+    const userDoc = (await getDoc(docsRef)).data() as UserInfo;
+    console.log(userDoc);
+    return userDoc;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
 export {
   auth,
   db,
@@ -181,7 +196,10 @@ export {
   logout,
   submitEntryToFirebase,
   editEntryOnFirebase,
+  fetchUserInfo,
 };
+
+// functions from here are not meant to be exported
 
 const fetchUserId = async () => {
   try {
@@ -191,9 +209,57 @@ const fetchUserId = async () => {
       where('uid', '==', user && user.uid)
     );
     const doc = (await getDocs(q1)).docs[0];
-    const id = doc.id;
-    return id;
+    return doc.id;
   } catch (err) {
     console.error(err);
   }
+};
+
+const fetchPetrolData = async (
+  date: moment.Moment,
+  otherDate?: moment.Moment
+): Promise<DocumentData | undefined> => {
+  if (otherDate && otherDate.diff(moment(date).subtract(10, 'days')) === 0) {
+    // History not long enough...
+    // Return some form of error message in FE
+    throw new Error('No such record found');
+  }
+  try {
+    const docRef = doc(
+      db,
+      'petrol_prices',
+      otherDate ? otherDate.format('DDMMYYYY') : date.format('DDMMYYYY')
+    );
+    const docSnap = await getDoc(docRef);
+    if (!docSnap.exists()) {
+      // doc.data() will be undefined in this case
+      console.log(docSnap.data());
+      return fetchPetrolData(
+        date,
+        otherDate
+          ? otherDate.subtract(1, 'days')
+          : moment(date).subtract(1, 'days')
+      );
+    }
+    return docSnap.data();
+  } catch (err) {
+    console.error(err);
+    alert('An error occured while fetching user data!');
+  }
+};
+
+const getPetrolPrice = async (date: moment.Moment) => {
+  // get user's petrol station and petrol type
+  const userDoc = await fetchUserInfo();
+  const petrolStation = (userDoc && userDoc.petrolStation) || 'esso';
+  const petrolType = (userDoc && userDoc.fuelGrade) || '95';
+  const petrolProfile = (petrolStation + '_' + petrolType).toLowerCase();
+  // get the date's petrol prices from db
+  const petrolData = await fetchPetrolData(date);
+  const userPetrolPrice = petrolData && petrolData[petrolProfile];
+  const discountedPetrol =
+    petrolData && petrolData.discounted_prices === false
+      ? userPetrolPrice * 0.8
+      : userPetrolPrice;
+  return discountedPetrol;
 };
