@@ -1,11 +1,11 @@
 self.__precacheManifest = [
   {
-    "revision": "352f573a964b1616315b",
+    "revision": "484658dc73553785df6e",
     "url": "/phvrofits-frontend/static/css/main.b3778d28.chunk.css"
   },
   {
-    "revision": "352f573a964b1616315b",
-    "url": "/phvrofits-frontend/static/js/main.f14c9089.chunk.js"
+    "revision": "484658dc73553785df6e",
+    "url": "/phvrofits-frontend/static/js/main.d2ab4b42.chunk.js"
   },
   {
     "revision": "534652efdc0180a8b871",
@@ -20,7 +20,7 @@ self.__precacheManifest = [
     "url": "/phvrofits-frontend/static/js/2.fe81b8d7.chunk.js"
   },
   {
-    "revision": "f3b001d987bfd6c3bffa41092be6efe8",
+    "revision": "a91a843630cb4f60708cc2d1b7c7d043",
     "url": "/phvrofits-frontend/index.html"
   }
 ];
