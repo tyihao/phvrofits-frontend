@@ -268,11 +268,23 @@ const LogListPage = () => {
 
   const Footer = () => {
     return (
-      <Box sx={{ padding: '10px', display: 'flex' }}>Total: {totalTotal}</Box>
+      <Box
+        sx={{
+          padding: '10px',
+          display: 'flex',
+          border: '1px solid rgba(224,224,224,1)',
+          borderRadius: '5px',
+          margin: '10px',
+        }}
+      >
+        Total revenue: ${Math.round(totalTotalRevenue * 100) / 100} | Total
+        profit: ${Math.round(totalTotalProfit * 100) / 100}
+      </Box>
     );
   };
 
-  const totalTotal = logData.reduce((a, b) => a + b.totalRevenue, 0);
+  const totalTotalRevenue = logData.reduce((a, b) => a + b.totalRevenue, 0);
+  const totalTotalProfit = logData.reduce((a, b) => a + b.totalProfit, 0);
 
   return (
     <div style={{ height: '790px', width: '90%', margin: '20px' }}>

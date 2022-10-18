@@ -175,34 +175,28 @@ function Navbar() {
               >
                 {user
                   ? user_pages.map((page) => (
-                      <MenuItem
-                        key={page.pageName}
-                        onClick={handleCloseNavMenu}
-                      >
-                        <Typography textAlign="center">
-                          <Link
-                            className="navbar-link"
-                            to={`/${page.pageLink}`}
-                          >
+                      <Link className="navbar-link" to={`/${page.pageLink}`}>
+                        <MenuItem
+                          key={page.pageName}
+                          onClick={handleCloseNavMenu}
+                        >
+                          <Typography textAlign="center">
                             {page.pageName}
-                          </Link>
-                        </Typography>
-                      </MenuItem>
+                          </Typography>
+                        </MenuItem>
+                      </Link>
                     ))
                   : general_pages.map((page) => (
-                      <MenuItem
-                        key={page.pageName}
-                        onClick={handleCloseNavMenu}
-                      >
-                        <Typography textAlign="center">
-                          <Link
-                            className="navbar-link"
-                            to={`/${page.pageLink}`}
-                          >
+                      <Link className="navbar-link" to={`/${page.pageLink}`}>
+                        <MenuItem
+                          key={page.pageName}
+                          onClick={handleCloseNavMenu}
+                        >
+                          <Typography textAlign="center">
                             {page.pageName}
-                          </Link>
-                        </Typography>
-                      </MenuItem>
+                          </Typography>
+                        </MenuItem>
+                      </Link>
                     ))}
               </Menu>
             </Box>
