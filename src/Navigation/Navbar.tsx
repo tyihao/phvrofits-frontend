@@ -120,28 +120,34 @@ function Navbar() {
             <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
               {user
                 ? user_pages.map((page) => (
-                    <MenuItem key={page.pageName} onClick={handleCloseNavMenu}>
-                      <Typography textAlign="center">
-                        <Link
-                          className="navbar-link-desktop"
-                          to={`/${page.pageLink}`}
-                        >
+                    <Link
+                      className="navbar-link-desktop"
+                      to={`/${page.pageLink}`}
+                    >
+                      <MenuItem
+                        key={page.pageName}
+                        onClick={handleCloseNavMenu}
+                      >
+                        <Typography textAlign="center">
                           {page.pageName}
-                        </Link>
-                      </Typography>
-                    </MenuItem>
+                        </Typography>
+                      </MenuItem>
+                    </Link>
                   ))
                 : general_pages.map((page) => (
-                    <MenuItem key={page.pageName} onClick={handleCloseNavMenu}>
-                      <Typography textAlign="center">
-                        <Link
-                          className="navbar-link-desktop"
-                          to={`/${page.pageLink}`}
-                        >
+                    <Link
+                      className="navbar-link-desktop"
+                      to={`/${page.pageLink}`}
+                    >
+                      <MenuItem
+                        key={page.pageName}
+                        onClick={handleCloseNavMenu}
+                      >
+                        <Typography textAlign="center">
                           {page.pageName}
-                        </Link>
-                      </Typography>
-                    </MenuItem>
+                        </Typography>
+                      </MenuItem>
+                    </Link>
                   ))}
             </Box>
             <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>

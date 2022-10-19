@@ -12,8 +12,11 @@ import {
   Box,
   Button,
   Dialog,
+  FormControlLabel,
+  FormGroup,
   Grid,
   InputAdornment,
+  Switch,
   TextField,
   Toolbar,
   Typography,
@@ -210,15 +213,24 @@ const LogListPage = () => {
           </Dialog>
         </Grid>
         <Grid item>
-          <Button
+          {/* <Button
             startIcon={<InfoIcon />}
             onClick={() => setHide((state) => !state)}
           >
             Breakdown
-          </Button>
+          </Button> */}
+          <FormGroup>
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={!hide}
+                  onClick={() => setHide((state) => !state)}
+                />
+              }
+              label="Detailed"
+            />
+          </FormGroup>
         </Grid>
-        {/* <GridToolbarColumnsButton /> */}
-        <GridToolbarDensitySelector />
       </GridToolbarContainer>
     );
   };
