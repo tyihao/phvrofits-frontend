@@ -277,12 +277,28 @@ const LogListPage = () => {
     setDateFilter(selectedDates);
   };
 
-  const logDataFiltered = logData.filter((log) =>
-    dateFilter && dateFilter.from && dateFilter.to
-      ? log.date >= new Date(dateFilter.from.setHours(0, 0, 0, 0)) &&
-        log.date < new Date(dateFilter.to.setHours(23, 59, 59, 999))
-      : log.date
-  );
+  const logDataFiltered = logData.filter((log) => {
+    if (dateFilter) {
+      if (dateFilter.from && dateFilter.to) {
+        return (
+          log.date >=
+            new Date(new Date(dateFilter.from).setHours(0, 0, 0, 0)) &&
+          log.date < new Date(new Date(dateFilter.to).setHours(23, 59, 59, 999))
+        );
+      }
+      if (dateFilter.from) {
+        return (
+          log.date >= new Date(new Date(dateFilter.from).setHours(0, 0, 0, 0))
+        );
+      }
+      if (dateFilter.to) {
+        return (
+          log.date < new Date(new Date(dateFilter.to).setHours(23, 59, 59, 999))
+        );
+      }
+    }
+    return log;
+  });
 
   const {
     totalTotalRevenue,
@@ -326,20 +342,13 @@ const LogListPage = () => {
         componentsProps={{
           footer: {},
         }}
-        rows={logData
-          .filter((log) =>
-            dateFilter && dateFilter.from && dateFilter.to
-              ? log.date >= new Date(dateFilter.from.setHours(0, 0, 0, 0)) &&
-                log.date < new Date(dateFilter.to.setHours(23, 59, 59, 999))
-              : log.date
-          )
-          .map((log) => ({
-            ...log,
-            date: log.date.toLocaleDateString(),
-            totalProfit: Math.round(log.totalProfit * 100) / 100,
-            totalRevenue: Math.round(log.totalRevenue * 100) / 100,
-            petrolCost: Math.round(log.petrolCost * 100) / 100,
-          }))}
+        rows={logDataFiltered.map((log) => ({
+          ...log,
+          date: log.date.toLocaleDateString(),
+          totalProfit: Math.round(log.totalProfit * 100) / 100,
+          totalRevenue: Math.round(log.totalRevenue * 100) / 100,
+          petrolCost: Math.round(log.petrolCost * 100) / 100,
+        }))}
         columns={columns}
       />
       <Dialog
