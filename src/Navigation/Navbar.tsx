@@ -12,10 +12,12 @@ import {
   IconButton,
   Menu,
   MenuItem,
+  SwipeableDrawer,
   Toolbar,
   Tooltip,
   Typography,
 } from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
 import AppBar from '@mui/material/AppBar';
 import React, { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
@@ -97,7 +99,15 @@ function Navbar() {
 
   return (
     <ThemeProvider theme={theme}>
-      <AppBar position="static" enableColorOnDark>
+      <AppBar
+        position="static"
+        sx={{
+          padding: '20px 10px 10px 10px',
+          backgroundColor: 'rgba(0,0,0,0)',
+          color: '#2c5491',
+          boxShadow: 0,
+        }}
+      >
         <Container maxWidth="xl">
           <Toolbar disableGutters>
             <HailIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
@@ -158,10 +168,16 @@ function Navbar() {
                 aria-haspopup="true"
                 onClick={handleOpenNavMenu}
                 color="inherit"
+                sx={{
+                  border: '100px #FAFAFA',
+                  backgroundColor: 'white',
+                  borderRadius: '15px',
+                  boxShadow: `rgba(149, 157, 165, 0.2) 0px 8px 24px`,
+                }}
               >
                 <MenuIcon />
               </IconButton>
-              <Menu
+              {/* <Menu
                 id="menu-appbar"
                 anchorEl={anchorElNav}
                 anchorOrigin={{
@@ -204,7 +220,52 @@ function Navbar() {
                         </MenuItem>
                       </Link>
                     ))}
-              </Menu>
+              </Menu> */}
+              <SwipeableDrawer
+                id="menu-appbar"
+                // anchorEl={anchorElNav}
+                // anchorOrigin={{
+                //   vertical: 'bottom',
+                //   horizontal: 'left',
+                // }}
+                keepMounted
+                // transformOrigin={{
+                //   vertical: 'top',
+                //   horizontal: 'left',
+                // }}
+                open={Boolean(anchorElNav)}
+                onOpen={handleOpenNavMenu}
+                onClose={handleCloseNavMenu}
+                sx={{
+                  display: { xs: 'block', md: 'none' },
+                }}
+              >
+                {user
+                  ? user_pages.map((page) => (
+                      <Link className="navbar-link" to={`/${page.pageLink}`}>
+                        <MenuItem
+                          key={page.pageName}
+                          onClick={handleCloseNavMenu}
+                        >
+                          <Typography textAlign="center">
+                            {page.pageName}
+                          </Typography>
+                        </MenuItem>
+                      </Link>
+                    ))
+                  : general_pages.map((page) => (
+                      <Link className="navbar-link" to={`/${page.pageLink}`}>
+                        <MenuItem
+                          key={page.pageName}
+                          onClick={handleCloseNavMenu}
+                        >
+                          <Typography textAlign="center">
+                            {page.pageName}
+                          </Typography>
+                        </MenuItem>
+                      </Link>
+                    ))}
+              </SwipeableDrawer>
             </Box>
             <HailIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
             <Typography
@@ -213,24 +274,39 @@ function Navbar() {
               component="a"
               href=""
               sx={{
-                mr: 2,
                 display: { xs: 'flex', md: 'none' },
                 flexGrow: 1,
                 fontFamily: 'monospace',
                 fontWeight: 700,
-                letterSpacing: '.3rem',
+                letterSpacing: '.1rem',
                 color: 'inherit',
                 textDecoration: 'none',
+                fontSize: '1.3rem',
               }}
             >
               PHVrofits
             </Typography>
             {user ? (
               <Box sx={{ flexGrow: 0 }}>
-                <Tooltip title="Open settings">
+                {/* <Tooltip title="Open settings">
                   <Link className="navbar-link" to={`/account`}>
                     <IconButton sx={{ p: 0 }}>
                       <Avatar alt={name} src="/static/images/avatar/2.jpg" />
+                    </IconButton>
+                  </Link>
+                </Tooltip> */}
+                <Tooltip title="Add Log">
+                  <Link className="navbar-link" to={`/submit`}>
+                    <IconButton
+                      sx={{
+                        padding: '12px',
+                        backgroundColor: '#2c5491',
+                        borderRadius: '15px',
+                        boxShadow: `rgba(149, 157, 165, 0.5) 0px 8px 24px`,
+                        color: 'white',
+                      }}
+                    >
+                      <AddIcon />
                     </IconButton>
                   </Link>
                 </Tooltip>
