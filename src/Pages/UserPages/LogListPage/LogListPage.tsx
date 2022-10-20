@@ -197,7 +197,10 @@ const LogListPage = () => {
                     <Button
                       autoFocus
                       color="inherit"
-                      onClick={() => setDateFilterDialog((state) => !state)}
+                      onClick={() => {
+                        setDateFilterDialog((state) => !state);
+                        setCustomDate((state) => !state);
+                      }}
                     >
                       Save
                     </Button>
@@ -295,8 +298,20 @@ const LogListPage = () => {
     );
   };
 
-  const totalTotalRevenue = logData.reduce((a, b) => a + b.totalRevenue, 0);
-  const totalTotalProfit = logData.reduce((a, b) => a + b.totalProfit, 0);
+  const { totalTotalRevenue, totalTotalProfit } = logData
+    .filter((log) =>
+      dateFilter && dateFilter.from && dateFilter.to
+        ? log.date >= new Date(dateFilter.from.setHours(0, 0, 0, 0)) &&
+          log.date < new Date(dateFilter.to.setHours(23, 59, 59, 999))
+        : log.date
+    )
+    .reduce(
+      (a, b) => ({
+        totalTotalProfit: a.totalTotalProfit + b.totalProfit,
+        totalTotalRevenue: a.totalTotalRevenue + b.totalRevenue,
+      }),
+      { totalTotalProfit: 0, totalTotalRevenue: 0 }
+    );
 
   return (
     <div style={{ height: '790px', width: '90%', margin: '20px' }}>
@@ -313,12 +328,13 @@ const LogListPage = () => {
         rows={logData
           .filter((log) =>
             dateFilter && dateFilter.from && dateFilter.to
-              ? log.date > dateFilter.from && log.date < dateFilter.to
+              ? log.date >= new Date(dateFilter.from.setHours(0, 0, 0, 0)) &&
+                log.date < new Date(dateFilter.to.setHours(23, 59, 59, 999))
               : log.date
           )
           .map((log) => ({
             ...log,
-            date: log.date.toISOString().split('T')[0],
+            date: log.date.toLocaleDateString(),
           }))}
         columns={columns}
       />
