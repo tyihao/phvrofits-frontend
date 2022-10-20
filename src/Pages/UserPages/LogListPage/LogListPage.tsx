@@ -277,37 +277,37 @@ const LogListPage = () => {
     setDateFilter(selectedDates);
   };
 
+  const logDataFiltered = logData.filter((log) =>
+    dateFilter && dateFilter.from && dateFilter.to
+      ? log.date >= new Date(dateFilter.from.setHours(0, 0, 0, 0)) &&
+        log.date < new Date(dateFilter.to.setHours(23, 59, 59, 999))
+      : log.date
+  );
+
   const {
     totalTotalRevenue,
     totalTotalProfit,
     totalPetrolCosts,
     totalDistance,
-  } = logData
-    .filter((log) =>
-      dateFilter && dateFilter.from && dateFilter.to
-        ? log.date >= new Date(dateFilter.from.setHours(0, 0, 0, 0)) &&
-          log.date < new Date(dateFilter.to.setHours(23, 59, 59, 999))
-        : log.date
-    )
-    .reduce(
-      (a, b) => ({
-        totalTotalProfit: a.totalTotalProfit + b.totalProfit,
-        totalTotalRevenue: a.totalTotalRevenue + b.totalRevenue,
-        totalPetrolCosts: a.totalPetrolCosts + b.petrolCost,
-        totalDistance: a.totalDistance + b.distance,
-      }),
-      {
-        totalTotalProfit: 0,
-        totalTotalRevenue: 0,
-        totalPetrolCosts: 0,
-        totalDistance: 0,
-      }
-    );
+  } = logDataFiltered.reduce(
+    (a, b) => ({
+      totalTotalProfit: a.totalTotalProfit + b.totalProfit,
+      totalTotalRevenue: a.totalTotalRevenue + b.totalRevenue,
+      totalPetrolCosts: a.totalPetrolCosts + b.petrolCost,
+      totalDistance: a.totalDistance + b.distance,
+    }),
+    {
+      totalTotalProfit: 0,
+      totalTotalRevenue: 0,
+      totalPetrolCosts: 0,
+      totalDistance: 0,
+    }
+  );
 
   return (
     <div style={{ margin: '20px' }}>
       <ActionBar />
-      <Header dateRange={dateFilter} />
+      <Header dateRange={dateFilter} totalResults={logDataFiltered.length} />
       <Summary
         totalDistance={totalDistance}
         totalPetrolCosts={totalPetrolCosts}

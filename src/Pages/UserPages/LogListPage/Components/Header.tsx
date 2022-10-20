@@ -4,10 +4,11 @@ import { DateRange } from 'react-day-picker';
 
 interface HeaderProps {
   dateRange?: DateRange;
+  totalResults: number;
 }
 
 const Header = (props: HeaderProps) => {
-  const { dateRange } = props;
+  const { dateRange, totalResults } = props;
   return (
     <Box
       sx={{
@@ -25,12 +26,12 @@ const Header = (props: HeaderProps) => {
     >
       {dateRange ? (
         <>
-          Displaying logs from{' '}
-          {dateRange.from && dateRange.from.toLocaleDateString()} to
-          {dateRange.to ? dateRange.to.toLocaleDateString() : ' today'}
+          Displaying {totalResults} logs from{' '}
+          {dateRange.from && dateRange.from.toLocaleDateString()} to{' '}
+          {dateRange.to ? dateRange.to.toLocaleDateString() : 'today'}
         </>
       ) : (
-        <> Displaying all X logs </>
+        <> Displaying all {totalResults} logs </>
       )}
     </Box>
   );
