@@ -29,6 +29,7 @@ import 'react-day-picker/dist/style.css';
 import Transition from './Components/Transition';
 import { format } from 'date-fns';
 import Summary from './Components/Summary';
+import Header from './Components/Header';
 
 const LogListPage = () => {
   const [hide, setHide] = useState(true);
@@ -95,7 +96,7 @@ const LogListPage = () => {
     );
   };
 
-  const Header = () => {
+  const ActionBar = () => {
     return (
       <Grid container direction="row" justifyContent={'space-between'}>
         <Grid item>
@@ -214,7 +215,7 @@ const LogListPage = () => {
             endIcon={<InfoIcon />}
             onClick={() => setHide((state) => !state)}
           >
-            Expand
+            Expand Table
           </Button>
           {/* <FormGroup>
             <FormControlLabel
@@ -305,8 +306,8 @@ const LogListPage = () => {
 
   return (
     <div style={{ margin: '20px' }}>
-      <h1> Logs </h1>
-      <Header />
+      <ActionBar />
+      <Header dateRange={dateFilter} />
       <Summary
         totalDistance={totalDistance}
         totalPetrolCosts={totalPetrolCosts}

@@ -3,9 +3,10 @@ import React from 'react';
 
 interface SummaryBoxProps {
   children: React.ReactNode;
+  color?: string;
 }
 const SummaryBox = (props: SummaryBoxProps) => {
-  const { children } = props;
+  const { children, color } = props;
   return (
     <Box
       sx={{
@@ -14,9 +15,10 @@ const SummaryBox = (props: SummaryBoxProps) => {
         border: '1px solid rgba(224,224,224,1)',
         borderRadius: '15px',
         margin: '0px 0 5px 0',
-        background: 'white',
+        background: color,
         boxShadow: 'rgba(100, 100, 111, 0.2) 0px 7px 29px 0px',
         height: '60px',
+        color: color ? 'white' : 'black',
       }}
     >
       {children}
