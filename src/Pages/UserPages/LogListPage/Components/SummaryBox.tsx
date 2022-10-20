@@ -17,8 +17,8 @@ const SummaryBox = (props: SummaryBoxProps) => {
         margin: '0px 0 5px 0',
         background: color,
         boxShadow: 'rgba(100, 100, 111, 0.2) 0px 7px 29px 0px',
-        height: '60px',
         color: color ? 'white' : 'black',
+        fontFamily: 'sans-serif',
       }}
     >
       {children}
