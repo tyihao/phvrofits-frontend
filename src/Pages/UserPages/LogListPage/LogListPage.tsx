@@ -1,12 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import useLogData from '../../../Utils/useLogData';
-import {
-  DataGrid,
-  GridColDef,
-  GridRenderCellParams,
-  GridToolbarContainer,
-  GridToolbarDensitySelector,
-} from '@mui/x-data-grid';
+import { DataGrid, GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
 import {
   AppBar,
   Box,
@@ -22,8 +16,8 @@ import {
   Typography,
 } from '@mui/material';
 import { editEntryOnFirebase } from '../../../Firebase/firebase';
-import InfoIcon from '@mui/icons-material/Info';
 import EditIcon from '@mui/icons-material/Edit';
+import InfoIcon from '@mui/icons-material/Info';
 import CloseIcon from '@mui/icons-material/Close';
 import IconButton from '@mui/material/IconButton';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
@@ -33,8 +27,8 @@ import DateRangePicker from '../../../Components/DateRangePicker';
 import { DateRange } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
 import Transition from './Components/Transition';
-import DateFilter from './Components/DateFilter';
 import { format } from 'date-fns';
+import Summary from './Components/Summary';
 
 const LogListPage = () => {
   const [hide, setHide] = useState(true);
@@ -103,13 +97,13 @@ const LogListPage = () => {
 
   const Header = () => {
     return (
-      <GridToolbarContainer>
+      <Grid container direction="row" justifyContent={'space-between'}>
         <Grid item>
           <Button
             startIcon={<CalendarMonthIcon />}
             onClick={() => setDateFilterDialog((state) => !state)}
           >
-            Date
+            Date Filter
           </Button>
           {/* TODO Bug Fix: dialog keeps exiting custom date selection after selecting a date */}
           {/* <DateFilter
@@ -216,13 +210,13 @@ const LogListPage = () => {
           </Dialog>
         </Grid>
         <Grid item>
-          {/* <Button
-            startIcon={<InfoIcon />}
+          <Button
+            endIcon={<InfoIcon />}
             onClick={() => setHide((state) => !state)}
           >
-            Breakdown
-          </Button> */}
-          <FormGroup>
+            Expand
+          </Button>
+          {/* <FormGroup>
             <FormControlLabel
               control={
                 <Switch
@@ -230,11 +224,12 @@ const LogListPage = () => {
                   onClick={() => setHide((state) => !state)}
                 />
               }
-              label="Detailed"
+              label="Details"
+              labelPlacement="start"
             />
-          </FormGroup>
+          </FormGroup> */}
         </Grid>
-      </GridToolbarContainer>
+      </Grid>
     );
   };
 
@@ -281,24 +276,12 @@ const LogListPage = () => {
     setDateFilter(selectedDates);
   };
 
-  const Footer = () => {
-    return (
-      <Box
-        sx={{
-          padding: '10px',
-          display: 'flex',
-          border: '1px solid rgba(224,224,224,1)',
-          borderRadius: '5px',
-          margin: '10px',
-        }}
-      >
-        Total revenue: ${Math.round(totalTotalRevenue * 100) / 100} | Total
-        profit: ${Math.round(totalTotalProfit * 100) / 100}
-      </Box>
-    );
-  };
-
-  const { totalTotalRevenue, totalTotalProfit } = logData
+  const {
+    totalTotalRevenue,
+    totalTotalProfit,
+    totalPetrolCosts,
+    totalDistance,
+  } = logData
     .filter((log) =>
       dateFilter && dateFilter.from && dateFilter.to
         ? log.date >= new Date(dateFilter.from.setHours(0, 0, 0, 0)) &&
@@ -309,19 +292,36 @@ const LogListPage = () => {
       (a, b) => ({
         totalTotalProfit: a.totalTotalProfit + b.totalProfit,
         totalTotalRevenue: a.totalTotalRevenue + b.totalRevenue,
+        totalPetrolCosts: a.totalPetrolCosts + b.petrolCost,
+        totalDistance: a.totalDistance + b.distance,
       }),
-      { totalTotalProfit: 0, totalTotalRevenue: 0 }
+      {
+        totalTotalProfit: 0,
+        totalTotalRevenue: 0,
+        totalPetrolCosts: 0,
+        totalDistance: 0,
+      }
     );
 
   return (
-    <div style={{ height: '790px', width: '90%', margin: '20px' }}>
-      <h1> Logs List </h1>
-      {dateFilter && <DateRangeDisplay />}
+    <div style={{ margin: '20px' }}>
+      <h1> Logs </h1>
+      <Header />
+      <Summary
+        totalDistance={totalDistance}
+        totalPetrolCosts={totalPetrolCosts}
+        totalTotalProfit={totalTotalProfit}
+        totalTotalRevenue={totalTotalRevenue}
+      />
       <DataGrid
-        components={{
-          Toolbar: Header,
-          Footer: Footer,
+        autoHeight
+        style={{
+          background: 'white',
+          borderRadius: '10px',
+          marginTop: '10px',
+          boxShadow: 'rgba(100, 100, 111, 0.2) 0px 7px 29px 0px',
         }}
+        rowsPerPageOptions={[10, 25, 50, 100]}
         componentsProps={{
           footer: {},
         }}
@@ -335,6 +335,9 @@ const LogListPage = () => {
           .map((log) => ({
             ...log,
             date: log.date.toLocaleDateString(),
+            totalProfit: Math.round(log.totalProfit * 100) / 100,
+            totalRevenue: Math.round(log.totalRevenue * 100) / 100,
+            petrolCost: Math.round(log.petrolCost * 100) / 100,
           }))}
         columns={columns}
       />

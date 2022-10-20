@@ -232,16 +232,16 @@ const fetchPetrolData = async (
   date: moment.Moment,
   otherDate?: moment.Moment
 ): Promise<DocumentData | undefined> => {
-  if (otherDate && otherDate.diff(moment(date).subtract(10, 'days')) === 0) {
-    // History not long enough...
+  if (otherDate && otherDate.diff(moment(date).subtract(30, 'days')) === 0) {
+    // History not long enough... must be after 8/6/2021
     // Return some form of error message in FE
     throw new Error('No such record found');
   }
   try {
     const docRef = doc(
       db,
-      'petrol_prices',
-      otherDate ? otherDate.format('DDMMYYYY') : date.format('DDMMYYYY')
+      'gas_prices',
+      otherDate ? otherDate.format('YYYYMMDD') : date.format('YYYYMMDD')
     );
     const docSnap = await getDoc(docRef);
     if (!docSnap.exists()) {
@@ -271,8 +271,8 @@ const getPetrolPrice = async (date: moment.Moment) => {
   const petrolData = await fetchPetrolData(date);
   const userPetrolPrice = petrolData && petrolData[petrolProfile];
   const discountedPetrol =
-    petrolData && petrolData.discounted_prices === false
-      ? userPetrolPrice * 0.8
+    petrolData && petrolData.raw_prices
+      ? userPetrolPrice * 0.8 // using 0.8 as a rough estimate for discounts
       : userPetrolPrice;
   return discountedPetrol;
 };

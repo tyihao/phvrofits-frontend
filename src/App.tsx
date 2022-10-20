@@ -11,7 +11,7 @@ function App() {
   const [user, loading, error] = useAuthState(auth);
 
   return (
-    <div>
+    <div style={{ background: '#FAFAFA' }}>
       {!loading && (
         <>
           <Navbar />
