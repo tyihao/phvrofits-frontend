@@ -33,7 +33,7 @@ const Summary = (props: SummaryProps) => {
                 <span
                   style={{
                     fontWeight: 600,
-                    fontSize: '18px',
+                    fontSize: '16px',
                     marginLeft: '5px',
                   }}
                 >
@@ -44,7 +44,7 @@ const Summary = (props: SummaryProps) => {
                 <span
                   style={{
                     fontWeight: 300,
-                    fontSize: '14px',
+                    fontSize: '12px',
                     marginLeft: '5px',
                   }}
                 >
@@ -66,7 +66,7 @@ const Summary = (props: SummaryProps) => {
                 <span
                   style={{
                     fontWeight: 600,
-                    fontSize: '18px',
+                    fontSize: '16px',
                     marginLeft: '5px',
                   }}
                 >
@@ -99,7 +99,7 @@ const Summary = (props: SummaryProps) => {
                 <span
                   style={{
                     fontWeight: 600,
-                    fontSize: '18px',
+                    fontSize: '16px',
                     marginLeft: '5px',
                   }}
                 >
@@ -132,11 +132,11 @@ const Summary = (props: SummaryProps) => {
                 <span
                   style={{
                     fontWeight: 600,
-                    fontSize: '18px',
+                    fontSize: '16px',
                     marginLeft: '5px',
                   }}
                 >
-                  ${Math.round(totalDistance * 100) / 100}
+                  {Math.round(totalDistance * 100) / 100} km
                 </span>
               </Grid>
               <Grid item xs={12}>

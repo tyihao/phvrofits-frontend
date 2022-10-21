@@ -16,7 +16,7 @@ const Header = (props: HeaderProps) => {
         display: 'flex',
         border: '1px solid rgba(224,224,224,1)',
         borderRadius: '15px',
-        margin: '5px 0 15px 0',
+        margin: '3px 0 8px 0',
         boxShadow: 'rgba(100, 100, 111, 0.3) 0px 7px 29px 0px',
         height: '20px',
         background: '#2995F7',
@@ -36,9 +36,5 @@ const Header = (props: HeaderProps) => {
     </Box>
   );
 };
-
-interface Header {
-  dateFiltered: boolean;
-}
 
 export default Header;

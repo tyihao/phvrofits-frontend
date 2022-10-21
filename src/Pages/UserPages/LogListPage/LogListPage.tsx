@@ -103,6 +103,7 @@ const LogListPage = () => {
           <Button
             startIcon={<CalendarMonthIcon />}
             onClick={() => setDateFilterDialog((state) => !state)}
+            sx={{ color: '#2c5491' }}
           >
             Date Filter
           </Button>
@@ -214,6 +215,7 @@ const LogListPage = () => {
           <Button
             endIcon={<InfoIcon />}
             onClick={() => setHide((state) => !state)}
+            sx={{ color: '#2c5491' }}
           >
             Expand Table
           </Button>
@@ -321,7 +323,7 @@ const LogListPage = () => {
   );
 
   return (
-    <div style={{ margin: '20px' }}>
+    <div style={{ margin: '0 20px 20px 20px' }}>
       <ActionBar />
       <Header dateRange={dateFilter} totalResults={logDataFiltered.length} />
       <Summary
