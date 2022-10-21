@@ -40,7 +40,6 @@ const SubmitLogPage = () => {
 
   const submitEntry = async () => {
     setIsLoading(true);
-    // returns true if successfully added log, false if not - snackbar message triggered accordingly
     await submitEntryToFirebase(
       gojekEarnings !== '' ? parseFloat(gojekEarnings) : 0,
       tadaEarnings !== '' ? parseFloat(tadaEarnings) : 0,
@@ -53,10 +52,7 @@ const SubmitLogPage = () => {
         setSnackbar(true);
         setSubmitStatus(res);
       })
-      .finally(() => {
-        setIsLoading(false);
-        setSubmitStatus(false);
-      });
+      .finally(() => setIsLoading(false));
 
     setGojekEarnings('');
     setRydeEarnings('');
@@ -74,8 +70,6 @@ const SubmitLogPage = () => {
     }
   }, [submitStatus]);
 
-  console.log(newlyLoggedDates);
-
   return (
     <LocalizationProvider dateAdapter={AdapterMoment}>
       <div>
@@ -85,8 +79,6 @@ const SubmitLogPage = () => {
             <Grid direction="column" spacing={2} container>
               <Grid item>
                 <DesktopDatePicker
-                  minDate={moment(new Date('June 08, 2021 00:00:00'))}
-                  disableFuture
                   label="Date"
                   inputFormat="DD/MM/yyyy"
                   value={date}

@@ -1,4 +1,6 @@
 import { Backdrop, CircularProgress } from '@mui/material';
+import { createTheme } from '@mui/material/styles';
+import { green, purple } from '@mui/material/colors';
 import React from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { Routes, Route } from 'react-router-dom';
@@ -9,6 +11,17 @@ import './Styles/App.css';
 
 function App() {
   const [user, loading, error] = useAuthState(auth);
+
+  const theme = createTheme({
+    palette: {
+      primary: {
+        main: purple[500],
+      },
+      secondary: {
+        main: green[500],
+      },
+    },
+  });
 
   return (
     <div style={{ background: '#FAFAFA' }}>

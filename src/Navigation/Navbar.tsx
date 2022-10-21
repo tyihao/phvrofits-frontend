@@ -9,6 +9,7 @@ import {
   CircularProgress,
   Container,
   createTheme,
+  Fab,
   IconButton,
   Menu,
   MenuItem,
@@ -26,38 +27,12 @@ import { auth } from '../Firebase';
 import '../Styles/Navbar.css';
 import useUsername from '../Utils/useUsername';
 
-declare module '@mui/material/styles' {
-  interface Theme {
-    status: {
-      danger: React.CSSProperties['color'];
-    };
-  }
-
-  interface Palette {
-    neutral: Palette['primary'];
-  }
-  interface PaletteOptions {
-    neutral: PaletteOptions['primary'];
-  }
-
-  interface PaletteColor {
-    darker?: string;
-  }
-  interface SimplePaletteColorOptions {
-    darker?: string;
-  }
-  interface ThemeOptions {
-    status: {
-      danger: React.CSSProperties['color'];
-    };
-  }
-}
-
 const user_pages = [
   { pageName: 'Home', pageLink: '' },
   { pageName: 'Dashboard', pageLink: 'dashboard' },
   { pageName: 'Log List', pageLink: 'loglist' },
   { pageName: 'Submit Log', pageLink: 'submit' },
+  { pageName: 'Account', pageLink: 'account' },
 ];
 
 const general_pages = [
@@ -161,22 +136,19 @@ function Navbar() {
                   ))}
             </Box>
             <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
-              <IconButton
-                size="large"
-                aria-label="account of current user"
-                aria-controls="menu-appbar"
-                aria-haspopup="true"
+              <Fab
                 onClick={handleOpenNavMenu}
-                color="inherit"
+                size="medium"
+                aria-label="add"
                 sx={{
-                  border: '100px #FAFAFA',
+                  padding: '8px',
                   backgroundColor: 'white',
                   borderRadius: '15px',
                   boxShadow: `rgba(149, 157, 165, 0.2) 0px 8px 24px`,
                 }}
               >
                 <MenuIcon />
-              </IconButton>
+              </Fab>
               {/* <Menu
                 id="menu-appbar"
                 anchorEl={anchorElNav}
@@ -295,21 +267,21 @@ function Navbar() {
                     </IconButton>
                   </Link>
                 </Tooltip> */}
-                <Tooltip title="Add Log">
-                  <Link className="navbar-link" to={`/submit`}>
-                    <IconButton
-                      sx={{
-                        padding: '12px',
-                        backgroundColor: '#2c5491',
-                        borderRadius: '15px',
-                        boxShadow: `rgba(149, 157, 165, 0.5) 0px 8px 24px`,
-                        color: 'white',
-                      }}
-                    >
-                      <AddIcon />
-                    </IconButton>
-                  </Link>
-                </Tooltip>
+                <Link className="navbar-link" to={`/submit`}>
+                  <Fab
+                    aria-label="add"
+                    size="medium"
+                    sx={{
+                      padding: '8px',
+                      backgroundColor: '#2c5491',
+                      borderRadius: '15px',
+                      boxShadow: `rgba(149, 157, 165, 0.5) 0px 8px 24px`,
+                      color: 'white',
+                    }}
+                  >
+                    <AddIcon />
+                  </Fab>
+                </Link>
               </Box>
             ) : (
               <Button
