@@ -1,6 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import useLogData from '../../../Utils/useLogData';
-import { DataGrid, GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
+import {
+  DataGrid,
+  gridClasses,
+  GridColDef,
+  GridRenderCellParams,
+} from '@mui/x-data-grid';
 import {
   AppBar,
   Box,
@@ -48,7 +53,10 @@ const LogListPage = () => {
   useEffect(() => setLogData(orderBy(data, ['date'], ['desc'])), [data]);
 
   const columns: GridColDef[] = [
-    { field: 'date', headerName: 'Date' },
+    {
+      field: 'date',
+      headerName: 'Date',
+    },
     { field: 'distance', headerName: 'Distance (km)', width: 110 },
     { field: 'gojekEarnings', headerName: 'Gojek ($)', hide, width: 80 },
     { field: 'grabEarnings', headerName: 'Grab ($)', hide, width: 70 },
@@ -334,16 +342,38 @@ const LogListPage = () => {
       />
       <DataGrid
         autoHeight
-        style={{
+        disableColumnMenu
+        getRowClassName={(params) => {
+          const rowNum = params.indexRelativeToCurrentPage;
+          if (rowNum % 2 === 0) {
+            return 'even';
+          }
+          return 'odd';
+        }}
+        sx={{
           background: 'white',
           borderRadius: '10px',
-          marginTop: '10px',
+          marginTop: '25px',
+          border: 0,
+          // border: '1px solid rgb(200,200,200)',
           boxShadow: 'rgba(100, 100, 111, 0.2) 0px 7px 29px 0px',
+          [`& .${gridClasses.row}.even`]: {
+            backgroundColor: 'rgba(44, 84, 145, 0)',
+          },
+          [`& .MuiDataGrid-columnHeaders`]: {
+            backgroundColor: 'rgba(44, 84, 145, 0.2)',
+            borderTopLeftRadius: '10px',
+            borderTopRightRadius: '10px',
+          },
+          // [`& .MuiDataGrid-footerContainer`]: {
+          //   backgroundColor: 'rgba(44, 84, 145, 0.5)',
+          //   borderRadius: '10px',
+          // },
+          [`& .${gridClasses.row}.odd`]: {
+            backgroundColor: 'rgba(44, 84, 145, 0.1)',
+          },
         }}
         rowsPerPageOptions={[10, 25, 50, 100]}
-        componentsProps={{
-          footer: {},
-        }}
         rows={logDataFiltered.map((log) => ({
           ...log,
           date: log.date.toLocaleDateString(),
