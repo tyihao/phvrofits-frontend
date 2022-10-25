@@ -1,15 +1,15 @@
 {
-  "main.css": "/phvrofits-frontend/static/css/main.8e9a07aa.chunk.css",
-  "main.js": "/phvrofits-frontend/static/js/main.13dbb2eb.chunk.js",
-  "main.js.map": "/phvrofits-frontend/static/js/main.13dbb2eb.chunk.js.map",
+  "main.css": "/phvrofits-frontend/static/css/main.eca07b50.chunk.css",
+  "main.js": "/phvrofits-frontend/static/js/main.234f2fbd.chunk.js",
+  "main.js.map": "/phvrofits-frontend/static/js/main.234f2fbd.chunk.js.map",
   "runtime~main.js": "/phvrofits-frontend/static/js/runtime~main.b482606a.js",
   "runtime~main.js.map": "/phvrofits-frontend/static/js/runtime~main.b482606a.js.map",
   "static/css/2.b9d531b4.chunk.css": "/phvrofits-frontend/static/css/2.b9d531b4.chunk.css",
-  "static/js/2.194e21e7.chunk.js": "/phvrofits-frontend/static/js/2.194e21e7.chunk.js",
-  "static/js/2.194e21e7.chunk.js.map": "/phvrofits-frontend/static/js/2.194e21e7.chunk.js.map",
+  "static/js/2.4b65d36e.chunk.js": "/phvrofits-frontend/static/js/2.4b65d36e.chunk.js",
+  "static/js/2.4b65d36e.chunk.js.map": "/phvrofits-frontend/static/js/2.4b65d36e.chunk.js.map",
   "index.html": "/phvrofits-frontend/index.html",
-  "precache-manifest.16e351c0a2f7e60cdf80f9723534c2e0.js": "/phvrofits-frontend/precache-manifest.16e351c0a2f7e60cdf80f9723534c2e0.js",
+  "precache-manifest.f6775a57e5de0975d09cf65aa0261733.js": "/phvrofits-frontend/precache-manifest.f6775a57e5de0975d09cf65aa0261733.js",
   "service-worker.js": "/phvrofits-frontend/service-worker.js",
   "static/css/2.b9d531b4.chunk.css.map": "/phvrofits-frontend/static/css/2.b9d531b4.chunk.css.map",
-  "static/css/main.8e9a07aa.chunk.css.map": "/phvrofits-frontend/static/css/main.8e9a07aa.chunk.css.map"
+  "static/css/main.eca07b50.chunk.css.map": "/phvrofits-frontend/static/css/main.eca07b50.chunk.css.map"
 }
