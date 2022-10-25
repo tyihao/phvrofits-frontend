@@ -25,6 +25,7 @@ import gojekLogo from '../../../Assets/gojek_logo.png';
 import grabLogo from '../../../Assets/grab_logo.png';
 import rydeLogo from '../../../Assets/ryde_logo.png';
 import tadaLogo from '../../../Assets/tada_logo.webp';
+import LogoBox from './Components/LogoBox';
 
 const SubmitLogPage = () => {
   const [gojekEarnings, setGojekEarnings] = useState<string>('');
@@ -144,7 +145,7 @@ const SubmitLogPage = () => {
                         [...loggedDates, ...newlyLoggedDates].includes(
                           date.format('DD/MM/YYYY')
                         ) &&
-                        `Date already exists. Please choose another date or edit
+                        `Date exists. Please choose another date or edit
                       current entry in Log List.`
                       }
                     />
@@ -186,120 +187,136 @@ const SubmitLogPage = () => {
                 </b>
               </Grid>
               <Grid item>
-                <TextField
-                  type="number"
-                  id="gojek-earnings"
-                  onChange={(e) => setGojekEarnings(e.target.value)}
-                  value={gojekEarnings}
-                  placeholder={'0'}
-                  className="textfield"
-                  sx={{
-                    '& .MuiInputBase-root': {
-                      borderRadius: '10px',
-                    },
-                  }}
-                  InputProps={{
-                    startAdornment: (
-                      <>
-                        <img
-                          width={60}
-                          style={{ marginRight: 10 }}
-                          src={gojekLogo}
-                          alt="gojek-earnings"
-                        />
+                <Stack direction="row">
+                  <LogoBox>
+                    <img
+                      style={{
+                        width: '60px',
+                        height: 'auto',
+                      }}
+                      src={gojekLogo}
+                      alt="gojek-earnings"
+                    />
+                  </LogoBox>
+                  <TextField
+                    type="number"
+                    id="gojek-earnings"
+                    onChange={(e) => setGojekEarnings(e.target.value)}
+                    value={gojekEarnings}
+                    placeholder={'0'}
+                    className="textfield"
+                    sx={{
+                      '& .MuiInputBase-root': {
+                        borderRadius: '10px',
+                      },
+                    }}
+                    InputProps={{
+                      startAdornment: (
                         <InputAdornment position="start">$</InputAdornment>
-                      </>
-                    ),
-                  }}
-                  fullWidth
-                />
+                      ),
+                    }}
+                    fullWidth
+                  />
+                </Stack>
               </Grid>
               <Grid item>
-                <TextField
-                  type="number"
-                  id="grab-earnings"
-                  placeholder={'0'}
-                  onChange={(e) => setGrabEarnings(e.target.value)}
-                  value={grabEarnings}
-                  className="textfield"
-                  sx={{
-                    '& .MuiInputBase-root': {
-                      borderRadius: '10px',
-                    },
-                  }}
-                  InputProps={{
-                    startAdornment: (
-                      <>
-                        <img
-                          width={60}
-                          style={{ marginRight: 10 }}
-                          src={grabLogo}
-                          alt="grab-earnings"
-                        />
+                <Stack direction="row">
+                  <LogoBox>
+                    <img
+                      style={{
+                        width: '60px',
+                        height: 'auto',
+                      }}
+                      src={grabLogo}
+                      alt="grab-earnings"
+                    />
+                  </LogoBox>
+                  <TextField
+                    type="number"
+                    id="grab-earnings"
+                    placeholder={'0'}
+                    onChange={(e) => setGrabEarnings(e.target.value)}
+                    value={grabEarnings}
+                    className="textfield"
+                    sx={{
+                      '& .MuiInputBase-root': {
+                        borderRadius: '10px',
+                      },
+                    }}
+                    InputProps={{
+                      startAdornment: (
                         <InputAdornment position="start">$</InputAdornment>
-                      </>
-                    ),
-                  }}
-                  fullWidth
-                />
+                      ),
+                    }}
+                    fullWidth
+                  />
+                </Stack>
               </Grid>
               <Grid item>
-                <TextField
-                  type="number"
-                  id="tada-earnings"
-                  placeholder={'0'}
-                  onChange={(e) => setTadaEarnings(e.target.value)}
-                  value={tadaEarnings}
-                  className="textfield"
-                  sx={{
-                    '& .MuiInputBase-root': {
-                      borderRadius: '10px',
-                    },
-                  }}
-                  InputProps={{
-                    startAdornment: (
-                      <>
-                        <img
-                          width={60}
-                          style={{ marginRight: 10 }}
-                          src={tadaLogo}
-                          alt="tada-earnings"
-                        />
+                <Stack direction="row">
+                  <LogoBox>
+                    <img
+                      style={{
+                        width: '60px',
+                        height: 'auto',
+                      }}
+                      src={tadaLogo}
+                      alt="tada-earnings"
+                    />{' '}
+                  </LogoBox>
+                  <TextField
+                    type="number"
+                    id="tada-earnings"
+                    placeholder={'0'}
+                    onChange={(e) => setTadaEarnings(e.target.value)}
+                    value={tadaEarnings}
+                    className="textfield"
+                    sx={{
+                      '& .MuiInputBase-root': {
+                        borderRadius: '10px',
+                      },
+                    }}
+                    InputProps={{
+                      startAdornment: (
                         <InputAdornment position="start">$</InputAdornment>
-                      </>
-                    ),
-                  }}
-                  fullWidth
-                />
+                      ),
+                    }}
+                    fullWidth
+                  />
+                </Stack>
               </Grid>
               <Grid item>
-                <TextField
-                  type="number"
-                  id="ryde-earnings"
-                  placeholder={'0'}
-                  onChange={(e) => setRydeEarnings(e.target.value)}
-                  value={rydeEarnings}
-                  className="textfield"
-                  sx={{
-                    '& .MuiInputBase-root': {
-                      borderRadius: '10px',
-                    },
-                  }}
-                  InputProps={{
-                    startAdornment: (
-                      <>
-                        <img
-                          width={60}
-                          style={{ marginRight: 10 }}
-                          src={rydeLogo}
-                          alt="ryde-earnings"
-                        />
+                <Stack direction="row">
+                  <LogoBox>
+                    <img
+                      style={{
+                        width: '60px',
+                        height: 'auto',
+                      }}
+                      src={rydeLogo}
+                      alt="ryde-earnings"
+                    />
+                  </LogoBox>
+                  <TextField
+                    type="number"
+                    id="ryde-earnings"
+                    placeholder={'0'}
+                    onChange={(e) => setRydeEarnings(e.target.value)}
+                    value={rydeEarnings}
+                    className="textfield"
+                    sx={{
+                      '& .MuiInputBase-root': {
+                        borderRadius: '10px',
+                      },
+                    }}
+                    InputProps={{
+                      startAdornment: (
                         <InputAdornment position="start">$</InputAdornment>
-                      </>
-                    ),
-                  }}
-                  fullWidth
-                />
+                      ),
+                    }}
+                    fullWidth
+                  />
+                </Stack>
               </Grid>
             </Grid>
           </Box>
@@ -323,11 +340,12 @@ const SubmitLogPage = () => {
             <Button
               variant="outlined"
               style={{
-                margin: '15px 0 0 0',
+                margin: '15px 0 15px 0',
                 color: '#2c5491',
                 borderColor: '#2c5491',
                 height: '50px',
                 borderRadius: '10px',
+                backgroundColor: 'white',
               }}
               onClick={clearEntry}
               disabled={[...loggedDates, ...newlyLoggedDates].includes(
