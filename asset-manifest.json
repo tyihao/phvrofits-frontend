@@ -1,20 +1,20 @@
 {
-  "main.css": "/phvrofits-frontend/static/css/main.eca07b50.chunk.css",
-  "main.js": "/phvrofits-frontend/static/js/main.f2536cfc.chunk.js",
-  "main.js.map": "/phvrofits-frontend/static/js/main.f2536cfc.chunk.js.map",
-  "runtime~main.js": "/phvrofits-frontend/static/js/runtime~main.b482606a.js",
-  "runtime~main.js.map": "/phvrofits-frontend/static/js/runtime~main.b482606a.js.map",
-  "static/css/2.b9d531b4.chunk.css": "/phvrofits-frontend/static/css/2.b9d531b4.chunk.css",
-  "static/js/2.f1fd14df.chunk.js": "/phvrofits-frontend/static/js/2.f1fd14df.chunk.js",
-  "static/js/2.f1fd14df.chunk.js.map": "/phvrofits-frontend/static/js/2.f1fd14df.chunk.js.map",
-  "index.html": "/phvrofits-frontend/index.html",
-  "precache-manifest.5e2187cb4abddef02a9b3c6329c39337.js": "/phvrofits-frontend/precache-manifest.5e2187cb4abddef02a9b3c6329c39337.js",
-  "service-worker.js": "/phvrofits-frontend/service-worker.js",
-  "static/css/2.b9d531b4.chunk.css.map": "/phvrofits-frontend/static/css/2.b9d531b4.chunk.css.map",
-  "static/css/main.eca07b50.chunk.css.map": "/phvrofits-frontend/static/css/main.eca07b50.chunk.css.map",
-  "static/media/gojek_logo.png": "/phvrofits-frontend/static/media/gojek_logo.abc40694.png",
-  "static/media/grab_logo.png": "/phvrofits-frontend/static/media/grab_logo.5e3569f1.png",
-  "static/media/ryde_logo.png": "/phvrofits-frontend/static/media/ryde_logo.6c2fe10d.png",
-  "static/media/tada_logo.webp": "/phvrofits-frontend/static/media/tada_logo.6ac5cd04.webp",
-  "static/media/work-in-progress.png": "/phvrofits-frontend/static/media/work-in-progress.b364b2b6.png"
+  "files": {
+    "main.css": "/phvrofits-frontend/static/css/main.ae7d0629.css",
+    "main.js": "/phvrofits-frontend/static/js/main.ac8e3f5e.js",
+    "static/media/grab_g_logo.png": "/phvrofits-frontend/static/media/grab_g_logo.0bda717f4395acda2d2c.png",
+    "static/media/ryde_logo.png": "/phvrofits-frontend/static/media/ryde_logo.3410a5e20f3c5f6db336.png",
+    "static/media/gojek_logo.png": "/phvrofits-frontend/static/media/gojek_logo.1cf3c28a7e5f64792c42.png",
+    "static/media/grab_logo.png": "/phvrofits-frontend/static/media/grab_logo.e3309bfa02b0f5c39114.png",
+    "static/media/gojek_no_words_logo.png": "/phvrofits-frontend/static/media/gojek_no_words_logo.87318836e600872b5840.png",
+    "static/media/work-in-progress.png": "/phvrofits-frontend/static/media/work-in-progress.986cc3b9dd91fa31446d.png",
+    "static/media/tada_logo.webp": "/phvrofits-frontend/static/media/tada_logo.f05c51dc2f829a504c8f.webp",
+    "index.html": "/phvrofits-frontend/index.html",
+    "main.ae7d0629.css.map": "/phvrofits-frontend/static/css/main.ae7d0629.css.map",
+    "main.ac8e3f5e.js.map": "/phvrofits-frontend/static/js/main.ac8e3f5e.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.ae7d0629.css",
+    "static/js/main.ac8e3f5e.js"
+  ]
 }
