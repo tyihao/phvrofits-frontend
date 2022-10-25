@@ -18,7 +18,7 @@ const Header = (props: HeaderProps) => {
         borderRadius: '15px',
         margin: '3px 0 8px 0',
         boxShadow: 'rgba(100, 100, 111, 0.3) 0px 7px 29px 0px',
-        height: '20px',
+        height: '100%',
         background: '#2995F7',
         fontSize: '14px',
         color: 'white',

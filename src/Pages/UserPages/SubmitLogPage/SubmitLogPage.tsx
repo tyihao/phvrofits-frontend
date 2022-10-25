@@ -9,6 +9,7 @@ import {
   Grid,
   InputAdornment,
   Snackbar,
+  Stack,
   TextField,
 } from '@mui/material';
 import { useEffect, useState } from 'react';
@@ -20,7 +21,6 @@ import moment from 'moment';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import useLogData from '../../../Utils/useLogData';
 import './Styles/styles.css';
-import { Link } from 'react-router-dom';
 
 const SubmitLogPage = () => {
   const [gojekEarnings, setGojekEarnings] = useState<string>('');
@@ -61,6 +61,14 @@ const SubmitLogPage = () => {
     setDistance('');
   };
 
+  const clearEntry = async () => {
+    setGojekEarnings('');
+    setRydeEarnings('');
+    setGrabEarnings('');
+    setTadaEarnings('');
+    setDistance('');
+  };
+
   useEffect(() => {
     if (submitStatus) {
       setSnackbarType('success');
@@ -74,41 +82,129 @@ const SubmitLogPage = () => {
     <LocalizationProvider dateAdapter={AdapterMoment}>
       <div>
         <div className="submit-log-form">
-          <h1> Submit Your Log </h1>
+          <Box
+            sx={{
+              borderRadius: '10px',
+              textAlign: 'center',
+              margin: '0 0 20px 0',
+              padding: '13px',
+              background: 'rgba(145,105,44,0.5)',
+              fontFamily: 'sans-serif',
+              border: '1px solid rgba(145,105,44,0.8)',
+              // boxShadow: 'rgba(149, 157, 165, 0.5) 0px 8px 24px',
+            }}
+          >
+            <span style={{ fontWeight: 500, fontSize: 24, color: '#292929' }}>
+              DAILY LOG
+            </span>
+            <br />
+            <span style={{ fontWeight: 300, fontSize: 16, color: '#4F4F4F' }}>
+              Fill in the form
+            </span>
+          </Box>
           <Box>
             <Grid direction="column" spacing={2} container>
               <Grid item>
+                <b
+                  style={{
+                    fontFamily: 'sans-serif',
+                    color: '#292929',
+                  }}
+                >
+                  Section 1: Date and Distance
+                </b>
+              </Grid>
+              <Grid item>
                 <DesktopDatePicker
-                  label="Date"
                   inputFormat="DD/MM/yyyy"
                   value={date}
                   onChange={(date) => date && setDate(date)}
-                  renderInput={(params) => <TextField {...params} fullWidth />}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      fullWidth
+                      error={[...loggedDates, ...newlyLoggedDates].includes(
+                        date.format('DD/MM/YYYY')
+                      )}
+                      sx={{
+                        '& .MuiInputBase-root': {
+                          backgroundColor: 'white',
+                          borderRadius: '10px',
+                        },
+
+                        '& .MuiFormHelperText-root': {
+                          backgroundColor: 'transparent',
+                        },
+                      }}
+                      helperText={
+                        [...loggedDates, ...newlyLoggedDates].includes(
+                          date.format('DD/MM/YYYY')
+                        ) &&
+                        `Date already exists. Please choose another date or edit
+                      current entry in Log List.`
+                      }
+                    />
+                  )}
                 />
               </Grid>
-              {[...loggedDates, ...newlyLoggedDates].includes(
-                date.format('DD/MM/YYYY')
-              ) && (
-                <Alert
-                  severity="error"
-                  className="alert_message"
-                  variant="outlined"
+              <Grid item>
+                <TextField
+                  required
+                  id="distance"
+                  onChange={(e) => setDistance(e.target.value)}
+                  fullWidth
+                  type="number"
+                  value={distance}
+                  placeholder={'0'}
+                  className="textfield"
+                  sx={{
+                    '& .MuiInputBase-root': {
+                      borderRadius: '10px',
+                    },
+                  }}
+                  InputProps={{
+                    startAdornment: (
+                      <>
+                        <InputAdornment position="start">km</InputAdornment>
+                      </>
+                    ),
+                  }}
+                />
+              </Grid>
+              <Grid item>
+                <b
+                  style={{
+                    fontFamily: 'sans-serif',
+                    color: '#292929',
+                  }}
                 >
-                  Date already exists. Please choose another date or delete
-                  current entry {<Link to={`/loglist`}> here</Link>}.
-                </Alert>
-              )}
+                  Section 2: Earnings
+                </b>
+              </Grid>
               <Grid item>
                 <TextField
                   type="number"
                   id="gojek-earnings"
-                  label="Gojek Earnings"
                   onChange={(e) => setGojekEarnings(e.target.value)}
                   value={gojekEarnings}
                   placeholder={'0'}
+                  className="textfield"
+                  sx={{
+                    '& .MuiInputBase-root': {
+                      borderRadius: '10px',
+                    },
+                  }}
                   InputProps={{
                     startAdornment: (
-                      <InputAdornment position="start">$</InputAdornment>
+                      <>
+                        <img
+                          width={60}
+                          style={{ marginRight: 10 }}
+                          src="gojek_logo.png"
+                          alt="gojek-earnings"
+                        />
+                        <InputAdornment position="start">$</InputAdornment>
+                      </>
                     ),
                   }}
                   fullWidth
@@ -118,13 +214,26 @@ const SubmitLogPage = () => {
                 <TextField
                   type="number"
                   id="grab-earnings"
-                  label="Grab Earnings"
                   placeholder={'0'}
                   onChange={(e) => setGrabEarnings(e.target.value)}
                   value={grabEarnings}
+                  className="textfield"
+                  sx={{
+                    '& .MuiInputBase-root': {
+                      borderRadius: '10px',
+                    },
+                  }}
                   InputProps={{
                     startAdornment: (
-                      <InputAdornment position="start">$</InputAdornment>
+                      <>
+                        <img
+                          width={60}
+                          style={{ marginRight: 10 }}
+                          src="grab_logo.png"
+                          alt="grab-earnings"
+                        />
+                        <InputAdornment position="start">$</InputAdornment>
+                      </>
                     ),
                   }}
                   fullWidth
@@ -134,13 +243,26 @@ const SubmitLogPage = () => {
                 <TextField
                   type="number"
                   id="tada-earnings"
-                  label="Tada Earnings"
                   placeholder={'0'}
                   onChange={(e) => setTadaEarnings(e.target.value)}
                   value={tadaEarnings}
+                  className="textfield"
+                  sx={{
+                    '& .MuiInputBase-root': {
+                      borderRadius: '10px',
+                    },
+                  }}
                   InputProps={{
                     startAdornment: (
-                      <InputAdornment position="start">$</InputAdornment>
+                      <>
+                        <img
+                          width={60}
+                          style={{ marginRight: 10 }}
+                          src="tada_logo.webp"
+                          alt="tada-earnings"
+                        />
+                        <InputAdornment position="start">$</InputAdornment>
+                      </>
                     ),
                   }}
                   fullWidth
@@ -151,50 +273,66 @@ const SubmitLogPage = () => {
                   type="number"
                   id="ryde-earnings"
                   placeholder={'0'}
-                  label="Ryde Earnings"
                   onChange={(e) => setRydeEarnings(e.target.value)}
                   value={rydeEarnings}
+                  className="textfield"
+                  sx={{
+                    '& .MuiInputBase-root': {
+                      borderRadius: '10px',
+                    },
+                  }}
                   InputProps={{
                     startAdornment: (
-                      <InputAdornment position="start">$</InputAdornment>
+                      <>
+                        <img
+                          width={60}
+                          style={{ marginRight: 10 }}
+                          src="ryde_logo.png"
+                          alt="ryde-earnings"
+                        />
+                        <InputAdornment position="start">$</InputAdornment>
+                      </>
                     ),
                   }}
                   fullWidth
-                />
-              </Grid>
-              <Grid item>
-                <TextField
-                  required
-                  id="distance"
-                  label="Distance"
-                  onChange={(e) => setDistance(e.target.value)}
-                  fullWidth
-                  type="number"
-                  value={distance}
-                  placeholder={'0'}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">km</InputAdornment>
-                    ),
-                  }}
                 />
               </Grid>
             </Grid>
           </Box>
-          <Button
-            variant="contained"
-            style={{
-              margin: '15px 0 7px 0',
-              color: 'white',
-              backgroundColor: '216fb3',
-            }}
-            onClick={submitEntry}
-            disabled={[...loggedDates, ...newlyLoggedDates].includes(
-              date.format('DD/MM/YYYY')
-            )}
-          >
-            Submit Entry
-          </Button>
+          <Stack>
+            <Button
+              variant="contained"
+              style={{
+                margin: '15px 0 0 0',
+                color: 'white',
+                backgroundColor: '#2c5491',
+                height: '50px',
+                borderRadius: '10px',
+              }}
+              onClick={submitEntry}
+              disabled={[...loggedDates, ...newlyLoggedDates].includes(
+                date.format('DD/MM/YYYY')
+              )}
+            >
+              Confirm
+            </Button>
+            <Button
+              variant="outlined"
+              style={{
+                margin: '15px 0 0 0',
+                color: '#2c5491',
+                borderColor: '#2c5491',
+                height: '50px',
+                borderRadius: '10px',
+              }}
+              onClick={clearEntry}
+              disabled={[...loggedDates, ...newlyLoggedDates].includes(
+                date.format('DD/MM/YYYY')
+              )}
+            >
+              Reset
+            </Button>
+          </Stack>
         </div>
         {isLoading && (
           <Backdrop
