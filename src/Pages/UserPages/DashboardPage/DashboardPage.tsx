@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { auth, logout } from '../../../Firebase';
 import useLogData from '../../../Utils/useLogData';
 import useUsername from '../../../Utils/useUsername';
+import workInProgress from './work-in-progress.png';
 import './Styles/styles.css';
 
 function Dashboard() {
@@ -21,7 +22,7 @@ function Dashboard() {
         transform: 'translate(-50%, -50%)',
       }}
     >
-      <img src="work-in-progress.png" alt="Work in progress" />
+      <img src={workInProgress} alt="Work in progress" />
     </div>
   );
 }

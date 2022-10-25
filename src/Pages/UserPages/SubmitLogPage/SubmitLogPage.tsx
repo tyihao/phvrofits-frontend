@@ -21,6 +21,10 @@ import moment from 'moment';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import useLogData from '../../../Utils/useLogData';
 import './Styles/styles.css';
+import gojekLogo from '../../../Assets/gojek_logo.png';
+import grabLogo from '../../../Assets/grab_logo.png';
+import rydeLogo from '../../../Assets/ryde_logo.png';
+import tadaLogo from '../../../Assets/tada_logo.webp';
 
 const SubmitLogPage = () => {
   const [gojekEarnings, setGojekEarnings] = useState<string>('');
@@ -200,7 +204,7 @@ const SubmitLogPage = () => {
                         <img
                           width={60}
                           style={{ marginRight: 10 }}
-                          src="gojek_logo.png"
+                          src={gojekLogo}
                           alt="gojek-earnings"
                         />
                         <InputAdornment position="start">$</InputAdornment>
@@ -229,7 +233,7 @@ const SubmitLogPage = () => {
                         <img
                           width={60}
                           style={{ marginRight: 10 }}
-                          src="grab_logo.png"
+                          src={grabLogo}
                           alt="grab-earnings"
                         />
                         <InputAdornment position="start">$</InputAdornment>
@@ -258,7 +262,7 @@ const SubmitLogPage = () => {
                         <img
                           width={60}
                           style={{ marginRight: 10 }}
-                          src="tada_logo.webp"
+                          src={tadaLogo}
                           alt="tada-earnings"
                         />
                         <InputAdornment position="start">$</InputAdornment>
@@ -287,7 +291,7 @@ const SubmitLogPage = () => {
                         <img
                           width={60}
                           style={{ marginRight: 10 }}
-                          src="ryde_logo.png"
+                          src={rydeLogo}
                           alt="ryde-earnings"
                         />
                         <InputAdornment position="start">$</InputAdornment>

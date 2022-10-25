@@ -1,4 +1,5 @@
 import React from 'react';
+import workInProgress from './work-in-progress.png';
 
 const Home = () => {
   return (
@@ -10,7 +11,7 @@ const Home = () => {
         transform: 'translate(-50%, -50%)',
       }}
     >
-      <img src="work-in-progress.png" alt="Work in progress" />
+      <img src={workInProgress} alt="Work in progress" />
     </div>
   );
 };
