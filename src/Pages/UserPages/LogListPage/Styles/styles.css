@@ -1,1 +1,9 @@
-/* No CSS *//*# sourceMappingURL=styles.css.map */
+.swiper {
+  width: 100%;
+  height: 100%;
+}
+
+.swiper-slide {
+  border: 0;
+}
+/*# sourceMappingURL=styles.css.map */

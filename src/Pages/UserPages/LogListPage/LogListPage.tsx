@@ -315,18 +315,30 @@ const LogListPage = () => {
     totalTotalProfit,
     totalPetrolCosts,
     totalDistance,
+    totalGrabRevenue,
+    totalGojekRevenue,
+    totalRydeRevenue,
+    totalTadaRevenue,
   } = logDataFiltered.reduce(
     (a, b) => ({
       totalTotalProfit: a.totalTotalProfit + b.totalProfit,
       totalTotalRevenue: a.totalTotalRevenue + b.totalRevenue,
       totalPetrolCosts: a.totalPetrolCosts + b.petrolCost,
       totalDistance: a.totalDistance + b.distance,
+      totalGrabRevenue: a.totalGrabRevenue + b.grabEarnings,
+      totalGojekRevenue: a.totalGojekRevenue + b.gojekEarnings,
+      totalRydeRevenue: a.totalRydeRevenue + b.rydeEarnings,
+      totalTadaRevenue: a.totalTadaRevenue + b.tadaEarnings,
     }),
     {
       totalTotalProfit: 0,
       totalTotalRevenue: 0,
       totalPetrolCosts: 0,
       totalDistance: 0,
+      totalGrabRevenue: 0,
+      totalGojekRevenue: 0,
+      totalTadaRevenue: 0,
+      totalRydeRevenue: 0,
     }
   );
 
@@ -339,6 +351,10 @@ const LogListPage = () => {
         totalPetrolCosts={totalPetrolCosts}
         totalTotalProfit={totalTotalProfit}
         totalTotalRevenue={totalTotalRevenue}
+        totalGrabRevenue={totalGrabRevenue}
+        totalGojekRevenue={totalGojekRevenue}
+        totalRydeRevenue={totalRydeRevenue}
+        totalTadaRevenue={totalTadaRevenue}
       />
       <DataGrid
         autoHeight

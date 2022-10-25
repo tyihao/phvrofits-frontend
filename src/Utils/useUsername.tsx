@@ -6,7 +6,7 @@ import { auth, db } from '../Firebase';
 
 const useUsername = () => {
   const [name, setName] = useState('');
-  const [user, loading, error] = useAuthState(auth);
+  const [user, loading] = useAuthState(auth);
   const navigate = useNavigate();
 
   const fetchUserName = async () => {
