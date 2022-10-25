@@ -30,8 +30,8 @@ import useUsername from '../Utils/useUsername';
 const user_pages = [
   { pageName: 'Home', pageLink: '' },
   { pageName: 'Dashboard', pageLink: 'dashboard' },
-  { pageName: 'Log List', pageLink: 'loglist' },
-  { pageName: 'Submit Log', pageLink: 'submit' },
+  { pageName: 'Logs', pageLink: 'loglist' },
+  { pageName: 'Submit', pageLink: 'submit' },
   { pageName: 'Account', pageLink: 'account' },
 ];
 

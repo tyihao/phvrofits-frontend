@@ -26,6 +26,7 @@ import grabLogo from '../../../Assets/grab_logo.png';
 import rydeLogo from '../../../Assets/ryde_logo.png';
 import tadaLogo from '../../../Assets/tada_logo.webp';
 import LogoBox from './Components/LogoBox';
+import { getFormattedDate } from '../../../Utils/generalUtils';
 
 const SubmitLogPage = () => {
   const [gojekEarnings, setGojekEarnings] = useState<string>('');
@@ -86,27 +87,26 @@ const SubmitLogPage = () => {
   return (
     <LocalizationProvider dateAdapter={AdapterMoment}>
       <div>
+        <Box
+          sx={{
+            // borderRadius: '10px',
+            textAlign: 'center',
+            margin: '5px 0 10px 0',
+            padding: '6px',
+            background: 'rgba(145,105,44,0.3)',
+            fontFamily: 'sans-serif',
+            // boxShadow: 'rgba(149, 157, 165, 0.4) 0px 8px 24px',
+          }}
+        >
+          <span style={{ fontWeight: 500, fontSize: 24, color: '#292929' }}>
+            Log Entry
+          </span>
+          <br />
+          <span style={{ fontWeight: 300, fontSize: 16, color: '#4F4F4F' }}>
+            Fill in the form
+          </span>
+        </Box>
         <div className="submit-log-form">
-          <Box
-            sx={{
-              borderRadius: '10px',
-              textAlign: 'center',
-              margin: '0 0 20px 0',
-              padding: '13px',
-              background: 'rgba(145,105,44,0.5)',
-              fontFamily: 'sans-serif',
-              border: '1px solid rgba(145,105,44,0.8)',
-              // boxShadow: 'rgba(149, 157, 165, 0.5) 0px 8px 24px',
-            }}
-          >
-            <span style={{ fontWeight: 500, fontSize: 24, color: '#292929' }}>
-              DAILY LOG
-            </span>
-            <br />
-            <span style={{ fontWeight: 300, fontSize: 16, color: '#4F4F4F' }}>
-              Fill in the form
-            </span>
-          </Box>
           <Box>
             <Grid direction="column" spacing={2} container>
               <Grid item>
@@ -122,6 +122,7 @@ const SubmitLogPage = () => {
               <Grid item>
                 <DesktopDatePicker
                   inputFormat="DD/MM/yyyy"
+                  disableFuture
                   value={date}
                   onChange={(date) => date && setDate(date)}
                   renderInput={(params) => (
@@ -132,7 +133,7 @@ const SubmitLogPage = () => {
                         date.format('DD/MM/YYYY')
                       )}
                       sx={{
-                        '& .MuiInputBase-root': {
+                        '& .MuiInputBase-root.MuiOutlinedInput-root': {
                           backgroundColor: 'white',
                           borderRadius: '10px',
                         },
@@ -145,8 +146,8 @@ const SubmitLogPage = () => {
                         [...loggedDates, ...newlyLoggedDates].includes(
                           date.format('DD/MM/YYYY')
                         ) &&
-                        `Date exists. Please choose another date or edit
-                      current entry in Log List.`
+                        `Log exists. Choose another date or edit
+                       log in Logs.`
                       }
                     />
                   )}
@@ -262,7 +263,7 @@ const SubmitLogPage = () => {
                       }}
                       src={tadaLogo}
                       alt="tada-earnings"
-                    />{' '}
+                    />
                   </LogoBox>
                   <TextField
                     type="number"
@@ -386,15 +387,3 @@ const SubmitLogPage = () => {
 };
 
 export default SubmitLogPage;
-
-const getFormattedDate = (date: Date) => {
-  const yyyy = date.getFullYear();
-  let mm = (date.getMonth() + 1) as unknown as string; // Months start at 0!
-  let dd = date.getDate() as unknown as string;
-
-  if (dd < '10') dd = '0' + dd;
-  if (mm < '10') mm = '0' + mm;
-
-  const formattedDate = dd + '/' + mm + '/' + yyyy;
-  return formattedDate;
-};
