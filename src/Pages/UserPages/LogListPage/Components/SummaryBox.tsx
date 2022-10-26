@@ -10,7 +10,7 @@ const SummaryBox = (props: SummaryBoxProps) => {
   return (
     <Box
       sx={{
-        padding: '20px',
+        padding: '20px 15px',
         display: 'flex',
         borderRadius: '20px',
         margin: '0px 0 0 0',
