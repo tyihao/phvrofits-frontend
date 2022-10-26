@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/phvrofits-frontend/static/css/main.8a7b1718.css",
-    "main.js": "/phvrofits-frontend/static/js/main.9a2894be.js",
+    "main.css": "/phvrofits-frontend/static/css/main.53a7d957.css",
+    "main.js": "/phvrofits-frontend/static/js/main.dfe42f24.js",
     "static/media/grab_g_logo.png": "/phvrofits-frontend/static/media/grab_g_logo.0bda717f4395acda2d2c.png",
     "static/media/ryde_logo.png": "/phvrofits-frontend/static/media/ryde_logo.3410a5e20f3c5f6db336.png",
     "static/media/gojek_logo.png": "/phvrofits-frontend/static/media/gojek_logo.1cf3c28a7e5f64792c42.png",
@@ -10,11 +10,11 @@
     "static/media/work-in-progress.png": "/phvrofits-frontend/static/media/work-in-progress.986cc3b9dd91fa31446d.png",
     "static/media/tada_logo.webp": "/phvrofits-frontend/static/media/tada_logo.f05c51dc2f829a504c8f.webp",
     "index.html": "/phvrofits-frontend/index.html",
-    "main.8a7b1718.css.map": "/phvrofits-frontend/static/css/main.8a7b1718.css.map",
-    "main.9a2894be.js.map": "/phvrofits-frontend/static/js/main.9a2894be.js.map"
+    "main.53a7d957.css.map": "/phvrofits-frontend/static/css/main.53a7d957.css.map",
+    "main.dfe42f24.js.map": "/phvrofits-frontend/static/js/main.dfe42f24.js.map"
   },
   "entrypoints": [
-    "static/css/main.8a7b1718.css",
-    "static/js/main.9a2894be.js"
+    "static/css/main.53a7d957.css",
+    "static/js/main.dfe42f24.js"
   ]
 }
