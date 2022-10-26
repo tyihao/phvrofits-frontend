@@ -269,7 +269,6 @@ const LogListPage = () => {
               date: mappedLog.date,
               totalRevenue,
             };
-            console.log(log);
             editEntryOnFirebase(log);
             return log;
           } else {
@@ -342,8 +341,6 @@ const LogListPage = () => {
       totalRydeRevenue: 0,
     }
   );
-
-  console.log(logDataFiltered);
 
   return (
     <div style={{ margin: '0 20px 20px 20px' }}>

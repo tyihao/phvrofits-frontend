@@ -3,9 +3,19 @@ import { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useNavigate } from 'react-router-dom';
 import { auth, db } from '../Firebase';
+import { UserInfo } from './types';
 
-const useUsername = () => {
-  const [name, setName] = useState('');
+const useUserInfo = () => {
+  const [userInfo, setUserInfo] = useState<UserInfo>({
+    name: '',
+    authProvider: '',
+    carModel: '',
+    email: '',
+    fuelEfficiency: '10',
+    fuelGrade: '',
+    petrolStation: '',
+    uid: '',
+  });
   const [user, loading] = useAuthState(auth);
   const navigate = useNavigate();
 
@@ -16,8 +26,8 @@ const useUsername = () => {
         where('uid', '==', user && user.uid)
       );
       const doc = await getDocs(q);
-      const data = doc.docs[0].data();
-      setName(data.name);
+      const data = doc.docs[0].data() as UserInfo;
+      setUserInfo(data);
     } catch (err) {
       console.error(err);
     }
@@ -29,7 +39,7 @@ const useUsername = () => {
     fetchUserName();
   }, [loading, user]);
 
-  return name;
+  return userInfo;
 };
 
-export default useUsername;
+export default useUserInfo;

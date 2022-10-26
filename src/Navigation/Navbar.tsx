@@ -1,38 +1,41 @@
 import { ThemeProvider } from '@emotion/react';
+import AddIcon from '@mui/icons-material/Add';
 import HailIcon from '@mui/icons-material/Hail';
 import MenuIcon from '@mui/icons-material/Menu';
 import {
   Avatar,
-  Backdrop,
   Box,
   Button,
-  CircularProgress,
   Container,
   createTheme,
   Fab,
   IconButton,
-  Menu,
   MenuItem,
+  Stack,
   SwipeableDrawer,
   Toolbar,
   Tooltip,
   Typography,
 } from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
 import AppBar from '@mui/material/AppBar';
-import React, { useEffect, useState } from 'react';
+import HomeIcon from '@mui/icons-material/Home';
+import DashboardIcon from '@mui/icons-material/Dashboard';
+import TableViewIcon from '@mui/icons-material/TableView';
+import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
+import AccountBoxIcon from '@mui/icons-material/AccountBox';
+import React, { useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { auth } from '../Firebase';
 import '../Styles/Navbar.css';
-import useUsername from '../Utils/useUsername';
+import useUserInfo from '../Utils/useUserInfo';
 
 const user_pages = [
-  { pageName: 'Home', pageLink: '' },
-  { pageName: 'Dashboard', pageLink: 'dashboard' },
-  { pageName: 'Logs', pageLink: 'loglist' },
-  { pageName: 'Submit', pageLink: 'submit' },
-  { pageName: 'Account', pageLink: 'account' },
+  { pageName: 'Home', pageLink: '', Icon: HomeIcon },
+  { pageName: 'Dashboard', pageLink: 'dashboard', Icon: DashboardIcon },
+  { pageName: 'Logs', pageLink: 'loglist', Icon: TableViewIcon },
+  { pageName: 'Submit', pageLink: 'submit', Icon: ReceiptLongIcon },
+  { pageName: 'Account', pageLink: 'account', Icon: AccountBoxIcon },
 ];
 
 const general_pages = [
@@ -51,10 +54,11 @@ const theme = createTheme({
 });
 
 function Navbar() {
-  const name = useUsername();
+  const userInfo = useUserInfo();
   const [user, loading] = useAuthState(auth);
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
   const navigate = useNavigate();
+  const location = useLocation().pathname;
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -69,7 +73,7 @@ function Navbar() {
       <AppBar
         position="static"
         sx={{
-          padding: '20px 10px 10px 10px',
+          padding: '10px 10px 10px 10px',
           backgroundColor: 'rgba(0,0,0,0)',
           color: '#2c5491',
           boxShadow: 0,
@@ -141,94 +145,76 @@ function Navbar() {
               >
                 <MenuIcon />
               </Fab>
-              {/* <Menu
-                id="menu-appbar"
-                anchorEl={anchorElNav}
-                anchorOrigin={{
-                  vertical: 'bottom',
-                  horizontal: 'left',
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'left',
-                }}
-                open={Boolean(anchorElNav)}
-                onClose={handleCloseNavMenu}
-                sx={{
-                  display: { xs: 'block', md: 'none' },
-                }}
-              >
-                {user
-                  ? user_pages.map((page) => (
-                      <Link className="navbar-link" to={`/${page.pageLink}`}>
-                        <MenuItem
-                          key={page.pageName}
-                          onClick={handleCloseNavMenu}
-                        >
-                          <Typography textAlign="center">
-                            {page.pageName}
-                          </Typography>
-                        </MenuItem>
-                      </Link>
-                    ))
-                  : general_pages.map((page) => (
-                      <Link className="navbar-link" to={`/${page.pageLink}`}>
-                        <MenuItem
-                          key={page.pageName}
-                          onClick={handleCloseNavMenu}
-                        >
-                          <Typography textAlign="center">
-                            {page.pageName}
-                          </Typography>
-                        </MenuItem>
-                      </Link>
-                    ))}
-              </Menu> */}
               <SwipeableDrawer
                 id="menu-appbar"
-                // anchorEl={anchorElNav}
-                // anchorOrigin={{
-                //   vertical: 'bottom',
-                //   horizontal: 'left',
-                // }}
-                keepMounted
-                // transformOrigin={{
-                //   vertical: 'top',
-                //   horizontal: 'left',
-                // }}
                 open={Boolean(anchorElNav)}
                 onOpen={handleOpenNavMenu}
                 onClose={handleCloseNavMenu}
                 sx={{
                   display: { xs: 'block', md: 'none' },
+                  height: 10,
                 }}
               >
-                {user
-                  ? user_pages.map((page) => (
-                      <Link className="navbar-link" to={`/${page.pageLink}`}>
-                        <MenuItem
-                          key={page.pageName}
-                          onClick={handleCloseNavMenu}
-                        >
-                          <Typography textAlign="center">
-                            {page.pageName}
-                          </Typography>
-                        </MenuItem>
-                      </Link>
-                    ))
-                  : general_pages.map((page) => (
-                      <Link className="navbar-link" to={`/${page.pageLink}`}>
-                        <MenuItem
-                          key={page.pageName}
-                          onClick={handleCloseNavMenu}
-                        >
-                          <Typography textAlign="center">
-                            {page.pageName}
-                          </Typography>
-                        </MenuItem>
-                      </Link>
-                    ))}
+                <Box
+                  sx={{
+                    height: '100px',
+                    padding: 3,
+                    backgroundSize: 'cover',
+                    backgroundRepeat: 'no-repeat',
+                    color: 'white',
+                    backgroundImage:
+                      'url(https://img.freepik.com/premium-vector/abstract-global-network-connection-background_46250-2147.jpg)',
+                  }}
+                >
+                  <Stack>
+                    <Avatar alt={userInfo.name} />
+                    <Typography
+                      sx={{ marginTop: 2, fontWeight: 600, fontSize: 19 }}
+                    >
+                      {userInfo.name}
+                    </Typography>
+                    <Typography sx={{ fontWeight: 400, fontSize: 14 }}>
+                      {userInfo.email} | {userInfo.carModel}
+                    </Typography>
+                  </Stack>
+                </Box>
+                <Box sx={{ margin: 2 }}>
+                  {user
+                    ? user_pages.map((page) => (
+                        <Link className="navbar-link" to={`/${page.pageLink}`}>
+                          <MenuItem
+                            key={page.pageName}
+                            onClick={handleCloseNavMenu}
+                            sx={{
+                              borderRadius: 2,
+                              backgroundColor:
+                                page.pageLink === location.split('/')[1]
+                                  ? 'rgba(145,105,44,0.3)'
+                                  : '',
+                            }}
+                          >
+                            <>
+                              {<page.Icon sx={{ marginRight: 2 }} />}
+                              <Typography textAlign="center">
+                                {page.pageName}
+                              </Typography>
+                            </>
+                          </MenuItem>
+                        </Link>
+                      ))
+                    : general_pages.map((page) => (
+                        <Link className="navbar-link" to={`/${page.pageLink}`}>
+                          <MenuItem
+                            key={page.pageName}
+                            onClick={handleCloseNavMenu}
+                          >
+                            <Typography textAlign="center">
+                              {page.pageName}
+                            </Typography>
+                          </MenuItem>
+                        </Link>
+                      ))}
+                </Box>
               </SwipeableDrawer>
             </Box>
             <HailIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
@@ -252,13 +238,6 @@ function Navbar() {
             </Typography>
             {user ? (
               <Box sx={{ flexGrow: 0 }}>
-                {/* <Tooltip title="Open settings">
-                  <Link className="navbar-link" to={`/account`}>
-                    <IconButton sx={{ p: 0 }}>
-                      <Avatar alt={name} src="/static/images/avatar/2.jpg" />
-                    </IconButton>
-                  </Link>
-                </Tooltip> */}
                 <Link className="navbar-link" to={`/submit`}>
                   <Fab
                     aria-label="add"

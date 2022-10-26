@@ -3,13 +3,13 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import { useNavigate } from 'react-router-dom';
 import { auth, logout } from '../../../Firebase';
 import useLogData from '../../../Utils/useLogData';
-import useUsername from '../../../Utils/useUsername';
+import useUserInfo from '../../../Utils/useUserInfo';
 import workInProgress from './work-in-progress.png';
 import './Styles/styles.css';
 
 function Dashboard() {
   const [user] = useAuthState(auth);
-  const name = useUsername();
+  const userInfo = useUserInfo();
   const logs = useLogData();
 
   return (

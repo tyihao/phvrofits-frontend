@@ -13,3 +13,13 @@
   text-decoration: none;
   color: rgb(255, 255, 255);
 }
+
+.MuiPaper-root.MuiDrawer-paper {
+  height: 100%;
+  width: 70%;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+
+.MuiBackdrop-root {
+  background-color: rgba(0, 0, 0, 0.3) !important;
+}

@@ -47,7 +47,7 @@ const Summary = (props: SummaryProps) => {
       }}
       modules={[Pagination]}
       className="mySwiper"
-      spaceBetween={10}
+      spaceBetween={20}
     >
       <SwiperSlide>
         <Grid container spacing={1}>

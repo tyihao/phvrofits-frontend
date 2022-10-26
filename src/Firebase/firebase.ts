@@ -118,7 +118,6 @@ const editEntryOnFirebase = async (log: LogInfo) => {
   } = log;
   try {
     const userId = await fetchUserId();
-    console.log(userId);
     const docsRef = doc(db, 'users/' + userId + '/logs', id);
     const log = (await getDoc(docsRef)).data();
     if (log) {
@@ -246,7 +245,6 @@ const fetchPetrolData = async (
     const docSnap = await getDoc(docRef);
     if (!docSnap.exists()) {
       // doc.data() will be undefined in this case
-      console.log(docSnap.data());
       return fetchPetrolData(
         date,
         otherDate

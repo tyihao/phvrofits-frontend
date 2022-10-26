@@ -336,7 +336,7 @@ const SubmitLogPage = () => {
                 date.format('DD/MM/YYYY')
               )}
             >
-              Confirm
+              Submit
             </Button>
             <Button
               variant="outlined"
