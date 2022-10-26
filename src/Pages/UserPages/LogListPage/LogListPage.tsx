@@ -59,12 +59,12 @@ const LogListPage = () => {
     },
     { field: 'distance', headerName: 'Distance (km)', width: 110 },
     { field: 'gojekEarnings', headerName: 'Gojek ($)', hide, width: 80 },
-    { field: 'grabEarnings', headerName: 'Grab ($)', hide, width: 70 },
-    { field: 'rydeEarnings', headerName: 'Ryde ($)', hide, width: 70 },
-    { field: 'tadaEarnings', headerName: 'Tada ($)', hide, width: 70 },
+    { field: 'grabEarnings', headerName: 'Grab ($)', hide, width: 80 },
+    { field: 'rydeEarnings', headerName: 'Ryde ($)', hide, width: 80 },
+    { field: 'tadaEarnings', headerName: 'Tada ($)', hide, width: 80 },
     { field: 'totalRevenue', headerName: 'Revenue ($)', hide, width: 100 },
-    { field: 'petrolCost', headerName: 'Cost ($)', hide, width: 70 },
-    { field: 'totalProfit', headerName: 'Profit ($)', width: 70 },
+    { field: 'petrolCost', headerName: 'Cost ($)', hide, width: 80 },
+    { field: 'totalProfit', headerName: 'Profit ($)', width: 80 },
     {
       field: 'Edit Action',
       headerName: 'Edit',
@@ -261,7 +261,7 @@ const LogListPage = () => {
               selectedLog.gojekEarnings +
               selectedLog.grabEarnings +
               selectedLog.rydeEarnings +
-              selectedLog.rydeEarnings;
+              selectedLog.tadaEarnings;
             const log = {
               ...selectedLog,
               petrolCost,
@@ -269,6 +269,7 @@ const LogListPage = () => {
               date: mappedLog.date,
               totalRevenue,
             };
+            console.log(log);
             editEntryOnFirebase(log);
             return log;
           } else {
@@ -341,6 +342,8 @@ const LogListPage = () => {
       totalRydeRevenue: 0,
     }
   );
+
+  console.log(logDataFiltered);
 
   return (
     <div style={{ margin: '0 20px 20px 20px' }}>
