@@ -15,6 +15,8 @@ import grabLogo from '../../../../Assets/grab_g_logo.png';
 import rydeLogo from '../../../../Assets/ryde_logo.png';
 import tadaLogo from '../../../../Assets/tada_logo.webp';
 
+import 'swiper/css/pagination';
+
 interface SummaryProps {
   totalTotalProfit: number;
   totalTotalRevenue: number;
@@ -38,7 +40,15 @@ const Summary = (props: SummaryProps) => {
     totalTadaRevenue,
   } = props;
   return (
-    <Swiper pagination={true} modules={[Pagination]} className="mySwiper">
+    <Swiper
+      pagination={{
+        clickable: true,
+        type: 'bullets',
+      }}
+      modules={[Pagination]}
+      className="mySwiper"
+      spaceBetween={10}
+    >
       <SwiperSlide>
         <Grid container spacing={1}>
           <Grid item xs={6}>

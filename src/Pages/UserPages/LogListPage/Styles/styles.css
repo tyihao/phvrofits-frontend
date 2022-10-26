@@ -4,6 +4,15 @@
 }
 
 .swiper-slide {
+  background: transparent;
   border: 0;
+}
+
+.swiper-pagination-bullet-active {
+  background-color: #2c5491 !important;
+}
+
+.swiper-pagination {
+  position: static !important;
 }
 /*# sourceMappingURL=styles.css.map */
