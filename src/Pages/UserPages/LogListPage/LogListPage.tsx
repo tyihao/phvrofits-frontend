@@ -369,7 +369,7 @@ const LogListPage = () => {
         sx={{
           background: 'white',
           borderRadius: '10px',
-          marginTop: '25px',
+          marginTop: '15px',
           border: 0,
           // border: '1px solid rgb(200,200,200)',
           boxShadow: 'rgba(100, 100, 111, 0.2) 0px 7px 29px 0px',

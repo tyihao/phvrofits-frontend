@@ -12,14 +12,13 @@ const Header = (props: HeaderProps) => {
   return (
     <Box
       sx={{
-        padding: '7px 7px 7px 14px',
+        padding: '4px 7px 4px 14px',
         display: 'flex',
-        border: '1px solid rgba(224,224,224,1)',
         borderRadius: '15px',
         margin: '3px 0 8px 0',
         boxShadow: 'rgba(100, 100, 111, 0.3) 0px 7px 29px 0px',
         height: '100%',
-        background: '#2995F7',
+        background: 'rgba(60, 83, 117, 0.7)',
         fontSize: '14px',
         color: 'white',
       }}
