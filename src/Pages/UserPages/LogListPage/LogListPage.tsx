@@ -49,6 +49,8 @@ const LogListPage = () => {
     orderBy(useLogData(), ['date'], ['desc'])
   );
 
+  console.log(logData);
+
   const data = useLogData();
   useEffect(() => setLogData(orderBy(data, ['date'], ['desc'])), [data]);
 
@@ -398,6 +400,7 @@ const LogListPage = () => {
           petrolCost: Math.round(log.petrolCost * 100) / 100,
         }))}
         columns={columns}
+        loading={logData.length === 0}
       />
       <Dialog
         fullScreen
