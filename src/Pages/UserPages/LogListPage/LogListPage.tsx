@@ -11,10 +11,16 @@ import {
   Box,
   Button,
   Dialog,
+  Fab,
+  FormControl,
   FormControlLabel,
   FormGroup,
+  FormLabel,
   Grid,
   InputAdornment,
+  Radio,
+  RadioGroup,
+  Stack,
   Switch,
   TextField,
   Toolbar,
@@ -36,6 +42,67 @@ import { format } from 'date-fns';
 import Summary from './Components/Summary';
 import Header from './Components/Header';
 
+import {
+  addDays,
+  endOfDay,
+  startOfDay,
+  startOfMonth,
+  endOfMonth,
+  addMonths,
+  startOfWeek,
+  endOfWeek,
+  startOfYear,
+  endOfYear,
+  addYears,
+  isSameDay,
+} from 'date-fns';
+
+const defineds = {
+  startOfWeek: startOfWeek(new Date()),
+  endOfWeek: endOfWeek(new Date()),
+  startOfLastWeek: startOfWeek(addDays(new Date(), -7)),
+  endOfLastWeek: endOfWeek(addDays(new Date(), -7)),
+  startOfToday: startOfDay(new Date()),
+  endOfToday: endOfDay(new Date()),
+  startOfYesterday: startOfDay(addDays(new Date(), -1)),
+  endOfYesterday: endOfDay(addDays(new Date(), -1)),
+  startOfMonth: startOfMonth(new Date()),
+  endOfMonth: endOfMonth(new Date()),
+  startOfLastMonth: startOfMonth(addMonths(new Date(), -1)),
+  endOfLastMonth: endOfMonth(addMonths(new Date(), -1)),
+  startOfYear: startOfYear(new Date()),
+  endOfYear: endOfYear(new Date()),
+  startOfLastYear: startOfYear(addYears(new Date(), -1)),
+  endOfLastYear: endOfYear(addYears(new Date(), -1)),
+};
+
+const defaultRanges = {
+  'This week': {
+    from: defineds.startOfWeek,
+    to: defineds.endOfWeek,
+  },
+  'Last week': {
+    from: defineds.startOfLastWeek,
+    to: defineds.endOfLastWeek,
+  },
+  'This month': {
+    from: defineds.startOfMonth,
+    to: defineds.endOfMonth,
+  },
+  'Last month': {
+    from: defineds.startOfLastMonth,
+    to: defineds.endOfLastMonth,
+  },
+  'This year': {
+    from: defineds.startOfYear,
+    to: defineds.endOfYear,
+  },
+  'Last year': {
+    from: defineds.startOfLastYear,
+    to: defineds.endOfLastYear,
+  },
+};
+
 const LogListPage = () => {
   const [hide, setHide] = useState(true);
   const [openDialog, setOpenDialog] = useState(false);
@@ -44,12 +111,13 @@ const LogListPage = () => {
   const [dateFilter, setDateFilter] = useState<DateRange | undefined>(
     undefined
   );
+  const [temporaryDateFilter, setTemporaryDateFilter] = useState<
+    DateRange | undefined
+  >(undefined);
   const [customDate, setCustomDate] = useState(false);
   const [logData, setLogData] = useState<LogInfo[]>(
     orderBy(useLogData(), ['date'], ['desc'])
   );
-
-  console.log(logData);
 
   const data = useLogData();
   useEffect(() => setLogData(orderBy(data, ['date'], ['desc'])), [data]);
@@ -130,95 +198,174 @@ const LogListPage = () => {
             onClose={() => setDateFilterDialog(false)}
             transitionDuration={0}
           >
-            {!customDate ? (
-              <>
-                <AppBar sx={{ position: 'relative' }}>
-                  <Toolbar>
-                    <IconButton
-                      edge="start"
-                      color="inherit"
-                      onClick={() => setDateFilterDialog((state) => !state)}
-                      aria-label="close"
-                    >
-                      <CloseIcon />
-                    </IconButton>
-                    <Typography
-                      sx={{ ml: 2, flex: 1 }}
-                      variant="h6"
-                      component="div"
-                    >
-                      Set Date Filter
-                    </Typography>
-                    <Button
-                      autoFocus
-                      color="inherit"
-                      onClick={() => setDateFilter(undefined)}
-                    >
-                      RESET ALl
-                    </Button>
-                  </Toolbar>
-                </AppBar>
-                <DateRangeDisplay />
-                <Button
-                  variant="contained"
-                  style={{ margin: '10px 15px' }}
-                  onClick={() => setCustomDate((state) => !state)}
-                >
-                  Custom: Select Date
-                </Button>
-                <Button
-                  variant="contained"
-                  style={{ margin: '10px 15px' }}
-                  onClick={() => setDateFilterDialog((state) => !state)}
-                >
-                  APPLY FILTER
-                </Button>
-                <Button
-                  variant="outlined"
-                  style={{ margin: '10px 15px' }}
-                  onClick={() => setDateFilterDialog((state) => !state)}
-                >
-                  CLOSE
-                </Button>
-              </>
-            ) : (
-              <>
-                <AppBar sx={{ position: 'relative' }}>
-                  <Toolbar>
-                    <IconButton
-                      edge="start"
-                      color="inherit"
-                      onClick={() => setCustomDate((state) => !state)}
-                      aria-label="close"
-                    >
-                      <CloseIcon />
-                    </IconButton>
-                    <Typography
-                      sx={{ ml: 2, flex: 1 }}
-                      variant="h6"
-                      component="div"
-                    >
-                      Custom Date Range
-                    </Typography>
-                    <Button
-                      autoFocus
-                      color="inherit"
-                      onClick={() => {
-                        setDateFilterDialog((state) => !state);
-                        setCustomDate((state) => !state);
+            <>
+              <AppBar
+                sx={{
+                  padding: '10px',
+                  position: 'relative',
+                  backgroundColor: 'transparent',
+                  color: 'black',
+                  boxShadow: 0,
+                }}
+              >
+                <Toolbar>
+                  <IconButton
+                    edge="start"
+                    color="inherit"
+                    onClick={() => {
+                      setDateFilterDialog((state) => !state);
+                      setTemporaryDateFilter(undefined);
+                    }}
+                    aria-label="close"
+                  >
+                    <Fab
+                      size="medium"
+                      sx={{
+                        padding: '8px',
+                        backgroundColor: 'white',
+                        borderRadius: '15px',
+                        boxShadow: `rgba(149, 157, 165, 0.2) 0px 8px 24px`,
                       }}
                     >
-                      Save
-                    </Button>
-                  </Toolbar>
-                </AppBar>
-                <DateRangeDisplay />
-                <DateRangePicker
-                  dateRange={dateFilter}
-                  handleDateRange={setDateFilter}
-                />
-              </>
-            )}
+                      <CloseIcon />
+                    </Fab>
+                  </IconButton>
+                  <Typography
+                    sx={{ ml: 2, flex: 1 }}
+                    variant="h6"
+                    component="div"
+                  >
+                    Set Date Filter
+                  </Typography>
+                  <Button
+                    autoFocus
+                    color="inherit"
+                    onClick={() => {
+                      setDateFilter(undefined);
+                      setTemporaryDateFilter(undefined);
+                    }}
+                  >
+                    RESET ALl
+                  </Button>
+                </Toolbar>
+              </AppBar>
+              <Box style={{ margin: '10px 20px' }}>
+                <Stack direction={'column'}>
+                  {/* <DateRangeDisplay /> */}
+                  <FormControl>
+                    <FormLabel id="date-range-form-label">Date Range</FormLabel>
+                    <RadioGroup
+                      aria-labelledby="date-range-radio-group-label"
+                      name="radio-buttons-group"
+                    >
+                      <FormControlLabel
+                        value="this-week"
+                        control={<Radio />}
+                        label="This week"
+                        onClick={(e) => {
+                          setTemporaryDateFilter(defaultRanges['This week']);
+                          setCustomDate(false);
+                        }}
+                      />
+                      <FormControlLabel
+                        value="last-week"
+                        control={<Radio />}
+                        label="Last week"
+                        onClick={() => {
+                          setTemporaryDateFilter(defaultRanges['Last week']);
+                          setCustomDate(false);
+                        }}
+                      />
+                      <FormControlLabel
+                        value="this-month"
+                        control={<Radio />}
+                        label="This month"
+                        onClick={() => {
+                          setTemporaryDateFilter(defaultRanges['This month']);
+                          setCustomDate(false);
+                        }}
+                      />
+                      <FormControlLabel
+                        value="last-month"
+                        control={<Radio />}
+                        label="Last month"
+                        onClick={() => {
+                          setTemporaryDateFilter(defaultRanges['Last month']);
+                          setCustomDate(false);
+                        }}
+                      />
+                      <FormControlLabel
+                        value="this-year"
+                        control={<Radio />}
+                        label="This year"
+                        onClick={() => {
+                          setTemporaryDateFilter(defaultRanges['This year']);
+                          setCustomDate(false);
+                        }}
+                      />
+                      <FormControlLabel
+                        value="last-year"
+                        control={<Radio />}
+                        label="Last year"
+                        onClick={() => {
+                          setTemporaryDateFilter(defaultRanges['Last year']);
+                          setCustomDate(false);
+                        }}
+                      />
+                      {/* 
+                      <FormControlLabel
+                        value="custom-date"
+                        control={<Radio onClick={() => setCustomDate(true)} />}
+                        label="Custom range"
+                        />
+                      {customDate && (
+                        <>
+                          <DateRangeDisplay />
+                          <DateRangePicker
+                            dateRange={dateFilter}
+                            handleDateRange={setDateFilter}
+                          />
+                        </>
+                      )}
+                      </>
+                    */}
+                    </RadioGroup>
+                  </FormControl>
+                  {/* <Button
+                    variant="contained"
+                    style={{ margin: '10px 15px' }}
+                    onClick={() => setCustomDate((state) => !state)}
+                    >
+                    Custom: Select Date
+                  </Button> */}
+                  <Button
+                    variant="contained"
+                    style={{ margin: '10px 0', backgroundColor: '#2c5491' }}
+                    onClick={() => {
+                      setDateFilterDialog((state) => !state);
+                      setDateFilter(temporaryDateFilter);
+                      setTemporaryDateFilter(undefined);
+                    }}
+                  >
+                    APPLY FILTER
+                  </Button>
+                  <Button
+                    variant="outlined"
+                    style={{
+                      margin: '10px 0',
+                      color: '#2c5491',
+                      borderColor: '#2c5491',
+                    }}
+                    onClick={() => {
+                      setDateFilterDialog((state) => !state);
+                      setTemporaryDateFilter(undefined);
+                    }}
+                  >
+                    CLOSE
+                  </Button>
+                </Stack>
+              </Box>
+            </>
           </Dialog>
         </Grid>
         <Grid item>

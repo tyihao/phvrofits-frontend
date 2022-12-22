@@ -33,6 +33,7 @@ const DateFilter = (props: DateFilterProps) => {
       open={open}
       onClose={() => handleFilterDateDialog(false)}
       transitionDuration={0}
+      sx={{ margin: '0 10px' }}
     >
       {!customDate ? (
         <>
