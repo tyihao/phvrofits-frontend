@@ -101,6 +101,11 @@ const defaultRanges = {
 };
 
 const LogListPage = () => {
+  const [gojekEarnings, setGojekEarnings] = useState<string>('');
+  const [grabEarnings, setGrabEarnings] = useState<string>('');
+  const [tadaEarnings, setTadaEarnings] = useState<string>('');
+  const [rydeEarnings, setRydeEarnings] = useState<string>('');
+  const [distance, setDistance] = useState<string>('');
   const [hide, setHide] = useState(true);
   const [openDialog, setOpenDialog] = useState(false);
   const [selectedLog, setSelectedLog] = useState<LogInfo>({} as LogInfo);
@@ -394,6 +399,11 @@ const LogListPage = () => {
     // If we are opening the edit dialog - select a log
     if (!openDialog && currentLog) {
       setSelectedLog(currentLog);
+      setGojekEarnings(currentLog.gojekEarnings.toString());
+      setGrabEarnings(currentLog.grabEarnings.toString());
+      setRydeEarnings(currentLog.rydeEarnings.toString());
+      setTadaEarnings(currentLog.tadaEarnings.toString());
+      setDistance(currentLog.distance.toString());
     } else if (!currentLog && openDialog) {
       // If we are closing the dialog
       setLogData((state) => {
@@ -401,20 +411,26 @@ const LogListPage = () => {
           if (mappedLog.id === selectedLog.id) {
             const petrolCost =
               mappedLog.discountedLitrePetrol *
-              ((selectedLog.distance || 0) / 100) *
+              ((distance !== '' ? parseFloat(distance) : 0) / 100) *
               selectedLog.fuelEfficiency;
             const totalRevenue =
-              (selectedLog.gojekEarnings || 0) +
-              (selectedLog.grabEarnings || 0) +
-              (selectedLog.rydeEarnings || 0) +
-              (selectedLog.tadaEarnings || 0);
+              gojekEarnings !== ''
+                ? parseFloat(gojekEarnings)
+                : 0 + tadaEarnings !== ''
+                ? parseFloat(tadaEarnings)
+                : 0 + grabEarnings !== ''
+                ? parseFloat(grabEarnings)
+                : 0 + rydeEarnings !== ''
+                ? parseFloat(rydeEarnings)
+                : 0;
             const log = {
               ...selectedLog,
-              gojekEarnings: selectedLog.gojekEarnings || 0,
-              grabEarnings: selectedLog.grabEarnings || 0,
-              rydeEarnings: selectedLog.rydeEarnings || 0,
-              tadaEarnings: selectedLog.tadaEarnings || 0,
-              distance: selectedLog.distance || 0,
+              gojekEarnings:
+                gojekEarnings !== '' ? parseFloat(gojekEarnings) : 0,
+              grabEarnings: grabEarnings !== '' ? parseFloat(grabEarnings) : 0,
+              rydeEarnings: rydeEarnings !== '' ? parseFloat(rydeEarnings) : 0,
+              tadaEarnings: tadaEarnings !== '' ? parseFloat(tadaEarnings) : 0,
+              distance: distance !== '' ? parseFloat(distance) : 0,
               petrolCost,
               totalProfit: totalRevenue - petrolCost,
               date: mappedLog.date,
@@ -595,14 +611,9 @@ const LogListPage = () => {
                 type="number"
                 id="gojek-earnings"
                 label="Gojek Earnings"
-                value={selectedLog.gojekEarnings}
+                value={gojekEarnings}
                 placeholder={'0'}
-                onChange={(e) =>
-                  setSelectedLog((state) => ({
-                    ...state,
-                    gojekEarnings: parseFloat(e.target.value),
-                  }))
-                }
+                onChange={(e) => setGojekEarnings(e.target.value)}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">$</InputAdornment>
@@ -617,13 +628,8 @@ const LogListPage = () => {
                 id="grab-earnings"
                 label="Grab Earnings"
                 placeholder={'0'}
-                onChange={(e) =>
-                  setSelectedLog((state) => ({
-                    ...state,
-                    grabEarnings: parseFloat(e.target.value),
-                  }))
-                }
-                value={selectedLog.grabEarnings}
+                onChange={(e) => setGrabEarnings(e.target.value)}
+                value={grabEarnings}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">$</InputAdornment>
@@ -638,13 +644,8 @@ const LogListPage = () => {
                 id="tada-earnings"
                 label="Tada Earnings"
                 placeholder={'0'}
-                onChange={(e) =>
-                  setSelectedLog((state) => ({
-                    ...state,
-                    tadaEarnings: parseFloat(e.target.value),
-                  }))
-                }
-                value={selectedLog.tadaEarnings}
+                onChange={(e) => setTadaEarnings(e.target.value)}
+                value={tadaEarnings}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">$</InputAdornment>
@@ -659,13 +660,8 @@ const LogListPage = () => {
                 id="ryde-earnings"
                 placeholder={'0'}
                 label="Ryde Earnings"
-                onChange={(e) =>
-                  setSelectedLog((state) => ({
-                    ...state,
-                    rydeEarnings: parseFloat(e.target.value),
-                  }))
-                }
-                value={selectedLog.rydeEarnings}
+                onChange={(e) => setRydeEarnings(e.target.value)}
+                value={rydeEarnings}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">$</InputAdornment>
@@ -681,14 +677,9 @@ const LogListPage = () => {
                 label="Distance"
                 fullWidth
                 type="number"
-                value={selectedLog.distance}
+                value={distance}
                 placeholder={'0'}
-                onChange={(e) =>
-                  setSelectedLog((state) => ({
-                    ...state,
-                    distance: parseFloat(e.target.value),
-                  }))
-                }
+                onChange={(e) => setDistance(e.target.value)}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">km</InputAdornment>
