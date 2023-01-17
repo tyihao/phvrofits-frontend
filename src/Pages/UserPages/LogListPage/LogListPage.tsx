@@ -11,17 +11,14 @@ import {
   Box,
   Button,
   Dialog,
-  Fab,
   FormControl,
   FormControlLabel,
-  FormGroup,
   FormLabel,
   Grid,
   InputAdornment,
   Radio,
   RadioGroup,
   Stack,
-  Switch,
   TextField,
   Toolbar,
   Typography,
@@ -209,7 +206,7 @@ const LogListPage = () => {
                 }}
               >
                 <Toolbar>
-                  <IconButton
+                  {/* <IconButton
                     edge="start"
                     color="inherit"
                     onClick={() => {
@@ -229,13 +226,13 @@ const LogListPage = () => {
                     >
                       <CloseIcon />
                     </Fab>
-                  </IconButton>
+                  </IconButton> */}
                   <Typography
                     sx={{ ml: 2, flex: 1 }}
                     variant="h6"
                     component="div"
                   >
-                    Set Date Filter
+                    Date Filters
                   </Typography>
                   <Button
                     autoFocus
@@ -346,8 +343,9 @@ const LogListPage = () => {
                       setDateFilter(temporaryDateFilter);
                       setTemporaryDateFilter(undefined);
                     }}
+                    disabled={!temporaryDateFilter}
                   >
-                    APPLY FILTER
+                    Apply Filter
                   </Button>
                   <Button
                     variant="outlined"
@@ -361,7 +359,7 @@ const LogListPage = () => {
                       setTemporaryDateFilter(undefined);
                     }}
                   >
-                    CLOSE
+                    Cancel
                   </Button>
                 </Stack>
               </Box>
@@ -392,7 +390,6 @@ const LogListPage = () => {
       </Grid>
     );
   };
-
   const handleEditDialog = (currentLog?: LogInfo) => {
     // If we are opening the edit dialog - select a log
     if (!openDialog && currentLog) {
@@ -404,20 +401,26 @@ const LogListPage = () => {
           if (mappedLog.id === selectedLog.id) {
             const petrolCost =
               mappedLog.discountedLitrePetrol *
-              (selectedLog.distance / 100) *
+              ((selectedLog.distance || 0) / 100) *
               selectedLog.fuelEfficiency;
             const totalRevenue =
-              selectedLog.gojekEarnings +
-              selectedLog.grabEarnings +
-              selectedLog.rydeEarnings +
-              selectedLog.tadaEarnings;
+              (selectedLog.gojekEarnings || 0) +
+              (selectedLog.grabEarnings || 0) +
+              (selectedLog.rydeEarnings || 0) +
+              (selectedLog.tadaEarnings || 0);
             const log = {
               ...selectedLog,
+              gojekEarnings: selectedLog.gojekEarnings || 0,
+              grabEarnings: selectedLog.grabEarnings || 0,
+              rydeEarnings: selectedLog.rydeEarnings || 0,
+              tadaEarnings: selectedLog.tadaEarnings || 0,
+              distance: selectedLog.distance || 0,
               petrolCost,
               totalProfit: totalRevenue - petrolCost,
               date: mappedLog.date,
               totalRevenue,
             };
+
             editEntryOnFirebase(log);
             return log;
           } else {

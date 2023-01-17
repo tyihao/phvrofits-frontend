@@ -29,11 +29,11 @@ import LogoBox from './Components/LogoBox';
 import { getFormattedDate } from '../../../Utils/generalUtils';
 
 const SubmitLogPage = () => {
-  const [gojekEarnings, setGojekEarnings] = useState<string>('');
-  const [tadaEarnings, setTadaEarnings] = useState<string>('');
-  const [grabEarnings, setGrabEarnings] = useState<string>('');
-  const [rydeEarnings, setRydeEarnings] = useState<string>('');
   const [date, setDate] = useState<moment.Moment>(moment());
+  const [gojekEarnings, setGojekEarnings] = useState<string>('');
+  const [grabEarnings, setGrabEarnings] = useState<string>('');
+  const [tadaEarnings, setTadaEarnings] = useState<string>('');
+  const [rydeEarnings, setRydeEarnings] = useState<string>('');
   const [distance, setDistance] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [snackbar, setSnackbar] = useState<boolean>(false);

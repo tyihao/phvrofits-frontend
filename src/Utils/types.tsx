@@ -1,5 +1,3 @@
-import moment from 'moment';
-
 export type Log = {
   date: Date;
   distance: number;
