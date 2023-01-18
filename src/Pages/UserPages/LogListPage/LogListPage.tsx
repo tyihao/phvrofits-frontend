@@ -399,10 +399,18 @@ const LogListPage = () => {
     // If we are opening the edit dialog - select a log
     if (!openDialog && currentLog) {
       setSelectedLog(currentLog);
-      setGojekEarnings(currentLog.gojekEarnings.toString());
-      setGrabEarnings(currentLog.grabEarnings.toString());
-      setRydeEarnings(currentLog.rydeEarnings.toString());
-      setTadaEarnings(currentLog.tadaEarnings.toString());
+      setGojekEarnings(
+        currentLog.gojekEarnings ? currentLog.gojekEarnings.toString() : ''
+      );
+      setGrabEarnings(
+        currentLog.grabEarnings ? currentLog.grabEarnings.toString() : ''
+      );
+      setRydeEarnings(
+        currentLog.rydeEarnings ? currentLog.rydeEarnings.toString() : ''
+      );
+      setTadaEarnings(
+        currentLog.tadaEarnings ? currentLog.tadaEarnings.toString() : ''
+      );
       setDistance(currentLog.distance.toString());
     } else if (!currentLog && openDialog) {
       // If we are closing the dialog
