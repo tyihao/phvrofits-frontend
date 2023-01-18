@@ -414,15 +414,10 @@ const LogListPage = () => {
               ((distance !== '' ? parseFloat(distance) : 0) / 100) *
               selectedLog.fuelEfficiency;
             const totalRevenue =
-              gojekEarnings !== ''
-                ? parseFloat(gojekEarnings)
-                : 0 + tadaEarnings !== ''
-                ? parseFloat(tadaEarnings)
-                : 0 + grabEarnings !== ''
-                ? parseFloat(grabEarnings)
-                : 0 + rydeEarnings !== ''
-                ? parseFloat(rydeEarnings)
-                : 0;
+              (gojekEarnings !== '' ? parseFloat(gojekEarnings) : 0) +
+              (tadaEarnings !== '' ? parseFloat(tadaEarnings) : 0) +
+              (grabEarnings !== '' ? parseFloat(grabEarnings) : 0) +
+              (rydeEarnings !== '' ? parseFloat(rydeEarnings) : 0);
             const log = {
               ...selectedLog,
               gojekEarnings:
