@@ -1,11 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import useLogData from '../../../Utils/useLogData';
-import {
-  DataGrid,
-  gridClasses,
-  GridColDef,
-  GridRenderCellParams,
-} from '@mui/x-data-grid';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import EditIcon from '@mui/icons-material/Edit';
+import InfoIcon from '@mui/icons-material/Info';
 import {
   AppBar,
   Box,
@@ -15,7 +10,6 @@ import {
   FormControlLabel,
   FormLabel,
   Grid,
-  InputAdornment,
   Radio,
   RadioGroup,
   Stack,
@@ -23,35 +17,36 @@ import {
   Toolbar,
   Typography,
 } from '@mui/material';
-import { editEntryOnFirebase } from '../../../Firebase/firebase';
-import EditIcon from '@mui/icons-material/Edit';
-import InfoIcon from '@mui/icons-material/Info';
-import CloseIcon from '@mui/icons-material/Close';
-import IconButton from '@mui/material/IconButton';
-import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import {
+  DataGrid,
+  gridClasses,
+  GridColDef,
+  GridRenderCellParams,
+} from '@mui/x-data-grid';
+import { format } from 'date-fns';
 import { orderBy } from 'lodash';
-import { LogInfo } from '../../../Utils/types';
-import DateRangePicker from '../../../Components/DateRangePicker';
+import { useEffect, useState } from 'react';
 import { DateRange } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
-import Transition from './Components/Transition';
-import { format } from 'date-fns';
-import Summary from './Components/Summary';
+import { LogInfo } from '../../../Utils/types';
+import useLogData from '../../../Utils/useLogData';
 import Header from './Components/Header';
+import Summary from './Components/Summary';
 
 import {
   addDays,
+  addMonths,
+  addYears,
   endOfDay,
+  endOfMonth,
+  endOfWeek,
+  endOfYear,
   startOfDay,
   startOfMonth,
-  endOfMonth,
-  addMonths,
   startOfWeek,
-  endOfWeek,
   startOfYear,
-  endOfYear,
-  addYears,
 } from 'date-fns';
+
 import EditLog from './Components/EditLog';
 
 const defineds = {
@@ -435,52 +430,11 @@ const LogListPage = () => {
     return log;
   });
 
-  const {
-    totalTotalRevenue,
-    totalTotalProfit,
-    totalPetrolCosts,
-    totalDistance,
-    totalGrabRevenue,
-    totalGojekRevenue,
-    totalRydeRevenue,
-    totalTadaRevenue,
-  } = logDataFiltered.reduce(
-    (a, b) => ({
-      totalTotalProfit: a.totalTotalProfit + b.totalProfit,
-      totalTotalRevenue: a.totalTotalRevenue + b.totalRevenue,
-      totalPetrolCosts: a.totalPetrolCosts + b.petrolCost,
-      totalDistance: a.totalDistance + b.distance,
-      totalGrabRevenue: a.totalGrabRevenue + b.grabEarnings,
-      totalGojekRevenue: a.totalGojekRevenue + b.gojekEarnings,
-      totalRydeRevenue: a.totalRydeRevenue + b.rydeEarnings,
-      totalTadaRevenue: a.totalTadaRevenue + b.tadaEarnings,
-    }),
-    {
-      totalTotalProfit: 0,
-      totalTotalRevenue: 0,
-      totalPetrolCosts: 0,
-      totalDistance: 0,
-      totalGrabRevenue: 0,
-      totalGojekRevenue: 0,
-      totalTadaRevenue: 0,
-      totalRydeRevenue: 0,
-    }
-  );
-
   return (
     <div style={{ margin: '0 20px 20px 20px' }}>
       <ActionBar />
       <Header dateRange={dateFilter} totalResults={logDataFiltered.length} />
-      <Summary
-        totalDistance={totalDistance}
-        totalPetrolCosts={totalPetrolCosts}
-        totalTotalProfit={totalTotalProfit}
-        totalTotalRevenue={totalTotalRevenue}
-        totalGrabRevenue={totalGrabRevenue}
-        totalGojekRevenue={totalGojekRevenue}
-        totalRydeRevenue={totalRydeRevenue}
-        totalTadaRevenue={totalTadaRevenue}
-      />
+      <Summary logData={logDataFiltered} />
       <DataGrid
         autoHeight
         disableColumnMenu

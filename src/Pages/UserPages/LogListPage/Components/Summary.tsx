@@ -1,5 +1,5 @@
 import React from 'react';
-import { Box, Grid } from '@mui/material';
+import { Grid } from '@mui/material';
 import 'react-day-picker/dist/style.css';
 import SummaryBox from './SummaryBox';
 import PriceCheckIcon from '@mui/icons-material/PriceCheck';
@@ -16,19 +16,15 @@ import rydeLogo from '../../../../Assets/ryde_logo.png';
 import tadaLogo from '../../../../Assets/tada_logo.webp';
 
 import 'swiper/css/pagination';
+import { LogInfo } from '../../../../Utils/types';
 
 interface SummaryProps {
-  totalTotalProfit: number;
-  totalTotalRevenue: number;
-  totalPetrolCosts: number;
-  totalDistance: number;
-  totalGrabRevenue: number;
-  totalGojekRevenue: number;
-  totalTadaRevenue: number;
-  totalRydeRevenue: number;
+  logData: LogInfo[];
 }
 
 const Summary = (props: SummaryProps) => {
+  const { logData } = props;
+
   const {
     totalTotalProfit,
     totalTotalRevenue,
@@ -38,7 +34,29 @@ const Summary = (props: SummaryProps) => {
     totalGojekRevenue,
     totalRydeRevenue,
     totalTadaRevenue,
-  } = props;
+  } = logData.reduce(
+    (a, b) => ({
+      totalTotalProfit: a.totalTotalProfit + b.totalProfit,
+      totalTotalRevenue: a.totalTotalRevenue + b.totalRevenue,
+      totalPetrolCosts: a.totalPetrolCosts + b.petrolCost,
+      totalDistance: a.totalDistance + b.distance,
+      totalGrabRevenue: a.totalGrabRevenue + b.grabEarnings,
+      totalGojekRevenue: a.totalGojekRevenue + b.gojekEarnings,
+      totalRydeRevenue: a.totalRydeRevenue + b.rydeEarnings,
+      totalTadaRevenue: a.totalTadaRevenue + b.tadaEarnings,
+    }),
+    {
+      totalTotalProfit: 0,
+      totalTotalRevenue: 0,
+      totalPetrolCosts: 0,
+      totalDistance: 0,
+      totalGrabRevenue: 0,
+      totalGojekRevenue: 0,
+      totalTadaRevenue: 0,
+      totalRydeRevenue: 0,
+    }
+  );
+
   return (
     <Swiper
       pagination={{
@@ -194,6 +212,7 @@ const Summary = (props: SummaryProps) => {
                   <img
                     src={tadaLogo}
                     width={31}
+                    alt={'tada-logo'}
                     style={{
                       borderRadius: 10,
                       background: 'white',
@@ -237,6 +256,7 @@ const Summary = (props: SummaryProps) => {
                 <Grid item xs={4}>
                   <img
                     src={gojekLogo}
+                    alt={'gojek-logo'}
                     width={35}
                     style={{
                       borderRadius: 10,
@@ -278,6 +298,7 @@ const Summary = (props: SummaryProps) => {
                   <img
                     src={grabLogo}
                     width={25}
+                    alt={'grab-logo'}
                     style={{
                       borderRadius: 10,
                       background: 'white',
@@ -322,6 +343,7 @@ const Summary = (props: SummaryProps) => {
                   <img
                     src={rydeLogo}
                     width={31}
+                    alt={'ryde-logo'}
                     style={{
                       borderRadius: 10,
                       background: 'white',
