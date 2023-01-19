@@ -69,9 +69,9 @@ const EditLog = (props: EditLogProps) => {
       distance: distance !== '' ? parseFloat(distance) : 0,
       petrolCost,
       totalProfit: totalRevenue - petrolCost,
-      date: selectedLog.date,
       totalRevenue,
     };
+    editEntryOnFirebase(log);
     confirmEdit(log);
     handleClose();
   };

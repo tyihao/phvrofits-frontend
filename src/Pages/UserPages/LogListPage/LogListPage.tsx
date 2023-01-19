@@ -400,39 +400,14 @@ const LogListPage = () => {
   };
 
   const confirmEditLog = (editedLog: LogInfo) => {
-    // If we are closing the dialog
     setLogData((state) => {
-      const updatedData = state.map((mappedLog) => {
-        if (mappedLog.id === editedLog.id) {
-          const petrolCost =
-            ((editedLog.discountedLitrePetrol * editedLog.distance) / 100) *
-            editedLog.fuelEfficiency;
-          const totalRevenue =
-            editedLog.gojekEarnings +
-            editedLog.tadaEarnings +
-            editedLog.grabEarnings +
-            editedLog.rydeEarnings;
-          const log = {
-            ...selectedLog,
-            gojekEarnings: editedLog.gojekEarnings,
-            grabEarnings: editedLog.grabEarnings,
-            rydeEarnings: editedLog.rydeEarnings,
-            tadaEarnings: editedLog.tadaEarnings,
-            distance: editedLog.distance,
-            petrolCost,
-            totalProfit: totalRevenue - petrolCost,
-            date: mappedLog.date,
-            totalRevenue,
-          };
-          editEntryOnFirebase(log);
-          return log;
-        } else {
-          return mappedLog;
-        }
-      });
+      const updatedData = state.map((log) =>
+        log.id === editedLog.id ? { ...editedLog, date: log.date } : log
+      );
       return updatedData;
     });
   };
+
   const handleSelectDateRange = (selectedDates: { from: Date; to: Date }) => {
     setDateFilter(selectedDates);
   };
