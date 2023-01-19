@@ -4,6 +4,7 @@
   "homepage": "https://tyihao.github.io/phvrofits-frontend",
   "private": true,
   "dependencies": {
+    "@elastic/apm-rum-react": "^1.4.2",
     "@emotion/react": "^11.9.3",
     "@emotion/styled": "^11.9.3",
     "@mui/icons-material": "^5.8.4",
