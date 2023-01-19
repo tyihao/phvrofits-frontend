@@ -1,5 +1,5 @@
 import { collection, getDocs, query, where } from 'firebase/firestore';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useNavigate } from 'react-router-dom';
 import { auth, db } from '../Firebase';
@@ -19,7 +19,7 @@ const useUserInfo = () => {
   const [user, loading] = useAuthState(auth);
   const navigate = useNavigate();
 
-  const fetchUserName = async () => {
+  const fetchUserName = useCallback(async () => {
     try {
       const q = query(
         collection(db, 'users'),
@@ -31,13 +31,12 @@ const useUserInfo = () => {
     } catch (err) {
       console.error(err);
     }
-  };
+  }, [user]);
 
   useEffect(() => {
     if (loading) return console.info('Data is loading, please wait.');
-    if (!user) return navigate('/');
     fetchUserName();
-  }, [loading, user]);
+  }, [fetchUserName, loading, navigate, user]);
 
   return userInfo;
 };

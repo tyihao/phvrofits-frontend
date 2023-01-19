@@ -39,7 +39,6 @@ const SubmitLogPage = () => {
   const [snackbar, setSnackbar] = useState<boolean>(false);
   const [snackbarType, setSnackbarType] = useState<AlertColor>('success');
   const [newlyLoggedDates, setNewlyLoggedDates] = useState<string[]>([]);
-  const [submitStatus, setSubmitStatus] = useState<boolean>(false);
   const loggedDates = useLogData().reduce((a, b) => {
     return [...a, getFormattedDate(b.date)];
   }, [] as string[]);
@@ -56,7 +55,12 @@ const SubmitLogPage = () => {
     )
       .then((res) => {
         setSnackbar(true);
-        setSubmitStatus(res);
+        if (res) {
+          setSnackbarType('success');
+          setNewlyLoggedDates((state) => [...state, date.format('DD/MM/YYYY')]);
+        } else {
+          setSnackbarType('error');
+        }
       })
       .finally(() => setIsLoading(false));
 
@@ -75,27 +79,16 @@ const SubmitLogPage = () => {
     setDistance('');
   };
 
-  useEffect(() => {
-    if (submitStatus) {
-      setSnackbarType('success');
-      setNewlyLoggedDates((state) => [...state, date.format('DD/MM/YYYY')]);
-    } else {
-      setSnackbarType('error');
-    }
-  }, [submitStatus]);
-
   return (
     <LocalizationProvider dateAdapter={AdapterMoment}>
       <div>
         <Box
           sx={{
-            // borderRadius: '10px',
             textAlign: 'center',
             margin: '5px 0 10px 0',
             padding: '6px',
             background: 'rgba(145,105,44,0.3)',
             fontFamily: 'sans-serif',
-            // boxShadow: 'rgba(149, 157, 165, 0.4) 0px 8px 24px',
           }}
         >
           <span style={{ fontWeight: 500, fontSize: 24, color: '#292929' }}>
@@ -125,6 +118,8 @@ const SubmitLogPage = () => {
                   disableFuture
                   value={date}
                   onChange={(date) => date && setDate(date)}
+                  minDate={moment('2021/06/08')}
+                  maxDate={moment()}
                   renderInput={(params) => (
                     <TextField
                       {...params}
@@ -327,7 +322,6 @@ const SubmitLogPage = () => {
               style={{
                 margin: '15px 0 0 0',
                 color: 'white',
-                backgroundColor: '#2c5491',
                 height: '50px',
                 borderRadius: '10px',
               }}
@@ -342,11 +336,11 @@ const SubmitLogPage = () => {
               variant="outlined"
               style={{
                 margin: '15px 0 15px 0',
-                color: '#2c5491',
-                borderColor: '#2c5491',
+                // color: '#2c5491',
+                // borderColor: '#2c5491',
                 height: '50px',
                 borderRadius: '10px',
-                backgroundColor: 'white',
+                // backgroundColor: 'white',
               }}
               onClick={clearEntry}
               disabled={[...loggedDates, ...newlyLoggedDates].includes(
@@ -368,7 +362,9 @@ const SubmitLogPage = () => {
         <Snackbar
           open={snackbar}
           autoHideDuration={6000}
-          onClose={() => setSnackbar(false)}
+          onClose={() => {
+            setSnackbar(false);
+          }}
           anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
         >
           <Alert

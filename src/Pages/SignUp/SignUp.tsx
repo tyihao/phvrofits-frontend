@@ -1,22 +1,16 @@
 import {
   Button,
   FormControl,
-  Input,
   InputLabel,
   MenuItem,
-  OutlinedInput,
   Select,
   SelectChangeEvent,
   TextField,
 } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { Link, useNavigate } from 'react-router-dom';
-import {
-  auth,
-  registerWithEmailAndPassword,
-  signInWithGoogle,
-} from '../../Firebase/firebase';
+import { auth, registerWithEmailAndPassword } from '../../Firebase/firebase';
 import './Styles/styles.css';
 
 function Register() {
@@ -28,7 +22,7 @@ function Register() {
   const [petrolStation, setPetrolStation] = useState('');
   const [fuelGrade, setFuelGrade] = useState('');
 
-  const [user, loading, error] = useAuthState(auth);
+  const [user, loading] = useAuthState(auth);
   const navigate = useNavigate();
   const register = () => {
     if (
@@ -59,7 +53,7 @@ function Register() {
   useEffect(() => {
     if (loading) return;
     if (user) navigate('/dashboard');
-  }, [user, loading]);
+  }, [user, loading, navigate]);
 
   return (
     <div className="register">

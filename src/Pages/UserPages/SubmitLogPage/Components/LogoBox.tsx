@@ -6,7 +6,6 @@ interface LogoBoxProps {
 }
 
 const LogoBox = (props: LogoBoxProps) => {
-  const { children } = props;
   return (
     <Box
       sx={{

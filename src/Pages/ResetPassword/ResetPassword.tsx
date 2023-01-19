@@ -4,14 +4,15 @@ import { useNavigate } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import { auth, sendPasswordReset } from '../../Firebase';
 import './Styles/styles.css';
+
 function Reset() {
   const [email, setEmail] = useState('');
-  const [user, loading, error] = useAuthState(auth);
+  const [user, loading] = useAuthState(auth);
   const navigate = useNavigate();
   useEffect(() => {
     if (loading) return;
     if (user) navigate('/dashboard');
-  }, [user, loading]);
+  }, [user, loading, navigate]);
   return (
     <div className="reset">
       <div className="reset__container">

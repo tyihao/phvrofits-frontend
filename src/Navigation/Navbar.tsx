@@ -53,7 +53,7 @@ const theme = createTheme({
 
 function Navbar() {
   const userInfo = useUserInfo();
-  const [user, loading] = useAuthState(auth);
+  const [user] = useAuthState(auth);
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
   const navigate = useNavigate();
   const location = useLocation().pathname;

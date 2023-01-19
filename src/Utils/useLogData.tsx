@@ -1,16 +1,16 @@
 import { collection, getDocs, query, where } from 'firebase/firestore';
-import React, { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useNavigate } from 'react-router-dom';
 import { auth, db } from '../Firebase';
 import { LogInfo } from './types';
 
 const useLogData = () => {
-  const [user, loading, error] = useAuthState(auth);
+  const [user, loading] = useAuthState(auth);
   const [logData, setLogData] = useState<Array<LogInfo>>([]);
   const navigate = useNavigate();
 
-  const fetchLogData = async () => {
+  const fetchLogData = useCallback(async () => {
     try {
       const q1 = query(
         collection(db, 'users'),
@@ -30,7 +30,7 @@ const useLogData = () => {
       console.error(err);
       alert('An error occured while fetching user data!');
     }
-  };
+  }, [user]);
 
   useEffect(() => {
     if (loading) return console.info('Data is loading, please wait.');

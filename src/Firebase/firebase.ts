@@ -84,7 +84,8 @@ const submitEntryToFirebase = async (
       discountedLitrePetrol *
       (distance / 100) *
       parseFloat(userInfo.fuelEfficiency);
-    await addDoc(collection(db, 'users/' + userId + '/logs'), {
+
+    setDoc(doc(db, 'users/' + userId + '/logs', date.format('YYYYMMDD')), {
       gojekEarnings,
       tadaEarnings,
       grabEarnings,
@@ -159,7 +160,7 @@ const registerWithEmailAndPassword = async (
   try {
     const res = await createUserWithEmailAndPassword(auth, email, password);
     const user = res.user;
-    await addDoc(collection(db, 'users'), {
+    await setDoc(doc(db, 'users', user.email || user.uid), {
       uid: user.uid,
       name,
       authProvider: 'local',
