@@ -255,8 +255,8 @@ const fetchPetrolData = async (
     }
     return docSnap.data();
   } catch (err) {
+    console.error('An error occured while fetching petrol data!');
     console.error(err);
-    alert('An error occured while fetching user data!');
   }
 };
 

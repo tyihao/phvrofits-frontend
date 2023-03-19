@@ -1,20 +1,19 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useNavigate } from 'react-router-dom';
-import './Styles/styles.css';
-import { auth, db, logout } from '../../../Firebase';
-import { query, collection, getDocs, where } from 'firebase/firestore';
+import { auth, logout } from '../../../Firebase';
 import useUserInfo from '../../../Utils/useUserInfo';
+import './Styles/styles.css';
 
 const AccountPage = () => {
-  const [user, loading, error] = useAuthState(auth);
+  const [user, loading] = useAuthState(auth);
   const userInfo = useUserInfo();
   const navigate = useNavigate();
 
   useEffect(() => {
     if (loading) return;
     if (!user) return navigate('/');
-  }, [user, loading]);
+  }, [user, loading, navigate]);
 
   return (
     <div className="account">

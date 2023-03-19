@@ -111,6 +111,8 @@ const LogListPage = () => {
     orderBy(useLogData(), ['date'], ['desc'])
   );
 
+  console.log(temporaryDateFilter);
+
   const data = useLogData();
   useEffect(() => setLogData(orderBy(data, ['date'], ['desc'])), [data]);
 
@@ -231,13 +233,14 @@ const LogListPage = () => {
                   </Typography>
                   <Button
                     autoFocus
+                    variant="outlined"
                     color="inherit"
                     onClick={() => {
                       setDateFilter(undefined);
                       setTemporaryDateFilter(undefined);
                     }}
                   >
-                    RESET ALl
+                    RESET FILTER
                   </Button>
                 </Toolbar>
               </AppBar>
@@ -249,9 +252,10 @@ const LogListPage = () => {
                     <RadioGroup
                       aria-labelledby="date-range-radio-group-label"
                       name="radio-buttons-group"
+                      value={temporaryDateFilter}
                     >
                       <FormControlLabel
-                        value="this-week"
+                        value={defaultRanges['This week']}
                         control={<Radio />}
                         label="This week"
                         onClick={(e) => {
@@ -260,7 +264,7 @@ const LogListPage = () => {
                         }}
                       />
                       <FormControlLabel
-                        value="last-week"
+                        value={defaultRanges['Last week']}
                         control={<Radio />}
                         label="Last week"
                         onClick={() => {
@@ -269,7 +273,7 @@ const LogListPage = () => {
                         }}
                       />
                       <FormControlLabel
-                        value="this-month"
+                        value={defaultRanges['This month']}
                         control={<Radio />}
                         label="This month"
                         onClick={() => {
@@ -278,7 +282,7 @@ const LogListPage = () => {
                         }}
                       />
                       <FormControlLabel
-                        value="last-month"
+                        value={defaultRanges['Last month']}
                         control={<Radio />}
                         label="Last month"
                         onClick={() => {
@@ -287,7 +291,7 @@ const LogListPage = () => {
                         }}
                       />
                       <FormControlLabel
-                        value="this-year"
+                        value={defaultRanges['This year']}
                         control={<Radio />}
                         label="This year"
                         onClick={() => {
@@ -296,7 +300,7 @@ const LogListPage = () => {
                         }}
                       />
                       <FormControlLabel
-                        value="last-year"
+                        value={defaultRanges['Last year']}
                         control={<Radio />}
                         label="Last year"
                         onClick={() => {
