@@ -48,6 +48,9 @@ import {
 } from 'date-fns';
 
 import EditLog from './Components/EditLog';
+import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 
 const defineds = {
   startOfWeek: startOfWeek(new Date()),
@@ -68,6 +71,7 @@ const defineds = {
   endOfLastYear: endOfYear(addYears(new Date(), -1)),
 };
 
+// TODO add Last 7/30/365 days
 const defaultRanges = {
   'This week': {
     from: defineds.startOfWeek,
@@ -110,8 +114,6 @@ const LogListPage = () => {
   const [logData, setLogData] = useState<LogInfo[]>(
     orderBy(useLogData(), ['date'], ['desc'])
   );
-
-  console.log(temporaryDateFilter);
 
   const data = useLogData();
   useEffect(() => setLogData(orderBy(data, ['date'], ['desc'])), [data]);
@@ -252,7 +254,9 @@ const LogListPage = () => {
                     <RadioGroup
                       aria-labelledby="date-range-radio-group-label"
                       name="radio-buttons-group"
-                      value={temporaryDateFilter}
+                      value={
+                        temporaryDateFilter || (customDate && 'custom-range')
+                      }
                     >
                       <FormControlLabel
                         value={defaultRanges['This week']}
@@ -308,23 +312,82 @@ const LogListPage = () => {
                           setCustomDate(false);
                         }}
                       />
-                      {/* 
+
                       <FormControlLabel
-                        value="custom-date"
-                        control={<Radio onClick={() => setCustomDate(true)} />}
+                        value="custom-range"
+                        control={
+                          <Radio
+                            onClick={() => {
+                              setTemporaryDateFilter(undefined);
+                              setCustomDate(true);
+                            }}
+                          />
+                        }
                         label="Custom range"
-                        />
+                      />
                       {customDate && (
                         <>
-                          <DateRangeDisplay />
-                          <DateRangePicker
-                            dateRange={dateFilter}
-                            handleDateRange={setDateFilter}
-                          />
+                          {/* <DateRangeDisplay /> */}
+                          <LocalizationProvider dateAdapter={AdapterMoment}>
+                            <Typography>Start Date</Typography>
+                            <MobileDatePicker
+                              onChange={(value) =>
+                                setTemporaryDateFilter((state) => ({
+                                  from: value ? new Date(value) : undefined,
+                                  to: state?.to,
+                                }))
+                              }
+                              value={temporaryDateFilter?.from}
+                              renderInput={(params) => (
+                                <TextField
+                                  {...params}
+                                  fullWidth
+                                  sx={{
+                                    '& .MuiInputBase-root.MuiOutlinedInput-root':
+                                      {
+                                        backgroundColor: 'white',
+                                        borderRadius: '10px',
+                                      },
+
+                                    '& .MuiFormHelperText-root': {
+                                      backgroundColor: 'transparent',
+                                    },
+                                  }}
+                                />
+                              )}
+                            />
+                            <Typography sx={{ marginTop: '5px' }}>
+                              End Date
+                            </Typography>
+                            <MobileDatePicker
+                              onChange={(value) =>
+                                setTemporaryDateFilter((state) => ({
+                                  from: state?.from,
+                                  to: value ? new Date(value) : undefined,
+                                }))
+                              }
+                              value={temporaryDateFilter?.to}
+                              renderInput={(params) => (
+                                <TextField
+                                  {...params}
+                                  fullWidth
+                                  sx={{
+                                    '& .MuiInputBase-root.MuiOutlinedInput-root':
+                                      {
+                                        backgroundColor: 'white',
+                                        borderRadius: '10px',
+                                      },
+
+                                    '& .MuiFormHelperText-root': {
+                                      backgroundColor: 'transparent',
+                                    },
+                                  }}
+                                />
+                              )}
+                            />
+                          </LocalizationProvider>
                         </>
                       )}
-                      </>
-                    */}
                     </RadioGroup>
                   </FormControl>
                   {/* <Button
@@ -433,6 +496,8 @@ const LogListPage = () => {
     }
     return log;
   });
+
+  console.log(temporaryDateFilter);
 
   return (
     <div style={{ margin: '0 20px 20px 20px' }}>
