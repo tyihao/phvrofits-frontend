@@ -321,7 +321,6 @@ const SubmitLogPage = () => {
               variant="contained"
               style={{
                 margin: '15px 0 0 0',
-                color: 'white',
                 height: '50px',
                 borderRadius: '10px',
               }}
@@ -336,11 +335,8 @@ const SubmitLogPage = () => {
               variant="outlined"
               style={{
                 margin: '15px 0 15px 0',
-                // color: '#2c5491',
-                // borderColor: '#2c5491',
                 height: '50px',
                 borderRadius: '10px',
-                // backgroundColor: 'white',
               }}
               onClick={clearEntry}
               disabled={[...loggedDates, ...newlyLoggedDates].includes(

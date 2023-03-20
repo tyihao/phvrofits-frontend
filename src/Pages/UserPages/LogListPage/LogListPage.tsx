@@ -51,6 +51,7 @@ import EditLog from './Components/EditLog';
 import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
+import { DesktopDatePicker } from '@mui/x-date-pickers';
 
 const defineds = {
   startOfWeek: startOfWeek(new Date()),
@@ -343,7 +344,10 @@ const LogListPage = () => {
                               >
                                 From
                               </Typography>
-                              <MobileDatePicker
+                              <DesktopDatePicker
+                                inputFormat="DD/MM/yyyy"
+                                disableFuture
+                                views={['year', 'month', 'day']}
                                 onChange={(value) =>
                                   setTemporaryDateFilter((state) => ({
                                     from: value ? new Date(value) : undefined,
@@ -375,7 +379,10 @@ const LogListPage = () => {
                               >
                                 To
                               </Typography>
-                              <MobileDatePicker
+                              <DesktopDatePicker
+                                inputFormat="DD/MM/yyyy"
+                                disableFuture
+                                views={['year', 'month', 'day']}
                                 onChange={(value) =>
                                   setTemporaryDateFilter((state) => ({
                                     from: state?.from,
@@ -451,7 +458,7 @@ const LogListPage = () => {
             onClick={() => setHide((state) => !state)}
             sx={{ color: '#2c5491' }}
           >
-            Expand Table
+            {hide ? 'Expand' : 'Collapse'} Table
           </Button>
           {/* <FormGroup>
             <FormControlLabel
