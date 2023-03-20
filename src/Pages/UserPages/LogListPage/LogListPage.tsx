@@ -240,6 +240,7 @@ const LogListPage = () => {
                     onClick={() => {
                       setDateFilter(undefined);
                       setTemporaryDateFilter(undefined);
+                      setCustomDate(false);
                     }}
                   >
                     RESET FILTER
@@ -255,7 +256,7 @@ const LogListPage = () => {
                       aria-labelledby="date-range-radio-group-label"
                       name="radio-buttons-group"
                       value={
-                        temporaryDateFilter || (customDate && 'custom-range')
+                        (customDate && 'custom-range') || temporaryDateFilter
                       }
                     >
                       <FormControlLabel
@@ -318,23 +319,29 @@ const LogListPage = () => {
                         control={
                           <Radio
                             onClick={() => {
-                              setTemporaryDateFilter(undefined);
                               setCustomDate(true);
                             }}
                           />
                         }
-                        label="Custom Range"
+                        label="Custom range"
                       />
                       {customDate && (
                         <>
                           <Box
                             sx={{
                               padding: '15px',
+                              border: '1px #CCCCCC solid',
+                              borderRadius: '15px',
+                              margin: '10px 0',
+                              backgroundColor: '#ccdbf0',
                             }}
                           >
                             <LocalizationProvider dateAdapter={AdapterMoment}>
-                              <Typography fontWeight={500}>
-                                Start Date
+                              <Typography
+                                fontWeight={500}
+                                sx={{ marginBottom: '3px' }}
+                              >
+                                From
                               </Typography>
                               <MobileDatePicker
                                 onChange={(value) =>
@@ -363,10 +370,10 @@ const LogListPage = () => {
                                 )}
                               />
                               <Typography
-                                sx={{ marginTop: '5px' }}
+                                sx={{ marginTop: '5px', marginBottom: '3px' }}
                                 fontWeight={500}
                               >
-                                End Date
+                                To
                               </Typography>
                               <MobileDatePicker
                                 onChange={(value) =>
