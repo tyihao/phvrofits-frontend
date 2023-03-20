@@ -323,69 +323,79 @@ const LogListPage = () => {
                             }}
                           />
                         }
-                        label="Custom range"
+                        label="Custom Range"
                       />
                       {customDate && (
                         <>
-                          {/* <DateRangeDisplay /> */}
-                          <LocalizationProvider dateAdapter={AdapterMoment}>
-                            <Typography>Start Date</Typography>
-                            <MobileDatePicker
-                              onChange={(value) =>
-                                setTemporaryDateFilter((state) => ({
-                                  from: value ? new Date(value) : undefined,
-                                  to: state?.to,
-                                }))
-                              }
-                              value={temporaryDateFilter?.from}
-                              renderInput={(params) => (
-                                <TextField
-                                  {...params}
-                                  fullWidth
-                                  sx={{
-                                    '& .MuiInputBase-root.MuiOutlinedInput-root':
-                                      {
-                                        backgroundColor: 'white',
-                                        borderRadius: '10px',
-                                      },
+                          <Box
+                            sx={{
+                              padding: '15px',
+                            }}
+                          >
+                            <LocalizationProvider dateAdapter={AdapterMoment}>
+                              <Typography fontWeight={500}>
+                                Start Date
+                              </Typography>
+                              <MobileDatePicker
+                                onChange={(value) =>
+                                  setTemporaryDateFilter((state) => ({
+                                    from: value ? new Date(value) : undefined,
+                                    to: state?.to,
+                                  }))
+                                }
+                                value={temporaryDateFilter?.from}
+                                renderInput={(params) => (
+                                  <TextField
+                                    {...params}
+                                    fullWidth
+                                    sx={{
+                                      '& .MuiInputBase-root.MuiOutlinedInput-root':
+                                        {
+                                          backgroundColor: 'white',
+                                          borderRadius: '10px',
+                                        },
 
-                                    '& .MuiFormHelperText-root': {
-                                      backgroundColor: 'transparent',
-                                    },
-                                  }}
-                                />
-                              )}
-                            />
-                            <Typography sx={{ marginTop: '5px' }}>
-                              End Date
-                            </Typography>
-                            <MobileDatePicker
-                              onChange={(value) =>
-                                setTemporaryDateFilter((state) => ({
-                                  from: state?.from,
-                                  to: value ? new Date(value) : undefined,
-                                }))
-                              }
-                              value={temporaryDateFilter?.to}
-                              renderInput={(params) => (
-                                <TextField
-                                  {...params}
-                                  fullWidth
-                                  sx={{
-                                    '& .MuiInputBase-root.MuiOutlinedInput-root':
-                                      {
-                                        backgroundColor: 'white',
-                                        borderRadius: '10px',
+                                      '& .MuiFormHelperText-root': {
+                                        backgroundColor: 'transparent',
                                       },
+                                    }}
+                                  />
+                                )}
+                              />
+                              <Typography
+                                sx={{ marginTop: '5px' }}
+                                fontWeight={500}
+                              >
+                                End Date
+                              </Typography>
+                              <MobileDatePicker
+                                onChange={(value) =>
+                                  setTemporaryDateFilter((state) => ({
+                                    from: state?.from,
+                                    to: value ? new Date(value) : undefined,
+                                  }))
+                                }
+                                value={temporaryDateFilter?.to}
+                                renderInput={(params) => (
+                                  <TextField
+                                    {...params}
+                                    fullWidth
+                                    sx={{
+                                      '& .MuiInputBase-root.MuiOutlinedInput-root':
+                                        {
+                                          backgroundColor: 'white',
+                                          borderRadius: '10px',
+                                        },
 
-                                    '& .MuiFormHelperText-root': {
-                                      backgroundColor: 'transparent',
-                                    },
-                                  }}
-                                />
-                              )}
-                            />
-                          </LocalizationProvider>
+                                      '& .MuiFormHelperText-root': {
+                                        backgroundColor: 'transparent',
+                                      },
+                                    }}
+                                  />
+                                )}
+                              />
+                            </LocalizationProvider>
+                          </Box>
                         </>
                       )}
                     </RadioGroup>

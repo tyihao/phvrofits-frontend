@@ -29,8 +29,8 @@ import '../Styles/Navbar.css';
 import useUserInfo from '../Utils/useUserInfo';
 
 const user_pages = [
-  { pageName: 'Home', pageLink: '', Icon: HomeIcon },
-  { pageName: 'Dashboard', pageLink: 'dashboard', Icon: DashboardIcon },
+  // { pageName: 'Home', pageLink: '', Icon: HomeIcon },
+  // { pageName: 'Dashboard', pageLink: 'dashboard', Icon: DashboardIcon },
   { pageName: 'Logs', pageLink: 'loglist', Icon: TableViewIcon },
   { pageName: 'Submit', pageLink: 'submit', Icon: ReceiptLongIcon },
   { pageName: 'Account', pageLink: 'account', Icon: AccountBoxIcon },
@@ -38,7 +38,7 @@ const user_pages = [
 
 const general_pages = [
   { pageName: 'Home', pageLink: '' },
-  { pageName: 'About', pageLink: 'about' },
+  // { pageName: 'About', pageLink: 'about' },
   { pageName: 'Login', pageLink: 'signin' },
   { pageName: 'Register', pageLink: 'signup' },
 ];

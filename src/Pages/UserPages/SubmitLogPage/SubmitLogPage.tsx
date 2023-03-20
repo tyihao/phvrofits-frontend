@@ -12,7 +12,7 @@ import {
   Stack,
   TextField,
 } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { submitEntryToFirebase } from '../../../Firebase/firebase';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
