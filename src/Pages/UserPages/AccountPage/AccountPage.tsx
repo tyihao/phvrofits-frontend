@@ -19,8 +19,8 @@ const AccountPage = () => {
     <div className="account">
       <div className="account__container">
         Logged in as
-        <div>{userInfo.name}</div>
-        <div>{userInfo.email}</div>
+        <div>{userInfo?.name}</div>
+        <div>{userInfo?.email}</div>
         <button className="account__btn" onClick={logout}>
           Logout
         </button>

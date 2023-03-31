@@ -16,8 +16,6 @@ import {
   Typography,
 } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
-import HomeIcon from '@mui/icons-material/Home';
-import DashboardIcon from '@mui/icons-material/Dashboard';
 import TableViewIcon from '@mui/icons-material/TableView';
 import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
@@ -25,7 +23,7 @@ import React, { useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { auth } from '../Firebase';
-import '../Styles/Navbar.css';
+import './Styles/Navbar.css';
 import useUserInfo from '../Utils/useUserInfo';
 
 const user_pages = [
@@ -37,10 +35,10 @@ const user_pages = [
 ];
 
 const general_pages = [
-  { pageName: 'Home', pageLink: '' },
+  { pageName: 'Home', pageLink: '', Icon: TableViewIcon },
   // { pageName: 'About', pageLink: 'about' },
-  { pageName: 'Login', pageLink: 'signin' },
-  { pageName: 'Register', pageLink: 'signup' },
+  { pageName: 'Login', pageLink: 'signin', Icon: ReceiptLongIcon },
+  { pageName: 'Register', pageLink: 'signup', Icon: AccountBoxIcon },
 ];
 
 const theme = createTheme({
@@ -153,65 +151,54 @@ function Navbar() {
                   height: 10,
                 }}
               >
-                <Box
-                  sx={{
-                    height: '100px',
-                    padding: 3,
-                    backgroundSize: 'cover',
-                    backgroundRepeat: 'no-repeat',
-                    color: 'white',
-                    backgroundImage:
-                      'url(https://img.freepik.com/premium-vector/abstract-global-network-connection-background_46250-2147.jpg)',
-                  }}
-                >
-                  <Stack>
-                    <Avatar alt={userInfo.name} />
-                    <Typography
-                      sx={{ marginTop: 2, fontWeight: 600, fontSize: 19 }}
-                    >
-                      {userInfo.name}
-                    </Typography>
-                    <Typography sx={{ fontWeight: 400, fontSize: 14 }}>
-                      {userInfo.email} | {userInfo.carModel}
-                    </Typography>
-                  </Stack>
-                </Box>
+                {userInfo && (
+                  <Box
+                    sx={{
+                      height: '100px',
+                      padding: 3,
+                      backgroundSize: 'cover',
+                      backgroundRepeat: 'no-repeat',
+                      color: 'white',
+                      backgroundImage:
+                        'url(https://img.freepik.com/premium-vector/abstract-global-network-connection-background_46250-2147.jpg)',
+                    }}
+                  >
+                    <Stack>
+                      <Avatar alt={userInfo.name} />
+                      <Typography
+                        sx={{ marginTop: 2, fontWeight: 600, fontSize: 19 }}
+                      >
+                        {userInfo.name}
+                      </Typography>
+                      <Typography sx={{ fontWeight: 400, fontSize: 14 }}>
+                        {userInfo.email} | {userInfo.carModel}
+                      </Typography>
+                    </Stack>
+                  </Box>
+                )}
                 <Box sx={{ margin: 2 }}>
-                  {user
-                    ? user_pages.map((page) => (
-                        <Link className="navbar-link" to={`/${page.pageLink}`}>
-                          <MenuItem
-                            key={page.pageName}
-                            onClick={handleCloseNavMenu}
-                            sx={{
-                              borderRadius: 2,
-                              backgroundColor:
-                                page.pageLink === location.split('/')[1]
-                                  ? 'rgba(145,105,44,0.3)'
-                                  : '',
-                            }}
-                          >
-                            <>
-                              {<page.Icon sx={{ marginRight: 2 }} />}
-                              <Typography textAlign="center">
-                                {page.pageName}
-                              </Typography>
-                            </>
-                          </MenuItem>
-                        </Link>
-                      ))
-                    : general_pages.map((page) => (
-                        <Link className="navbar-link" to={`/${page.pageLink}`}>
-                          <MenuItem
-                            key={page.pageName}
-                            onClick={handleCloseNavMenu}
-                          >
-                            <Typography textAlign="center">
-                              {page.pageName}
-                            </Typography>
-                          </MenuItem>
-                        </Link>
-                      ))}
+                  {(user ? user_pages : general_pages).map((page) => (
+                    <Link className="navbar-link" to={`/${page.pageLink}`}>
+                      <MenuItem
+                        key={page.pageName}
+                        onClick={handleCloseNavMenu}
+                        sx={{
+                          borderRadius: 2,
+                          backgroundColor:
+                            page.pageLink === location.split('/')[1]
+                              ? 'rgba(145,105,44,0.3)'
+                              : '',
+                        }}
+                      >
+                        <>
+                          <page.Icon sx={{ marginRight: 2 }} />
+                          <Typography textAlign="center">
+                            {page.pageName}
+                          </Typography>
+                        </>
+                      </MenuItem>
+                    </Link>
+                  ))}
                 </Box>
               </SwipeableDrawer>
             </Box>

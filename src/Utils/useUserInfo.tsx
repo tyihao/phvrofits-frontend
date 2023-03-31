@@ -6,16 +6,7 @@ import { auth, db } from '../Firebase';
 import { UserInfo } from './types';
 
 const useUserInfo = () => {
-  const [userInfo, setUserInfo] = useState<UserInfo>({
-    name: '',
-    authProvider: '',
-    carModel: '',
-    email: '',
-    fuelEfficiency: '10',
-    fuelGrade: '',
-    petrolStation: '',
-    uid: '',
-  });
+  const [userInfo, setUserInfo] = useState<UserInfo>();
   const [user, loading] = useAuthState(auth);
   const navigate = useNavigate();
 
