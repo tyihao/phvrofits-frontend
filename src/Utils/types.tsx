@@ -1,14 +1,3 @@
-export type Log = {
-  date: Date;
-  distance: number;
-  gojekEarnings: number;
-  grabEarnings: number;
-  tadaEarnings: number;
-  totalEarnings: number;
-  rydeEarnings: number;
-  id: string;
-};
-
 export type UserInfo = {
   authProvider: string;
   carModel: string;

@@ -129,7 +129,6 @@ const SubmitLogPage = () => {
                       )}
                       sx={{
                         '& .MuiInputBase-root.MuiOutlinedInput-root': {
-                          backgroundColor: 'white',
                           borderRadius: '10px',
                         },
 

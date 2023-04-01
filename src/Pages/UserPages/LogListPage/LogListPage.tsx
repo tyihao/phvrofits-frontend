@@ -521,8 +521,6 @@ const LogListPage = () => {
     return log;
   });
 
-  console.log(temporaryDateFilter);
-
   return (
     <div style={{ margin: '0 20px 20px 20px' }}>
       <ActionBar />
