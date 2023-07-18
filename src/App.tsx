@@ -5,7 +5,6 @@ import { Routes, Route } from 'react-router-dom';
 import { auth } from './Firebase';
 import Navbar from './Navigation/Navbar';
 import * as Pages from './Pages';
-import './Styles/App.css';
 
 function App() {
   const [, loading] = useAuthState(auth);

@@ -27,6 +27,7 @@ import './Styles/Navbar.css';
 import useUserInfo from '../Utils/useUserInfo';
 
 const user_pages = [
+  // Disabled temporarily till Home Page and Dashboard Page is completed
   // { pageName: 'Home', pageLink: '', Icon: HomeIcon },
   // { pageName: 'Dashboard', pageLink: 'dashboard', Icon: DashboardIcon },
   { pageName: 'Logs', pageLink: 'loglist', Icon: TableViewIcon },
@@ -36,6 +37,7 @@ const user_pages = [
 
 const general_pages = [
   { pageName: 'Home', pageLink: '', Icon: TableViewIcon },
+  // Disabled temporarily till About Page is completed
   // { pageName: 'About', pageLink: 'about' },
   { pageName: 'Login', pageLink: 'signin', Icon: ReceiptLongIcon },
   { pageName: 'Register', pageLink: 'signup', Icon: AccountBoxIcon },

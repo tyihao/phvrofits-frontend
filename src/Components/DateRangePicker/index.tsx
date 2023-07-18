@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
-import 'react-day-picker/dist/style.css';
-import { addDays, format } from 'date-fns';
+import React from 'react';
 import { DateRange, DayPicker } from 'react-day-picker';
+import 'react-day-picker/dist/style.css';
 
 const pastMonth = new Date();
 

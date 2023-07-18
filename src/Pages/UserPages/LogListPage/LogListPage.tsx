@@ -17,17 +17,13 @@ import {
   Toolbar,
   Typography,
 } from '@mui/material';
-import {
-  DataGrid,
-  gridClasses,
-  GridColDef,
-  GridRenderCellParams,
-} from '@mui/x-data-grid';
+import { GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
 import { format } from 'date-fns';
 import { orderBy } from 'lodash';
 import { useEffect, useState } from 'react';
 import { DateRange } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
+import LoggingTable from '../../../Components/LoggingTable';
 import { LogInfo } from '../../../Utils/types';
 import useLogData from '../../../Utils/useLogData';
 import Header from './Components/Header';
@@ -47,11 +43,10 @@ import {
   startOfYear,
 } from 'date-fns';
 
-import EditLog from './Components/EditLog';
-import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import { DesktopDatePicker } from '@mui/x-date-pickers';
+import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import EditLog from './Components/EditLog';
 
 const defineds = {
   startOfWeek: startOfWeek(new Date()),
@@ -521,51 +516,20 @@ const LogListPage = () => {
     return log;
   });
 
+  const filteredAndMappedLogData = logDataFiltered.map((log) => ({
+    ...log,
+    date: log.date.toLocaleDateString(),
+    totalProfit: Math.round(log.totalProfit * 100) / 100,
+    totalRevenue: Math.round(log.totalRevenue * 100) / 100,
+    petrolCost: Math.round(log.petrolCost * 100) / 100,
+  }));
+
   return (
     <div style={{ margin: '0 20px 20px 20px' }}>
       <ActionBar />
       <Header dateRange={dateFilter} totalResults={logDataFiltered.length} />
       <Summary logData={logDataFiltered} />
-      <DataGrid
-        autoHeight
-        disableColumnMenu
-        getRowClassName={(params) => {
-          const rowNum = params.indexRelativeToCurrentPage;
-          if (rowNum % 2 === 0) {
-            return 'even';
-          }
-          return 'odd';
-        }}
-        sx={{
-          background: 'white',
-          borderRadius: '10px',
-          marginTop: '8px',
-          border: 0,
-          // border: '1px solid rgb(200,200,200)',
-          boxShadow: 'rgba(100, 100, 111, 0.2) 0px 7px 29px 0px',
-          [`& .${gridClasses.row}.even`]: {
-            backgroundColor: 'rgba(44, 84, 145, 0)',
-          },
-          [`& .MuiDataGrid-columnHeaders`]: {
-            backgroundColor: 'rgba(44, 84, 145, 0.2)',
-            borderTopLeftRadius: '10px',
-            borderTopRightRadius: '10px',
-          },
-          [`& .${gridClasses.row}.odd`]: {
-            backgroundColor: 'rgba(44, 84, 145, 0.1)',
-          },
-        }}
-        rowsPerPageOptions={[10, 25, 50, 100]}
-        rows={logDataFiltered.map((log) => ({
-          ...log,
-          date: log.date.toLocaleDateString(),
-          totalProfit: Math.round(log.totalProfit * 100) / 100,
-          totalRevenue: Math.round(log.totalRevenue * 100) / 100,
-          petrolCost: Math.round(log.petrolCost * 100) / 100,
-        }))}
-        columns={columns}
-        loading={logData.length === 0}
-      />
+      <LoggingTable rowData={filteredAndMappedLogData} columnData={columns} />
       <EditLog
         handleClose={handleEditDialog}
         confirmEdit={confirmEditLog}
