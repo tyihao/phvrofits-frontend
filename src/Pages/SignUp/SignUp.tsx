@@ -106,7 +106,7 @@ function Register() {
         <TextField
           id="fuel-efficiency"
           variant="standard"
-          label="Fuel Efficiency"
+          label="Fuel Efficiency (Litre/100km)"
           required
           className="register_input"
           value={fuelEfficiency}
@@ -143,7 +143,7 @@ function Register() {
           sx={{ marginTop: 5, marginBottom: '20px', textAlign: 'left' }}
         >
           <InputLabel id="demo-simple-select-standard-label">
-            Fuel Grade *
+            Grade *
           </InputLabel>
           <Select
             variant="standard"
