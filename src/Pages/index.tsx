@@ -8,7 +8,7 @@ import {
   AccountPage,
   DashboardPage,
   SubmitLogPage,
-  LogListPage,
+  EarningsLogbookPage,
 } from './UserPages';
 
 export {
@@ -21,5 +21,5 @@ export {
   AccountPage,
   DashboardPage,
   SubmitLogPage,
-  LogListPage,
+  EarningsLogbookPage,
 };

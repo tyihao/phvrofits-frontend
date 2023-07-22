@@ -95,7 +95,7 @@ const defaultRanges = {
   },
 };
 
-const LogListPage = () => {
+const EarningsLogbookPage = () => {
   const [hide, setHide] = useState(true);
   const [openDialog, setOpenDialog] = useState(false);
   const [selectedLog, setSelectedLog] = useState<LogInfo>({} as LogInfo);
@@ -540,4 +540,4 @@ const LogListPage = () => {
   );
 };
 
-export default LogListPage;
+export default EarningsLogbookPage;

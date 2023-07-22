@@ -23,7 +23,7 @@ function App() {
             <Route path="/account" element={<Pages.AccountPage />} />
             <Route path="/submit" element={<Pages.SubmitLogPage />} />
             <Route path="/reset" element={<Pages.ResetPassword />} />
-            <Route path="/loglist" element={<Pages.LogListPage />} />
+            <Route path="/loglist" element={<Pages.EarningsLogbookPage />} />
           </Routes>
         </>
       )}
