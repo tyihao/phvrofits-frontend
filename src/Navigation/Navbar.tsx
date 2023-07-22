@@ -16,32 +16,14 @@ import {
   Typography,
 } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
-import TableViewIcon from '@mui/icons-material/TableView';
-import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
-import AccountBoxIcon from '@mui/icons-material/AccountBox';
+
 import React, { useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { auth } from '../Firebase';
 import './Styles/Navbar.css';
 import useUserInfo from '../Utils/useUserInfo';
-
-const user_pages = [
-  // Disabled temporarily till Home Page and Dashboard Page is completed
-  // { pageName: 'Home', pageLink: '', Icon: HomeIcon },
-  // { pageName: 'Dashboard', pageLink: 'dashboard', Icon: DashboardIcon },
-  { pageName: 'Logs', pageLink: 'loglist', Icon: TableViewIcon },
-  { pageName: 'Submit', pageLink: 'submit', Icon: ReceiptLongIcon },
-  { pageName: 'Account', pageLink: 'account', Icon: AccountBoxIcon },
-];
-
-const general_pages = [
-  { pageName: 'Home', pageLink: '', Icon: TableViewIcon },
-  // Disabled temporarily till About Page is completed
-  // { pageName: 'About', pageLink: 'about' },
-  { pageName: 'Login', pageLink: 'signin', Icon: ReceiptLongIcon },
-  { pageName: 'Register', pageLink: 'signup', Icon: AccountBoxIcon },
-];
+import { USER_PAGES, GENERAL_PAGES } from './constants';
 
 const theme = createTheme({
   palette: {
@@ -98,7 +80,7 @@ function Navbar() {
             </Typography>
             <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
               {user
-                ? user_pages.map((page) => (
+                ? USER_PAGES.map((page) => (
                     <Link
                       className="navbar-link-desktop"
                       to={`/${page.pageLink}`}
@@ -113,7 +95,7 @@ function Navbar() {
                       </MenuItem>
                     </Link>
                   ))
-                : general_pages.map((page) => (
+                : GENERAL_PAGES.map((page) => (
                     <Link
                       className="navbar-link-desktop"
                       to={`/${page.pageLink}`}
@@ -179,7 +161,7 @@ function Navbar() {
                   </Box>
                 )}
                 <Box sx={{ margin: 2 }}>
-                  {(user ? user_pages : general_pages).map((page) => (
+                  {(user ? USER_PAGES : GENERAL_PAGES).map((page) => (
                     <Link className="navbar-link" to={`/${page.pageLink}`}>
                       <MenuItem
                         key={page.pageName}

@@ -7,19 +7,21 @@ import ResetPassword from './ResetPassword';
 import {
   AccountPage,
   DashboardPage,
-  SubmitLogPage,
   EarningsLogbookPage,
+  FuelLogbookPage,
+  SubmitLogPage,
 } from './UserPages';
 
 export {
-  Home,
   About,
-  SignIn,
-  SignUp,
-  ResetPassword,
-  Error,
   AccountPage,
   DashboardPage,
-  SubmitLogPage,
   EarningsLogbookPage,
+  Error,
+  FuelLogbookPage,
+  Home,
+  ResetPassword,
+  SignIn,
+  SignUp,
+  SubmitLogPage,
 };
