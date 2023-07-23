@@ -25,7 +25,7 @@ import { DateRange } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
 import LoggingTable from '../../../Components/LoggingTable';
 import { LogInfo } from '../../../Utils/types';
-import useLogData from '../../../Utils/useLogData';
+import useEarningsLogData from '../../../Utils/useEarningsLogData';
 import Header from './Components/Header';
 import Summary from './Components/Summary';
 
@@ -108,10 +108,11 @@ const EarningsLogbookPage = () => {
   >(undefined);
   const [customDate, setCustomDate] = useState(false);
   const [logData, setLogData] = useState<LogInfo[]>(
-    orderBy(useLogData(), ['date'], ['desc'])
+    orderBy(useEarningsLogData(), ['date'], ['desc'])
   );
 
-  const data = useLogData();
+  const data = useEarningsLogData();
+  console.log(data);
   useEffect(() => setLogData(orderBy(data, ['date'], ['desc'])), [data]);
 
   const columns: GridColDef[] = [

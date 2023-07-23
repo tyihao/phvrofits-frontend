@@ -147,7 +147,30 @@ const submitEarningsLogToFirebase = async (
   return true;
 };
 
-// TODO Earnings Logs: Read
+// TODO Earnings Logs: Retrieve
+const fetchLogData = async () => {
+  const user = await fetchUserInfo();
+  try {
+    const q1 = query(
+      collection(db, 'users'),
+      where('uid', '==', user && user.uid)
+    );
+    const doc = (await getDocs(q1)).docs[0];
+    const id = doc.id;
+
+    const q2 = query(collection(db, 'users/' + id + '/logs'));
+    const logData = (await getDocs(q2)).docs.map((doc) => ({
+      ...doc.data(),
+      date: new Date(doc.data().date),
+      id: doc.id,
+    })) as Array<LogInfo>;
+    console.log({ logData });
+    return logData;
+  } catch (err) {
+    console.error(err);
+    console.log('An error occured while fetching log data!');
+  }
+};
 
 // Earnings Logs: Update
 const editEarningsLogOnFirebase = async (log: LogInfo) => {
@@ -251,6 +274,7 @@ export {
   auth,
   db,
   editEarningsLogOnFirebase,
+  fetchLogData,
   fetchUserInfo,
   logInWithEmailAndPassword,
   logout,

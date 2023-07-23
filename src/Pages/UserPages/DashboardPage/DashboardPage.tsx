@@ -1,16 +1,16 @@
 import React from 'react';
-import { useAuthState } from 'react-firebase-hooks/auth';
-import { useNavigate } from 'react-router-dom';
-import { auth, logout } from '../../../Firebase';
-import useLogData from '../../../Utils/useLogData';
-import useUserInfo from '../../../Utils/useUserInfo';
+// import { useAuthState } from 'react-firebase-hooks/auth';
+// import { useNavigate } from 'react-router-dom';
+// import { auth, logout } from '../../../Firebase';
+// import useEarningsLogData from '../../../Utils/useEarningsLogData';
+// import useUserInfo from '../../../Utils/useUserInfo';
 import workInProgress from './work-in-progress.png';
 import './Styles/styles.css';
 
 function Dashboard() {
-  const [user] = useAuthState(auth);
-  const userInfo = useUserInfo();
-  const logs = useLogData();
+  // const [user] = useAuthState(auth);
+  // const userInfo = useUserInfo();
+  // const logs = useEarningsLogData();
 
   return (
     <div

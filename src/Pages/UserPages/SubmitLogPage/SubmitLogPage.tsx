@@ -19,7 +19,7 @@ import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import './Styles/styles.css';
 import moment from 'moment';
 import { LocalizationProvider } from '@mui/x-date-pickers';
-import useLogData from '../../../Utils/useLogData';
+import useEarningsLogData from '../../../Utils/useEarningsLogData';
 import './Styles/styles.css';
 import gojekLogo from '../../../Assets/gojek_logo.png';
 import grabLogo from '../../../Assets/grab_logo.png';
@@ -39,7 +39,7 @@ const SubmitLogPage = () => {
   const [snackbar, setSnackbar] = useState<boolean>(false);
   const [snackbarType, setSnackbarType] = useState<AlertColor>('success');
   const [newlyLoggedDates, setNewlyLoggedDates] = useState<string[]>([]);
-  const loggedDates = useLogData().reduce((a, b) => {
+  const loggedDates = useEarningsLogData().reduce((a, b) => {
     return [...a, getFormattedDate(b.date)];
   }, [] as string[]);
 
