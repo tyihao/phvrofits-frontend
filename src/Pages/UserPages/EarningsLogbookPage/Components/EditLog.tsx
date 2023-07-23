@@ -13,7 +13,7 @@ import {
 import IconButton from '@mui/material/IconButton';
 import { useEffect, useState } from 'react';
 import 'react-day-picker/dist/style.css';
-import { editEntryOnFirebase } from '../../../../Firebase';
+import { editEarningsLogOnFirebase } from '../../../../Firebase';
 import { LogInfo } from '../../../../Utils/types';
 import Transition from './Transition';
 
@@ -71,7 +71,7 @@ const EditLog = (props: EditLogProps) => {
       totalProfit: totalRevenue - petrolCost,
       totalRevenue,
     };
-    editEntryOnFirebase(log);
+    editEarningsLogOnFirebase(log);
     confirmEdit(log);
     handleClose();
   };

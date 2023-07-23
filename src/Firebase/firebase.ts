@@ -1,24 +1,24 @@
 import { initializeApp } from 'firebase/app';
 import {
   GoogleAuthProvider,
-  getAuth,
-  signInWithPopup,
-  signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
+  getAuth,
   sendPasswordResetEmail,
+  signInWithEmailAndPassword,
+  signInWithPopup,
   signOut,
 } from 'firebase/auth';
 import {
-  getFirestore,
-  query,
-  getDocs,
-  collection,
-  where,
+  DocumentData,
   addDoc,
-  setDoc,
+  collection,
   doc,
   getDoc,
-  DocumentData,
+  getDocs,
+  getFirestore,
+  query,
+  setDoc,
+  where,
 } from 'firebase/firestore';
 import moment from 'moment';
 import { LogInfo, UserInfo } from '../Utils/types';
@@ -38,6 +38,7 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 const googleProvider = new GoogleAuthProvider();
+
 const signInWithGoogle = async () => {
   try {
     const res = await signInWithPopup(auth, googleProvider);
@@ -64,7 +65,48 @@ const logInWithEmailAndPassword = async (email: string, password: string) => {
   }
 };
 
-const submitEntryToFirebase = async (
+// Fuel Logs: Create
+const submitFuelLogToFirebase = async (
+  date: moment.Moment,
+  fuelPumped: number,
+  isFullTank: boolean,
+  mileage?: number
+) => {
+  try {
+    const userId = await fetchUserId();
+
+    if (isFullTank && !mileage) {
+      throw new Error('Full tank logs should include mileage entry.');
+    }
+
+    setDoc(
+      doc(
+        db,
+        'users/' + userId + '/fuelLogs',
+        date.format('YYYYMMDD') + isFullTank ? 'Full' : ''
+      ),
+      {
+        date: date.toDate().getTime(),
+        fuelPumped,
+        isFullTank,
+        mileage: mileage || null,
+      }
+    );
+  } catch (err) {
+    console.error(err);
+    return false;
+  }
+  return true;
+};
+
+// TODO Fuel Logs: Read
+
+// TODO Fuel Logs: Update
+
+// TODO Fuel Logs: Delete (Low Priority)
+
+// Earnings Logs: Create
+const submitEarningsLogToFirebase = async (
   gojekEarnings: number,
   tadaEarnings: number,
   grabEarnings: number,
@@ -105,7 +147,10 @@ const submitEntryToFirebase = async (
   return true;
 };
 
-const editEntryOnFirebase = async (log: LogInfo) => {
+// TODO Earnings Logs: Read
+
+// Earnings Logs: Update
+const editEarningsLogOnFirebase = async (log: LogInfo) => {
   const {
     id,
     gojekEarnings,
@@ -148,6 +193,8 @@ const editEntryOnFirebase = async (log: LogInfo) => {
   return true;
 };
 
+// Earnings Logs: Delete (Low Priority)
+
 const registerWithEmailAndPassword = async (
   name: string,
   email: string,
@@ -183,6 +230,7 @@ const sendPasswordReset = async (email: string) => {
     console.error(err);
   }
 };
+
 const logout = () => {
   signOut(auth);
 };
@@ -202,14 +250,15 @@ const fetchUserInfo = async (): Promise<UserInfo> => {
 export {
   auth,
   db,
-  signInWithGoogle,
+  editEarningsLogOnFirebase,
+  fetchUserInfo,
   logInWithEmailAndPassword,
+  logout,
   registerWithEmailAndPassword,
   sendPasswordReset,
-  logout,
-  submitEntryToFirebase,
-  editEntryOnFirebase,
-  fetchUserInfo,
+  signInWithGoogle,
+  submitEarningsLogToFirebase,
+  submitFuelLogToFirebase,
 };
 
 // functions from here are not meant to be exported

@@ -13,7 +13,7 @@ import {
   TextField,
 } from '@mui/material';
 import { useState } from 'react';
-import { submitEntryToFirebase } from '../../../Firebase/firebase';
+import { submitEarningsLogToFirebase } from '../../../Firebase/firebase';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 import './Styles/styles.css';
@@ -45,7 +45,7 @@ const SubmitLogPage = () => {
 
   const submitEntry = async () => {
     setIsLoading(true);
-    await submitEntryToFirebase(
+    await submitEarningsLogToFirebase(
       gojekEarnings !== '' ? parseFloat(gojekEarnings) : 0,
       tadaEarnings !== '' ? parseFloat(tadaEarnings) : 0,
       grabEarnings !== '' ? parseFloat(grabEarnings) : 0,
