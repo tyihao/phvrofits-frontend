@@ -21,18 +21,8 @@ import {
   where,
 } from 'firebase/firestore';
 import moment from 'moment';
-import { LogInfo, UserInfo } from '../Utils/types';
-
-const firebaseConfig = {
-  apiKey: 'AIzaSyDkzczYXW6sCsTh1yzdDo1YSiGP9yd2KFw',
-  authDomain: 'phvrofits.firebaseapp.com',
-  databaseURL:
-    'https://phvrofits-default-rtdb.asia-southeast1.firebasedatabase.app',
-  projectId: 'phvrofits',
-  storageBucket: 'phvrofits.appspot.com',
-  messagingSenderId: '1082643447398',
-  appId: '1:1082643447398:web:770a40726ba170c15bb7a7',
-};
+import { EarningsLogInfo, FuelLogInfo, UserInfo } from '../Utils/types';
+import { firebaseConfig } from './constants';
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
@@ -57,6 +47,7 @@ const signInWithGoogle = async () => {
     console.error(err);
   }
 };
+
 const logInWithEmailAndPassword = async (email: string, password: string) => {
   try {
     await signInWithEmailAndPassword(auth, email, password);
@@ -100,6 +91,28 @@ const submitFuelLogToFirebase = async (
 };
 
 // TODO Fuel Logs: Read
+const fetchFuelLogData = async () => {
+  const user = await fetchUserInfo();
+  try {
+    const q1 = query(
+      collection(db, 'users'),
+      where('uid', '==', user && user.uid)
+    );
+    const doc = (await getDocs(q1)).docs[0];
+    const id = doc.id;
+
+    const q2 = query(collection(db, 'users/' + id + '/fuel-logs'));
+    const logData = (await getDocs(q2)).docs.map((doc) => ({
+      ...doc.data(),
+      date: new Date(doc.data().date),
+      id: doc.id,
+    })) as Array<FuelLogInfo>;
+    return logData;
+  } catch (err) {
+    console.error(err);
+    console.log('An error occured while fetching log data!');
+  }
+};
 
 // TODO Fuel Logs: Update
 
@@ -148,7 +161,7 @@ const submitEarningsLogToFirebase = async (
 };
 
 // TODO Earnings Logs: Retrieve
-const fetchLogData = async () => {
+const fetchEarningsLogData = async () => {
   const user = await fetchUserInfo();
   try {
     const q1 = query(
@@ -163,8 +176,7 @@ const fetchLogData = async () => {
       ...doc.data(),
       date: new Date(doc.data().date),
       id: doc.id,
-    })) as Array<LogInfo>;
-    console.log({ logData });
+    })) as Array<EarningsLogInfo>;
     return logData;
   } catch (err) {
     console.error(err);
@@ -173,7 +185,7 @@ const fetchLogData = async () => {
 };
 
 // Earnings Logs: Update
-const editEarningsLogOnFirebase = async (log: LogInfo) => {
+const editEarningsLogOnFirebase = async (log: EarningsLogInfo) => {
   const {
     id,
     gojekEarnings,
@@ -274,7 +286,8 @@ export {
   auth,
   db,
   editEarningsLogOnFirebase,
-  fetchLogData,
+  fetchEarningsLogData,
+  fetchFuelLogData,
   fetchUserInfo,
   logInWithEmailAndPassword,
   logout,

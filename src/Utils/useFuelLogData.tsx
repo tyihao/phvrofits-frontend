@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { useNavigate } from 'react-router-dom';
-import { auth, fetchEarningsLogData } from '../Firebase';
-import { EarningsLogInfo } from './types';
+import { auth, fetchFuelLogData } from '../Firebase';
+import { FuelLogInfo } from './types';
 
 const useEarningsLogData = () => {
   const [user, loading] = useAuthState(auth);
-  const [logData, setLogData] = useState<Array<EarningsLogInfo>>([]);
+  const [logData, setLogData] = useState<Array<FuelLogInfo>>([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -14,7 +14,7 @@ const useEarningsLogData = () => {
     if (!user) return navigate('/');
 
     const fetchData = async () => {
-      const logData = await fetchEarningsLogData();
+      const logData = await fetchFuelLogData();
       setLogData(logData || []);
     };
 

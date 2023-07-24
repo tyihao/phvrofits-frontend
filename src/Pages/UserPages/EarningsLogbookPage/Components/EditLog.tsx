@@ -14,14 +14,14 @@ import IconButton from '@mui/material/IconButton';
 import { useEffect, useState } from 'react';
 import 'react-day-picker/dist/style.css';
 import { editEarningsLogOnFirebase } from '../../../../Firebase';
-import { LogInfo } from '../../../../Utils/types';
+import { EarningsLogInfo } from '../../../../Utils/types';
 import Transition from './Transition';
 
 interface EditLogProps {
-  handleClose: (currentLog?: LogInfo) => void;
+  handleClose: (currentLog?: EarningsLogInfo) => void;
   openDialog: boolean;
-  selectedLog: LogInfo;
-  confirmEdit: (log: LogInfo) => void;
+  selectedLog: EarningsLogInfo;
+  confirmEdit: (log: EarningsLogInfo) => void;
 }
 
 const EditLog = (props: EditLogProps) => {

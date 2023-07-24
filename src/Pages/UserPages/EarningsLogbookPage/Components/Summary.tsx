@@ -16,10 +16,10 @@ import rydeLogo from '../../../../Assets/ryde_logo.png';
 import tadaLogo from '../../../../Assets/tada_logo.webp';
 
 import 'swiper/css/pagination';
-import { LogInfo } from '../../../../Utils/types';
+import { EarningsLogInfo } from '../../../../Utils/types';
 
 interface SummaryProps {
-  logData: LogInfo[];
+  logData: EarningsLogInfo[];
 }
 
 const Summary = (props: SummaryProps) => {

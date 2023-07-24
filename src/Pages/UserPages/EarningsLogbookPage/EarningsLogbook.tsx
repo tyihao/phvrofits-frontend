@@ -24,7 +24,7 @@ import { useEffect, useState } from 'react';
 import { DateRange } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
 import LoggingTable from '../../../Components/LoggingTable';
-import { LogInfo } from '../../../Utils/types';
+import { EarningsLogInfo } from '../../../Utils/types';
 import useEarningsLogData from '../../../Utils/useEarningsLogData';
 import Header from './Components/Header';
 import Summary from './Components/Summary';
@@ -98,7 +98,9 @@ const defaultRanges = {
 const EarningsLogbookPage = () => {
   const [hide, setHide] = useState(true);
   const [openDialog, setOpenDialog] = useState(false);
-  const [selectedLog, setSelectedLog] = useState<LogInfo>({} as LogInfo);
+  const [selectedLog, setSelectedLog] = useState<EarningsLogInfo>(
+    {} as EarningsLogInfo
+  );
   const [dateFilterDialog, setDateFilterDialog] = useState(false);
   const [dateFilter, setDateFilter] = useState<DateRange | undefined>(
     undefined
@@ -107,7 +109,7 @@ const EarningsLogbookPage = () => {
     DateRange | undefined
   >(undefined);
   const [customDate, setCustomDate] = useState(false);
-  const [logData, setLogData] = useState<LogInfo[]>(
+  const [logData, setLogData] = useState<EarningsLogInfo[]>(
     orderBy(useEarningsLogData(), ['date'], ['desc'])
   );
 
@@ -472,7 +474,7 @@ const EarningsLogbookPage = () => {
       </Grid>
     );
   };
-  const handleEditDialog = (currentLog?: LogInfo) => {
+  const handleEditDialog = (currentLog?: EarningsLogInfo) => {
     // If we are opening the edit dialog - select a log
     if (!openDialog && currentLog) {
       setSelectedLog(currentLog);
@@ -481,7 +483,7 @@ const EarningsLogbookPage = () => {
     setOpenDialog((state) => !state);
   };
 
-  const confirmEditLog = (editedLog: LogInfo) => {
+  const confirmEditLog = (editedLog: EarningsLogInfo) => {
     setLogData((state) => {
       const updatedData = state.map((log) =>
         log.id === editedLog.id ? { ...editedLog, date: log.date } : log

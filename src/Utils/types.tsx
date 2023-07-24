@@ -9,7 +9,7 @@ export type UserInfo = {
   uid: string;
 };
 
-export type LogInfo = {
+export type EarningsLogInfo = {
   id: string;
   date: Date;
   gojekEarnings: number;
@@ -22,4 +22,12 @@ export type LogInfo = {
   fuelEfficiency: number;
   petrolCost: number;
   totalProfit: number;
+};
+
+export type FuelLogInfo = {
+  id: string;
+  date: Date;
+  isFullTank: boolean;
+  petrolPumped: number;
+  mileage?: number;
 };
