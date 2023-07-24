@@ -10,7 +10,7 @@ function App() {
   const [, loading] = useAuthState(auth);
 
   return (
-    <div style={{ background: '#FAFAFA' }}>
+    <div style={{ background: '#FAFAFA', height: '100vh' }}>
       {!loading && (
         <>
           <Navbar />
