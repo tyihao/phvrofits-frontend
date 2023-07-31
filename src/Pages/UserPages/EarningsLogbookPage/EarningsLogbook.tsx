@@ -16,9 +16,10 @@ import {
   TextField,
   Toolbar,
   Typography,
+  useTheme,
 } from '@mui/material';
 import { GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
-import { format } from 'date-fns';
+// import { format } from 'date-fns';
 import { orderBy } from 'lodash';
 import { useEffect, useState } from 'react';
 import { DateRange } from 'react-day-picker';
@@ -96,6 +97,7 @@ const defaultRanges = {
 };
 
 const EarningsLogbookPage = () => {
+  const theme = useTheme();
   const [hide, setHide] = useState(true);
   const [openDialog, setOpenDialog] = useState(false);
   const [selectedLog, setSelectedLog] = useState<EarningsLogInfo>(
@@ -114,7 +116,6 @@ const EarningsLogbookPage = () => {
   );
 
   const data = useEarningsLogData();
-  console.log(data);
   useEffect(() => setLogData(orderBy(data, ['date'], ['desc'])), [data]);
 
   const columns: GridColDef[] = [
@@ -144,30 +145,30 @@ const EarningsLogbookPage = () => {
     );
   };
 
-  const DateRangeDisplay = () => {
-    return (
-      <Box component="div" sx={{ display: 'inline' }}>
-        <TextField
-          sx={{ width: '40%', margin: '15px 10px' }}
-          disabled
-          value={
-            dateFilter && dateFilter.from
-              ? format(dateFilter.from, 'dd-MM-yyyy')
-              : 'Start Date'
-          }
-        />
-        <TextField
-          sx={{ width: '40%', margin: '15px 10px' }}
-          disabled
-          value={
-            dateFilter && dateFilter.to
-              ? format(dateFilter.to, 'dd-MM-yyyy')
-              : 'End Date'
-          }
-        />
-      </Box>
-    );
-  };
+  // const DateRangeDisplay = () => {
+  //   return (
+  //     <Box component="div" sx={{ display: 'inline' }}>
+  //       <TextField
+  //         sx={{ width: '40%', margin: '15px 10px' }}
+  //         disabled
+  //         value={
+  //           dateFilter && dateFilter.from
+  //             ? format(dateFilter.from, 'dd-MM-yyyy')
+  //             : 'Start Date'
+  //         }
+  //       />
+  //       <TextField
+  //         sx={{ width: '40%', margin: '15px 10px' }}
+  //         disabled
+  //         value={
+  //           dateFilter && dateFilter.to
+  //             ? format(dateFilter.to, 'dd-MM-yyyy')
+  //             : 'End Date'
+  //         }
+  //       />
+  //     </Box>
+  //   );
+  // };
 
   const ActionBar = () => {
     return (
@@ -176,7 +177,7 @@ const EarningsLogbookPage = () => {
           <Button
             startIcon={<CalendarMonthIcon />}
             onClick={() => setDateFilterDialog((state) => !state)}
-            sx={{ color: '#2c5491' }}
+            sx={{ color: theme.palette.primary.main }}
           >
             Date Filter
           </Button>
@@ -421,7 +422,10 @@ const EarningsLogbookPage = () => {
                   </Button> */}
                   <Button
                     variant="contained"
-                    style={{ margin: '10px 0', backgroundColor: '#2c5491' }}
+                    style={{
+                      margin: '10px 0',
+                      backgroundColor: theme.palette.primary.main,
+                    }}
                     onClick={() => {
                       setDateFilterDialog((state) => !state);
                       setDateFilter(temporaryDateFilter);
@@ -435,8 +439,8 @@ const EarningsLogbookPage = () => {
                     variant="outlined"
                     style={{
                       margin: '10px 0',
-                      color: '#2c5491',
-                      borderColor: '#2c5491',
+                      color: theme.palette.primary.main,
+                      borderColor: theme.palette.primary.main,
                     }}
                     onClick={() => {
                       setDateFilterDialog((state) => !state);
@@ -454,7 +458,7 @@ const EarningsLogbookPage = () => {
           <Button
             endIcon={<InfoIcon />}
             onClick={() => setHide((state) => !state)}
-            sx={{ color: '#2c5491' }}
+            sx={{ color: theme.palette.primary.main }}
           >
             {hide ? 'Expand' : 'Collapse'} Table
           </Button>
@@ -492,9 +496,9 @@ const EarningsLogbookPage = () => {
     });
   };
 
-  const handleSelectDateRange = (selectedDates: { from: Date; to: Date }) => {
-    setDateFilter(selectedDates);
-  };
+  // const handleSelectDateRange = (selectedDates: { from: Date; to: Date }) => {
+  //   setDateFilter(selectedDates);
+  // };
 
   const logDataFiltered = logData.filter((log) => {
     if (dateFilter) {

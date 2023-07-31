@@ -1,4 +1,3 @@
-import { ThemeProvider } from '@emotion/react';
 import AddIcon from '@mui/icons-material/Add';
 import HailIcon from '@mui/icons-material/Hail';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -7,13 +6,13 @@ import {
   Box,
   Button,
   Container,
-  createTheme,
   Fab,
   MenuItem,
   Stack,
   SwipeableDrawer,
   Toolbar,
   Typography,
+  useTheme,
 } from '@mui/material';
 import AppBar from '@mui/material/AppBar';
 
@@ -25,15 +24,8 @@ import './Styles/Navbar.css';
 import useUserInfo from '../Utils/useUserInfo';
 import { USER_PAGES, GENERAL_PAGES } from './constants';
 
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: '#0971f1',
-    },
-  },
-});
-
 function Navbar() {
+  const theme = useTheme();
   const userInfo = useUserInfo();
   const [user] = useAuthState(auth);
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
@@ -49,193 +41,191 @@ function Navbar() {
   };
 
   return (
-    <ThemeProvider theme={theme}>
-      <AppBar
-        position="static"
-        sx={{
-          padding: '10px 10px 10px 10px',
-          backgroundColor: 'rgba(0,0,0,0)',
-          color: '#2c5491',
-          boxShadow: 0,
-        }}
-      >
-        <Container maxWidth="xl">
-          <Toolbar disableGutters>
-            <HailIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
-            <Typography
-              variant="h6"
-              noWrap
-              component="a"
+    <AppBar
+      position="static"
+      sx={{
+        padding: '10px 10px 10px 10px',
+        backgroundColor: 'rgba(0,0,0,0)',
+        color: theme.palette.primary.main,
+        boxShadow: 0,
+      }}
+    >
+      <Container maxWidth="xl">
+        <Toolbar disableGutters>
+          <HailIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
+          <Typography
+            variant="h6"
+            noWrap
+            component="a"
+            sx={{
+              mr: 2,
+              display: { xs: 'none', md: 'flex' },
+              fontFamily: 'monospace',
+              fontWeight: 700,
+              letterSpacing: '.3rem',
+              color: 'inherit',
+              textDecoration: 'none',
+            }}
+          >
+            PHVrofits
+          </Typography>
+          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+            {user
+              ? USER_PAGES.map((page) => (
+                  <Link
+                    key={page.pageName}
+                    className="navbar-link-desktop"
+                    to={`/${page.pageLink}`}
+                  >
+                    <MenuItem key={page.pageName} onClick={handleCloseNavMenu}>
+                      <Typography textAlign="center">
+                        {page.pageName}
+                      </Typography>
+                    </MenuItem>
+                  </Link>
+                ))
+              : GENERAL_PAGES.map((page) => (
+                  <Link
+                    key={page.pageName}
+                    className="navbar-link-desktop"
+                    to={`/${page.pageLink}`}
+                  >
+                    <MenuItem key={page.pageName} onClick={handleCloseNavMenu}>
+                      <Typography textAlign="center">
+                        {page.pageName}
+                      </Typography>
+                    </MenuItem>
+                  </Link>
+                ))}
+          </Box>
+          <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
+            <Fab
+              onClick={handleOpenNavMenu}
+              size="medium"
+              aria-label="add"
               sx={{
-                mr: 2,
-                display: { xs: 'none', md: 'flex' },
-                fontFamily: 'monospace',
-                fontWeight: 700,
-                letterSpacing: '.3rem',
-                color: 'inherit',
-                textDecoration: 'none',
+                padding: '8px',
+                backgroundColor: 'white',
+                borderRadius: '15px',
+                boxShadow: `rgba(149, 157, 165, 0.2) 0px 8px 24px`,
               }}
             >
-              PHVrofits
-            </Typography>
-            <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-              {user
-                ? USER_PAGES.map((page) => (
-                    <Link
-                      className="navbar-link-desktop"
-                      to={`/${page.pageLink}`}
+              <MenuIcon />
+            </Fab>
+            <SwipeableDrawer
+              id="menu-appbar"
+              open={Boolean(anchorElNav)}
+              onOpen={handleOpenNavMenu}
+              onClose={handleCloseNavMenu}
+              sx={{
+                display: { xs: 'block', md: 'none' },
+                height: 10,
+              }}
+            >
+              {userInfo && (
+                <Box
+                  sx={{
+                    height: '100px',
+                    padding: 3,
+                    backgroundSize: 'cover',
+                    backgroundRepeat: 'no-repeat',
+                    color: 'white',
+                    backgroundImage:
+                      'url(https://img.freepik.com/premium-vector/abstract-global-network-connection-background_46250-2147.jpg)',
+                  }}
+                >
+                  <Stack>
+                    <Avatar alt={userInfo.name} />
+                    <Typography
+                      sx={{ marginTop: 2, fontWeight: 600, fontSize: 19 }}
                     >
-                      <MenuItem
-                        key={page.pageName}
-                        onClick={handleCloseNavMenu}
-                      >
-                        <Typography textAlign="center">
-                          {page.pageName}
-                        </Typography>
-                      </MenuItem>
-                    </Link>
-                  ))
-                : GENERAL_PAGES.map((page) => (
-                    <Link
-                      className="navbar-link-desktop"
-                      to={`/${page.pageLink}`}
-                    >
-                      <MenuItem
-                        key={page.pageName}
-                        onClick={handleCloseNavMenu}
-                      >
-                        <Typography textAlign="center">
-                          {page.pageName}
-                        </Typography>
-                      </MenuItem>
-                    </Link>
-                  ))}
-            </Box>
-            <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
-              <Fab
-                onClick={handleOpenNavMenu}
-                size="medium"
-                aria-label="add"
-                sx={{
-                  padding: '8px',
-                  backgroundColor: 'white',
-                  borderRadius: '15px',
-                  boxShadow: `rgba(149, 157, 165, 0.2) 0px 8px 24px`,
-                }}
-              >
-                <MenuIcon />
-              </Fab>
-              <SwipeableDrawer
-                id="menu-appbar"
-                open={Boolean(anchorElNav)}
-                onOpen={handleOpenNavMenu}
-                onClose={handleCloseNavMenu}
-                sx={{
-                  display: { xs: 'block', md: 'none' },
-                  height: 10,
-                }}
-              >
-                {userInfo && (
-                  <Box
-                    sx={{
-                      height: '100px',
-                      padding: 3,
-                      backgroundSize: 'cover',
-                      backgroundRepeat: 'no-repeat',
-                      color: 'white',
-                      backgroundImage:
-                        'url(https://img.freepik.com/premium-vector/abstract-global-network-connection-background_46250-2147.jpg)',
-                    }}
-                  >
-                    <Stack>
-                      <Avatar alt={userInfo.name} />
-                      <Typography
-                        sx={{ marginTop: 2, fontWeight: 600, fontSize: 19 }}
-                      >
-                        {userInfo.name}
-                      </Typography>
-                      <Typography sx={{ fontWeight: 400, fontSize: 14 }}>
-                        {userInfo.email} | {userInfo.carModel}
-                      </Typography>
-                    </Stack>
-                  </Box>
-                )}
-                <Box sx={{ margin: 2 }}>
-                  {(user ? USER_PAGES : GENERAL_PAGES).map((page) => (
-                    <Link className="navbar-link" to={`/${page.pageLink}`}>
-                      <MenuItem
-                        key={page.pageName}
-                        onClick={handleCloseNavMenu}
-                        sx={{
-                          borderRadius: 2,
-                          backgroundColor:
-                            page.pageLink === location.split('/')[1]
-                              ? 'rgba(145,105,44,0.3)'
-                              : '',
-                        }}
-                      >
-                        <>
-                          <page.Icon sx={{ marginRight: 2 }} />
-                          <Typography textAlign="center">
-                            {page.pageName}
-                          </Typography>
-                        </>
-                      </MenuItem>
-                    </Link>
-                  ))}
+                      {userInfo.name}
+                    </Typography>
+                    <Typography sx={{ fontWeight: 400, fontSize: 14 }}>
+                      {userInfo.email} | {userInfo.carModel}
+                    </Typography>
+                  </Stack>
                 </Box>
-              </SwipeableDrawer>
-            </Box>
-            <HailIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
-            <Typography
-              variant="h5"
-              noWrap
-              component="a"
-              href=""
-              sx={{
-                display: { xs: 'flex', md: 'none' },
-                flexGrow: 1,
-                fontFamily: 'monospace',
-                fontWeight: 700,
-                letterSpacing: '.1rem',
-                color: 'inherit',
-                textDecoration: 'none',
-                fontSize: '1.3rem',
-              }}
-            >
-              PHVrofits
-            </Typography>
-            {user ? (
-              <Box sx={{ flexGrow: 0 }}>
-                <Link className="navbar-link" to={`/submit`}>
-                  <Fab
-                    aria-label="add"
-                    size="medium"
-                    sx={{
-                      padding: '8px',
-                      backgroundColor: '#2c5491',
-                      borderRadius: '15px',
-                      boxShadow: `rgba(149, 157, 165, 0.5) 0px 8px 24px`,
-                      color: 'white',
-                    }}
+              )}
+              <Box sx={{ margin: 2 }}>
+                {(user ? USER_PAGES : GENERAL_PAGES).map((page) => (
+                  <Link
+                    key={page.pageName}
+                    className="navbar-link"
+                    to={`/${page.pageLink}`}
                   >
-                    <AddIcon />
-                  </Fab>
-                </Link>
+                    <MenuItem
+                      key={page.pageName}
+                      onClick={handleCloseNavMenu}
+                      sx={{
+                        borderRadius: 2,
+                        backgroundColor:
+                          page.pageLink === location.split('/')[1]
+                            ? 'rgba(145,105,44,0.3)'
+                            : '',
+                      }}
+                    >
+                      <>
+                        <page.Icon sx={{ marginRight: 2 }} />
+                        <Typography textAlign="center">
+                          {page.pageName}
+                        </Typography>
+                      </>
+                    </MenuItem>
+                  </Link>
+                ))}
               </Box>
-            ) : (
-              <Button
-                sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }}
-                color="inherit"
-                onClick={() => navigate('/signin')}
-              >
-                Login
-              </Button>
-            )}
-          </Toolbar>
-        </Container>
-      </AppBar>
-    </ThemeProvider>
+            </SwipeableDrawer>
+          </Box>
+          <HailIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
+          <Typography
+            variant="h5"
+            noWrap
+            component="a"
+            href=""
+            sx={{
+              display: { xs: 'flex', md: 'none' },
+              flexGrow: 1,
+              fontFamily: 'monospace',
+              fontWeight: 700,
+              letterSpacing: '.1rem',
+              color: 'inherit',
+              textDecoration: 'none',
+              fontSize: '1.3rem',
+            }}
+          >
+            PHVrofits
+          </Typography>
+          {user ? (
+            <Box sx={{ flexGrow: 0 }}>
+              <Link className="navbar-link" to={`/submit`}>
+                <Fab
+                  aria-label="add"
+                  size="medium"
+                  sx={{
+                    padding: '8px',
+                    backgroundColor: theme.palette.primary.main,
+                    borderRadius: '15px',
+                    boxShadow: `rgba(149, 157, 165, 0.5) 0px 8px 24px`,
+                    color: 'white',
+                  }}
+                >
+                  <AddIcon />
+                </Fab>
+              </Link>
+            </Box>
+          ) : (
+            <Button
+              sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }}
+              color="inherit"
+              onClick={() => navigate('/signin')}
+            >
+              Login
+            </Button>
+          )}
+        </Toolbar>
+      </Container>
+    </AppBar>
   );
 }
 

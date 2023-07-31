@@ -104,6 +104,7 @@ const SubmitEarningsLog = () => {
                   renderInput={(params) => (
                     <TextField
                       {...params}
+                      size="small"
                       fullWidth
                       error={[...loggedDates, ...newlyLoggedDates].includes(
                         date.format('DD/MM/YYYY')
@@ -132,6 +133,7 @@ const SubmitEarningsLog = () => {
                 <TextField
                   required
                   id="distance"
+                  size="small"
                   onChange={(e) => setDistance(e.target.value)}
                   fullWidth
                   type="number"
@@ -176,6 +178,7 @@ const SubmitEarningsLog = () => {
                   </LogoBox>
                   <TextField
                     type="number"
+                    size="small"
                     id="gojek-earnings"
                     onChange={(e) => setGojekEarnings(e.target.value)}
                     value={gojekEarnings}
@@ -209,6 +212,7 @@ const SubmitEarningsLog = () => {
                   </LogoBox>
                   <TextField
                     type="number"
+                    size="small"
                     id="grab-earnings"
                     placeholder={'0'}
                     onChange={(e) => setGrabEarnings(e.target.value)}
@@ -243,6 +247,7 @@ const SubmitEarningsLog = () => {
                   <TextField
                     type="number"
                     id="tada-earnings"
+                    size="small"
                     placeholder={'0'}
                     onChange={(e) => setTadaEarnings(e.target.value)}
                     value={tadaEarnings}
@@ -276,6 +281,7 @@ const SubmitEarningsLog = () => {
                   <TextField
                     type="number"
                     id="ryde-earnings"
+                    size="small"
                     placeholder={'0'}
                     onChange={(e) => setRydeEarnings(e.target.value)}
                     value={rydeEarnings}
@@ -301,7 +307,6 @@ const SubmitEarningsLog = () => {
               variant="contained"
               style={{
                 margin: '15px 0 0 0',
-                height: '50px',
                 borderRadius: '10px',
               }}
               onClick={submitEntry}
@@ -313,9 +318,9 @@ const SubmitEarningsLog = () => {
             </Button>
             <Button
               variant="outlined"
+              size="small"
               style={{
                 margin: '15px 0 15px 0',
-                height: '50px',
                 borderRadius: '10px',
               }}
               onClick={clearEntry}

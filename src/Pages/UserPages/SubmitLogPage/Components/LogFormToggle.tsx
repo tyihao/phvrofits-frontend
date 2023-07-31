@@ -28,8 +28,6 @@ const LogFormToggle = (props: ToggleButtonProps) => {
     handleLogForm(event.target.value);
   };
 
-  console.log(logForm);
-
   return (
     <Paper
       elevation={0}

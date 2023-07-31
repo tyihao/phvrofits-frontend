@@ -1,5 +1,5 @@
 import CloseIcon from '@mui/icons-material/Close';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   AppBar,
   Box,
@@ -24,8 +24,6 @@ interface DateFilterProps {
 const DateFilter = (props: DateFilterProps) => {
   const { open, filteredDate, handleDateRange, handleFilterDateDialog } = props;
   const [customDate, setCustomDate] = useState(false);
-
-  console.log(customDate);
 
   return (
     <Dialog
