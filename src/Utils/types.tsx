@@ -31,3 +31,10 @@ export type FuelLogInfo = {
   petrolPumped: number;
   mileage?: number;
 };
+
+export type FuelLogFormType = {
+  date: Date;
+  isFullTank: boolean;
+  petrolPumped: number;
+  mileage?: number;
+};

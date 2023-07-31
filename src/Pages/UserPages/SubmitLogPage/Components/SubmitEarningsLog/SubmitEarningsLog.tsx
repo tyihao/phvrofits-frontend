@@ -1,13 +1,8 @@
 import {
-  Alert,
   AlertColor,
-  Backdrop,
   Box,
-  Button,
-  CircularProgress,
   Grid,
   InputAdornment,
-  Snackbar,
   Stack,
   TextField,
 } from '@mui/material';
@@ -24,6 +19,9 @@ import { submitEarningsLogToFirebase } from '../../../../../Firebase/firebase';
 import { getFormattedDate } from '../../../../../Utils/generalUtils';
 import useEarningsLogData from '../../../../../Utils/useEarningsLogData';
 import LogoBox from '../../Components/LogoBox';
+import LoadingBackdrop from '../ReusableComponents/LoadingBackdrop';
+import LogFormButtons from '../ReusableComponents/LogFormButtons';
+import SubmitConfirmation from '../ReusableComponents/SubmitConfirmation';
 import './Styles/styles.css';
 
 const SubmitEarningsLog = () => {
@@ -62,6 +60,10 @@ const SubmitEarningsLog = () => {
       })
       .finally(() => setIsLoading(false));
 
+    clearEntry();
+  };
+
+  const clearEntry = () => {
     setGojekEarnings('');
     setRydeEarnings('');
     setGrabEarnings('');
@@ -69,75 +71,114 @@ const SubmitEarningsLog = () => {
     setDistance('');
   };
 
-  const clearEntry = async () => {
-    setGojekEarnings('');
-    setRydeEarnings('');
-    setGrabEarnings('');
-    setTadaEarnings('');
-    setDistance('');
+  const handleCloseSnackbar = () => {
+    setSnackbar(false);
   };
 
   return (
     <LocalizationProvider dateAdapter={AdapterMoment}>
-      <div>
-        <div className="submit-log-form">
-          <Box>
-            <Grid direction="column" spacing={2} container>
-              <Grid item>
-                <b
-                  style={{
-                    fontFamily: 'sans-serif',
-                    color: '#292929',
-                  }}
-                >
-                  Section 1: Date and Distance
-                </b>
-              </Grid>
-              <Grid item>
-                <DesktopDatePicker
-                  inputFormat="DD/MM/yyyy"
-                  disableFuture
-                  value={date}
-                  onChange={(date) => date && setDate(date)}
-                  minDate={moment('2021/06/08')}
-                  maxDate={moment()}
-                  renderInput={(params) => (
-                    <TextField
-                      {...params}
-                      size="small"
-                      fullWidth
-                      error={[...loggedDates, ...newlyLoggedDates].includes(
-                        date.format('DD/MM/YYYY')
-                      )}
-                      sx={{
-                        '& .MuiInputBase-root.MuiOutlinedInput-root': {
-                          borderRadius: '10px',
-                        },
+      <div className="submit-log-form">
+        <Box>
+          <Grid direction="column" spacing={2} container>
+            <Grid item>
+              <b
+                style={{
+                  fontFamily: 'sans-serif',
+                  color: '#292929',
+                }}
+              >
+                Section 1: Date and Distance
+              </b>
+            </Grid>
+            <Grid item>
+              <DesktopDatePicker
+                inputFormat="DD/MM/yyyy"
+                disableFuture
+                value={date}
+                onChange={(date) => date && setDate(date)}
+                minDate={moment('2021/06/08')}
+                maxDate={moment()}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    size="small"
+                    fullWidth
+                    error={[...loggedDates, ...newlyLoggedDates].includes(
+                      date.format('DD/MM/YYYY')
+                    )}
+                    sx={{
+                      '& .MuiInputBase-root.MuiOutlinedInput-root': {
+                        borderRadius: '10px',
+                      },
 
-                        '& .MuiFormHelperText-root': {
-                          backgroundColor: 'transparent',
-                        },
-                      }}
-                      helperText={
-                        [...loggedDates, ...newlyLoggedDates].includes(
-                          date.format('DD/MM/YYYY')
-                        ) &&
-                        `Log exists. Choose another date or edit
-                         log in Logs.`
-                      }
-                    />
-                  )}
-                />
-              </Grid>
-              <Grid item>
+                      '& .MuiFormHelperText-root': {
+                        backgroundColor: 'transparent',
+                      },
+                    }}
+                    helperText={
+                      [...loggedDates, ...newlyLoggedDates].includes(
+                        date.format('DD/MM/YYYY')
+                      ) &&
+                      `Log exists. Choose another date or edit
+                         log in Earnings Logbook.`
+                    }
+                  />
+                )}
+              />
+            </Grid>
+            <Grid item>
+              <TextField
+                required
+                id="distance"
+                size="small"
+                onChange={(e) => setDistance(e.target.value)}
+                fullWidth
+                type="number"
+                value={distance}
+                placeholder={'0'}
+                className="textfield"
+                sx={{
+                  '& .MuiInputBase-root': {
+                    borderRadius: '10px',
+                  },
+                }}
+                InputProps={{
+                  startAdornment: (
+                    <>
+                      <InputAdornment position="start">km</InputAdornment>
+                    </>
+                  ),
+                }}
+              />
+            </Grid>
+            <Grid item>
+              <b
+                style={{
+                  fontFamily: 'sans-serif',
+                  color: '#292929',
+                }}
+              >
+                Section 2: Earnings
+              </b>
+            </Grid>
+            <Grid item>
+              <Stack direction="row">
+                <LogoBox>
+                  <img
+                    style={{
+                      width: '60px',
+                      height: 'auto',
+                    }}
+                    src={gojekLogo}
+                    alt="gojek-earnings"
+                  />
+                </LogoBox>
                 <TextField
-                  required
-                  id="distance"
-                  size="small"
-                  onChange={(e) => setDistance(e.target.value)}
-                  fullWidth
                   type="number"
-                  value={distance}
+                  size="small"
+                  id="gojek-earnings"
+                  onChange={(e) => setGojekEarnings(e.target.value)}
+                  value={gojekEarnings}
                   placeholder={'0'}
                   className="textfield"
                   sx={{
@@ -147,218 +188,131 @@ const SubmitEarningsLog = () => {
                   }}
                   InputProps={{
                     startAdornment: (
-                      <>
-                        <InputAdornment position="start">km</InputAdornment>
-                      </>
+                      <InputAdornment position="start">$</InputAdornment>
                     ),
                   }}
+                  fullWidth
                 />
-              </Grid>
-              <Grid item>
-                <b
-                  style={{
-                    fontFamily: 'sans-serif',
-                    color: '#292929',
-                  }}
-                >
-                  Section 2: Earnings
-                </b>
-              </Grid>
-              <Grid item>
-                <Stack direction="row">
-                  <LogoBox>
-                    <img
-                      style={{
-                        width: '60px',
-                        height: 'auto',
-                      }}
-                      src={gojekLogo}
-                      alt="gojek-earnings"
-                    />
-                  </LogoBox>
-                  <TextField
-                    type="number"
-                    size="small"
-                    id="gojek-earnings"
-                    onChange={(e) => setGojekEarnings(e.target.value)}
-                    value={gojekEarnings}
-                    placeholder={'0'}
-                    className="textfield"
-                    sx={{
-                      '& .MuiInputBase-root': {
-                        borderRadius: '10px',
-                      },
-                    }}
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">$</InputAdornment>
-                      ),
-                    }}
-                    fullWidth
-                  />
-                </Stack>
-              </Grid>
-              <Grid item>
-                <Stack direction="row">
-                  <LogoBox>
-                    <img
-                      style={{
-                        width: '60px',
-                        height: 'auto',
-                      }}
-                      src={grabLogo}
-                      alt="grab-earnings"
-                    />
-                  </LogoBox>
-                  <TextField
-                    type="number"
-                    size="small"
-                    id="grab-earnings"
-                    placeholder={'0'}
-                    onChange={(e) => setGrabEarnings(e.target.value)}
-                    value={grabEarnings}
-                    className="textfield"
-                    sx={{
-                      '& .MuiInputBase-root': {
-                        borderRadius: '10px',
-                      },
-                    }}
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">$</InputAdornment>
-                      ),
-                    }}
-                    fullWidth
-                  />
-                </Stack>
-              </Grid>
-              <Grid item>
-                <Stack direction="row">
-                  <LogoBox>
-                    <img
-                      style={{
-                        width: '60px',
-                        height: 'auto',
-                      }}
-                      src={tadaLogo}
-                      alt="tada-earnings"
-                    />
-                  </LogoBox>
-                  <TextField
-                    type="number"
-                    id="tada-earnings"
-                    size="small"
-                    placeholder={'0'}
-                    onChange={(e) => setTadaEarnings(e.target.value)}
-                    value={tadaEarnings}
-                    className="textfield"
-                    sx={{
-                      '& .MuiInputBase-root': {
-                        borderRadius: '10px',
-                      },
-                    }}
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">$</InputAdornment>
-                      ),
-                    }}
-                    fullWidth
-                  />
-                </Stack>
-              </Grid>
-              <Grid item>
-                <Stack direction="row">
-                  <LogoBox>
-                    <img
-                      style={{
-                        width: '60px',
-                        height: 'auto',
-                      }}
-                      src={rydeLogo}
-                      alt="ryde-earnings"
-                    />
-                  </LogoBox>
-                  <TextField
-                    type="number"
-                    id="ryde-earnings"
-                    size="small"
-                    placeholder={'0'}
-                    onChange={(e) => setRydeEarnings(e.target.value)}
-                    value={rydeEarnings}
-                    className="textfield"
-                    sx={{
-                      '& .MuiInputBase-root': {
-                        borderRadius: '10px',
-                      },
-                    }}
-                    InputProps={{
-                      startAdornment: (
-                        <InputAdornment position="start">$</InputAdornment>
-                      ),
-                    }}
-                    fullWidth
-                  />
-                </Stack>
-              </Grid>
+              </Stack>
             </Grid>
-          </Box>
-          <Stack>
-            <Button
-              variant="contained"
-              style={{
-                margin: '15px 0 0 0',
-                borderRadius: '10px',
-              }}
-              onClick={submitEntry}
-              disabled={[...loggedDates, ...newlyLoggedDates].includes(
-                date.format('DD/MM/YYYY')
-              )}
-            >
-              Submit
-            </Button>
-            <Button
-              variant="outlined"
-              size="small"
-              style={{
-                margin: '15px 0 15px 0',
-                borderRadius: '10px',
-              }}
-              onClick={clearEntry}
-              disabled={[...loggedDates, ...newlyLoggedDates].includes(
-                date.format('DD/MM/YYYY')
-              )}
-            >
-              Reset
-            </Button>
-          </Stack>
-        </div>
-        {isLoading && (
-          <Backdrop
-            sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-            open={isLoading}
-          >
-            <CircularProgress color="inherit" />
-          </Backdrop>
-        )}
-        <Snackbar
-          open={snackbar}
-          autoHideDuration={6000}
-          onClose={() => {
-            setSnackbar(false);
-          }}
-          anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-        >
-          <Alert
-            onClose={() => setSnackbar(false)}
-            severity={snackbarType}
-            sx={{ width: '100%' }}
-          >
-            {snackbarType === 'success'
-              ? 'Log successfully added.'
-              : 'Error uploading log. Please try again later or inform system administrator.'}
-          </Alert>
-        </Snackbar>
+            <Grid item>
+              <Stack direction="row">
+                <LogoBox>
+                  <img
+                    style={{
+                      width: '60px',
+                      height: 'auto',
+                    }}
+                    src={grabLogo}
+                    alt="grab-earnings"
+                  />
+                </LogoBox>
+                <TextField
+                  type="number"
+                  size="small"
+                  id="grab-earnings"
+                  placeholder={'0'}
+                  onChange={(e) => setGrabEarnings(e.target.value)}
+                  value={grabEarnings}
+                  className="textfield"
+                  sx={{
+                    '& .MuiInputBase-root': {
+                      borderRadius: '10px',
+                    },
+                  }}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">$</InputAdornment>
+                    ),
+                  }}
+                  fullWidth
+                />
+              </Stack>
+            </Grid>
+            <Grid item>
+              <Stack direction="row">
+                <LogoBox>
+                  <img
+                    style={{
+                      width: '60px',
+                      height: 'auto',
+                    }}
+                    src={tadaLogo}
+                    alt="tada-earnings"
+                  />
+                </LogoBox>
+                <TextField
+                  type="number"
+                  id="tada-earnings"
+                  size="small"
+                  placeholder={'0'}
+                  onChange={(e) => setTadaEarnings(e.target.value)}
+                  value={tadaEarnings}
+                  className="textfield"
+                  sx={{
+                    '& .MuiInputBase-root': {
+                      borderRadius: '10px',
+                    },
+                  }}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">$</InputAdornment>
+                    ),
+                  }}
+                  fullWidth
+                />
+              </Stack>
+            </Grid>
+            <Grid item>
+              <Stack direction="row">
+                <LogoBox>
+                  <img
+                    style={{
+                      width: '60px',
+                      height: 'auto',
+                    }}
+                    src={rydeLogo}
+                    alt="ryde-earnings"
+                  />
+                </LogoBox>
+                <TextField
+                  type="number"
+                  id="ryde-earnings"
+                  size="small"
+                  placeholder={'0'}
+                  onChange={(e) => setRydeEarnings(e.target.value)}
+                  value={rydeEarnings}
+                  className="textfield"
+                  sx={{
+                    '& .MuiInputBase-root': {
+                      borderRadius: '10px',
+                    },
+                  }}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">$</InputAdornment>
+                    ),
+                  }}
+                  fullWidth
+                />
+              </Stack>
+            </Grid>
+          </Grid>
+        </Box>
+        <LogFormButtons
+          isDisabled={[...loggedDates, ...newlyLoggedDates].includes(
+            date.format('DD/MM/YYYY')
+          )}
+          handleSubmit={submitEntry}
+          handleClearEntry={clearEntry}
+        />
       </div>
+      <LoadingBackdrop isLoading={isLoading} />
+      <SubmitConfirmation
+        isOpen={snackbar}
+        handleSnackbar={handleCloseSnackbar}
+        snackbarType={snackbarType}
+      />
     </LocalizationProvider>
   );
 };

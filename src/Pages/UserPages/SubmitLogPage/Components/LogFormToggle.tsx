@@ -35,7 +35,7 @@ const LogFormToggle = (props: ToggleButtonProps) => {
         display: 'flex',
         border: (theme) => `1px solid ${theme.palette.divider}`,
         flexWrap: 'wrap',
-        margin: '5px 20px',
+        margin: '20px 20px 10px 20px',
         borderRadius: '10px',
       }}
     >
