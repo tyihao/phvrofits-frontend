@@ -1,3 +1,4 @@
+import { format } from 'date-fns';
 import { initializeApp } from 'firebase/app';
 import {
   GoogleAuthProvider,
@@ -21,7 +22,12 @@ import {
   where,
 } from 'firebase/firestore';
 import moment from 'moment';
-import { EarningsLogInfo, FuelLogInfo, UserInfo } from '../Utils/types';
+import {
+  EarningsLogInfo,
+  FuelLogFormType,
+  FuelLogInfo,
+  UserInfo,
+} from '../Utils/types';
 import { firebaseConfig } from './constants';
 
 const app = initializeApp(firebaseConfig);
@@ -57,12 +63,8 @@ const logInWithEmailAndPassword = async (email: string, password: string) => {
 };
 
 // Fuel Logs: Create
-const submitFuelLogToFirebase = async (
-  date: moment.Moment,
-  fuelPumped: number,
-  isFullTank: boolean,
-  mileage?: number
-) => {
+const submitFuelLogToFirebase = async (data: FuelLogFormType) => {
+  const { date, isFullTank, mileage, petrolPumped } = data;
   try {
     const userId = await fetchUserId();
 
@@ -74,11 +76,11 @@ const submitFuelLogToFirebase = async (
       doc(
         db,
         'users/' + userId + '/fuelLogs',
-        date.format('YYYYMMDD') + isFullTank ? 'Full' : ''
+        format(date, 'yyyyMMdd') + (isFullTank ? 'Full' : '')
       ),
       {
-        date: date.toDate().getTime(),
-        fuelPumped,
+        date: date.getTime(),
+        petrolPumped,
         isFullTank,
         mileage: mileage || null,
       }
