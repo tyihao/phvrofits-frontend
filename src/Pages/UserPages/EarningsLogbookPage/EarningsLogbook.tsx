@@ -111,9 +111,7 @@ const EarningsLogbookPage = () => {
     DateRange | undefined
   >(undefined);
   const [customDate, setCustomDate] = useState(false);
-  const [logData, setLogData] = useState<EarningsLogInfo[]>(
-    orderBy(useEarningsLogData(), ['date'], ['desc'])
-  );
+  const [logData, setLogData] = useState<EarningsLogInfo[]>([]);
 
   const data = useEarningsLogData();
   useEffect(() => setLogData(orderBy(data, ['date'], ['desc'])), [data]);
@@ -479,6 +477,7 @@ const EarningsLogbookPage = () => {
     );
   };
   const handleEditDialog = (currentLog?: EarningsLogInfo) => {
+    console.log(currentLog);
     // If we are opening the edit dialog - select a log
     if (!openDialog && currentLog) {
       setSelectedLog(currentLog);

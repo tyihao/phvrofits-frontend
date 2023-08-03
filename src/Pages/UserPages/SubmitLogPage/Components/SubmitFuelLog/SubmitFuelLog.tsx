@@ -1,7 +1,6 @@
 import { AlertColor } from '@mui/material';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import format from 'date-fns/format';
 import { useState } from 'react';
 import { submitFuelLogToFirebase } from '../../../../../Firebase';
 import { FuelLogFormType } from '../../../../../Utils/types';
@@ -21,6 +20,7 @@ const SubmitFuelLog = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [snackbar, setSnackbar] = useState(false);
   const [snackbarType, setSnackbarType] = useState<AlertColor>('success');
+  // const [errorMessage, setErrorMessage] = useState('');
 
   const handleSubmit = async () => {
     setIsLoading(true);
@@ -46,9 +46,6 @@ const SubmitFuelLog = () => {
   };
   const handleSnackbar = () => {
     setSnackbar(false);
-  };
-  const handleSnackbarType = (type: AlertColor) => {
-    setSnackbarType(type);
   };
 
   return (

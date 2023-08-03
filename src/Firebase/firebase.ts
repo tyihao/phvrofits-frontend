@@ -72,11 +72,21 @@ const submitFuelLogToFirebase = async (data: FuelLogFormType) => {
       throw new Error('Full tank logs should include mileage entry.');
     }
 
+    if (petrolPumped <= 0) {
+      throw new Error('Petrol pumped must be more than 0.');
+    }
+
+    if (mileage && mileage <= 0) {
+      throw new Error('Mileage must be more than 0.');
+    }
+
     setDoc(
       doc(
         db,
-        'users/' + userId + '/fuelLogs',
-        format(date, 'yyyyMMdd') + (isFullTank ? 'Full' : '')
+        'users/' + userId + '/fuel_logs',
+        format(date, 'yyyyMMdd') +
+          (isFullTank ? 'Full_' : '_') +
+          Math.floor(Math.random() * 1000)
       ),
       {
         date: date.getTime(),
@@ -103,7 +113,7 @@ const fetchFuelLogData = async () => {
     const doc = (await getDocs(q1)).docs[0];
     const id = doc.id;
 
-    const q2 = query(collection(db, 'users/' + id + '/fuel-logs'));
+    const q2 = query(collection(db, 'users/' + id + '/fuel_logs'));
     const logData = (await getDocs(q2)).docs.map((doc) => ({
       ...doc.data(),
       date: new Date(doc.data().date),

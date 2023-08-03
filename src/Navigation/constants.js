@@ -13,6 +13,7 @@ export const USER_PAGES = [
     pageLink: 'earnings-logbook',
     Icon: RequestQuoteIcon,
   },
+  // Disabled temporarily till Fuel Logbook Page is completed
   {
     pageName: 'Fuel Logbook',
     pageLink: 'fuel-logbook',

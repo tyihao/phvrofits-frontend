@@ -74,7 +74,7 @@ const FuelLogForm = (props: FuelLogFormProps) => {
             onChange={(e) =>
               handleForm({
                 ...form,
-                petrolPumped: parseInt(e.target.value, 10) || 0,
+                petrolPumped: parseFloat(e.target.value) || 0,
               })
             }
             fullWidth
@@ -110,40 +110,44 @@ const FuelLogForm = (props: FuelLogFormProps) => {
             <ToggleButton value={true}> Yes </ToggleButton>
           </ToggleButtonGroup>
         </Grid>
-        <Grid item>
-          <b>Current Mileage</b>
-        </Grid>
-        <Grid item>
-          <TextField
-            required
-            id="mileage"
-            size="small"
-            disabled={!form.isFullTank}
-            onChange={(e) =>
-              handleForm({
-                ...form,
-                mileage: parseInt(e.target.value, 10) || 0,
-              })
-            }
-            fullWidth
-            type="number"
-            value={form.mileage || ''}
-            placeholder={'0'}
-            className="textfield"
-            sx={{
-              '& .MuiInputBase-root': {
-                borderRadius: '10px',
-              },
-            }}
-            InputProps={{
-              startAdornment: (
-                <>
-                  <InputAdornment position="start">km</InputAdornment>
-                </>
-              ),
-            }}
-          />
-        </Grid>
+        {form.isFullTank && (
+          <>
+            <Grid item>
+              <b>Current Mileage</b>
+            </Grid>
+            <Grid item>
+              <TextField
+                required
+                id="mileage"
+                size="small"
+                disabled={!form.isFullTank}
+                onChange={(e) =>
+                  handleForm({
+                    ...form,
+                    mileage: parseFloat(e.target.value) || 0,
+                  })
+                }
+                fullWidth
+                type="number"
+                value={form.mileage || ''}
+                placeholder={'0'}
+                className="textfield"
+                sx={{
+                  '& .MuiInputBase-root': {
+                    borderRadius: '10px',
+                  },
+                }}
+                InputProps={{
+                  startAdornment: (
+                    <>
+                      <InputAdornment position="start">km</InputAdornment>
+                    </>
+                  ),
+                }}
+              />
+            </Grid>
+          </>
+        )}
       </Grid>
     </Box>
   );

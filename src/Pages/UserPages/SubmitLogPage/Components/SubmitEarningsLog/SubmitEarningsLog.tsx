@@ -25,12 +25,15 @@ import SubmitConfirmation from '../ReusableComponents/SubmitConfirmation';
 import './Styles/styles.css';
 
 const SubmitEarningsLog = () => {
+  // TODO refactor this into a single object
+  // Form Data
   const [date, setDate] = useState<moment.Moment>(moment());
   const [gojekEarnings, setGojekEarnings] = useState<string>('');
   const [grabEarnings, setGrabEarnings] = useState<string>('');
   const [tadaEarnings, setTadaEarnings] = useState<string>('');
   const [rydeEarnings, setRydeEarnings] = useState<string>('');
   const [distance, setDistance] = useState<string>('');
+
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [snackbar, setSnackbar] = useState<boolean>(false);
   const [snackbarType, setSnackbarType] = useState<AlertColor>('success');
