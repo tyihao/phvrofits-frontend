@@ -15,6 +15,7 @@ const SubmitFuelLog = () => {
     date: new Date(),
     isFullTank: false,
     petrolPumped: 0,
+    totalCost: 0,
     mileage: undefined,
   });
   const [isLoading, setIsLoading] = useState(false);
@@ -41,6 +42,7 @@ const SubmitFuelLog = () => {
       ...form,
       isFullTank: false,
       petrolPumped: 0,
+      totalCost: 0,
       mileage: undefined,
     }));
   };

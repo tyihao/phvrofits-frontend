@@ -63,6 +63,7 @@ const FuelLogForm = (props: FuelLogFormProps) => {
             )}
           />
         </Grid>
+
         <Grid item>
           <b>Petrol Pumped</b>
         </Grid>
@@ -91,6 +92,39 @@ const FuelLogForm = (props: FuelLogFormProps) => {
               startAdornment: (
                 <>
                   <InputAdornment position="start">litre</InputAdornment>
+                </>
+              ),
+            }}
+          />
+        </Grid>
+        <Grid item>
+          <b>Total Cost</b>
+        </Grid>
+        <Grid item>
+          <TextField
+            required
+            id="totalCost"
+            size="small"
+            onChange={(e) =>
+              handleForm({
+                ...form,
+                totalCost: parseFloat(e.target.value) || 0,
+              })
+            }
+            fullWidth
+            type="number"
+            value={form.totalCost || ''}
+            placeholder={'0'}
+            className="textfield"
+            sx={{
+              '& .MuiInputBase-root': {
+                borderRadius: '10px',
+              },
+            }}
+            InputProps={{
+              startAdornment: (
+                <>
+                  <InputAdornment position="start">$</InputAdornment>
                 </>
               ),
             }}

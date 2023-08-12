@@ -8,6 +8,8 @@ export const columns: GridColDef[] = [
     renderCell: (params) => format(params.row.date, 'dd/MM/yy'),
   },
   { field: 'petrolPumped', headerName: 'Pumped (L)', width: 100 },
+  { field: 'totalCost', headerName: 'Cost ($)', width: 100 },
+  { field: 'costDollarPerKm', headerName: 'Cost ($/km)', width: 100 },
   {
     field: 'isFullTank',
     headerName: 'Full Tank',

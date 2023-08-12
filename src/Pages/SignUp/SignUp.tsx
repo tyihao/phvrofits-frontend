@@ -44,6 +44,7 @@ function Register() {
         password,
         carModel,
         fuelEfficiency,
+        'manual',
         petrolStation,
         fuelGrade
       );

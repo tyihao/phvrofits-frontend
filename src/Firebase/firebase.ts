@@ -35,6 +35,8 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 const googleProvider = new GoogleAuthProvider();
 
+// TODO convert moment dates to using date-fns
+
 const signInWithGoogle = async () => {
   try {
     const res = await signInWithPopup(auth, googleProvider);
@@ -64,7 +66,7 @@ const logInWithEmailAndPassword = async (email: string, password: string) => {
 
 // Fuel Logs: Create
 const submitFuelLogToFirebase = async (data: FuelLogFormType) => {
-  const { date, isFullTank, mileage, petrolPumped } = data;
+  const { date, isFullTank, totalCost, mileage, petrolPumped } = data;
   try {
     const userId = await fetchUserId();
 
@@ -80,6 +82,8 @@ const submitFuelLogToFirebase = async (data: FuelLogFormType) => {
       throw new Error('Mileage must be more than 0.');
     }
 
+    const userInfo = await fetchUserInfo();
+
     setDoc(
       doc(
         db,
@@ -92,7 +96,20 @@ const submitFuelLogToFirebase = async (data: FuelLogFormType) => {
         date: date.getTime(),
         petrolPumped,
         isFullTank,
+        totalCost,
+        costDollarPerKm:
+          totalCost /
+          (petrolPumped *
+            parseFloat(
+              userInfo.fuelEfficiencyCalculationMethod === 'auto' && userInfo.autoFuelEfficiency
+                ? userInfo.autoFuelEfficiency
+                : userInfo.fuelEfficiency
+            )),
         mileage: mileage || null,
+        fuelEfficency: userInfo.fuelEfficiencyCalculationMethod === 'auto' && userInfo.autoFuelEfficiency
+        ? userInfo.autoFuelEfficiency
+        : userInfo.fuelEfficiency,
+        fuelEfficiencyCalculationMethod: userInfo.fuelEfficiencyCalculationMethod
       }
     );
   } catch (err) {
@@ -149,8 +166,12 @@ const submitEarningsLogToFirebase = async (
       ) / 100;
     const petrolCost =
       discountedLitrePetrol *
-      (distance / 100) *
-      parseFloat(userInfo.fuelEfficiency);
+      (distance /
+        parseFloat(
+          userInfo.fuelEfficiencyCalculationMethod === 'auto'
+            ? userInfo.autoFuelEfficiency
+            : userInfo.fuelEfficiency
+        ));
 
     setDoc(doc(db, 'users/' + userId + '/logs', date.format('YYYYMMDD')), {
       gojekEarnings,
@@ -248,6 +269,7 @@ const registerWithEmailAndPassword = async (
   password: string,
   carModel: string,
   fuelEfficiency: string,
+  fuelEfficiencyCalculationMethod: string,
   petrolStation: string,
   fuelGrade: string
 ) => {
@@ -261,6 +283,7 @@ const registerWithEmailAndPassword = async (
       email,
       carModel,
       fuelEfficiency,
+      fuelEfficiencyCalculationMethod,
       petrolStation,
       fuelGrade,
     });

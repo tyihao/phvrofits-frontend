@@ -1,8 +1,12 @@
+// TODO convert type to relevant type instead of string 
+
 export type UserInfo = {
   authProvider: string;
   carModel: string;
   email: string;
   fuelEfficiency: string;
+  autoFuelEfficiency: string;
+  fuelEfficiencyCalculationMethod: 'auto' | 'manual';
   fuelGrade: string;
   name: string;
   petrolStation: string;
@@ -29,6 +33,8 @@ export type FuelLogInfo = {
   date: Date;
   isFullTank: boolean;
   petrolPumped: number;
+  totalCost: number;
+  costPerKm: number;
   mileage?: number;
 };
 
@@ -36,5 +42,6 @@ export type FuelLogFormType = {
   date: Date;
   isFullTank: boolean;
   petrolPumped: number;
+  totalCost: number;
   mileage?: number;
 };
