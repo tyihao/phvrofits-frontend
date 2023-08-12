@@ -26,8 +26,8 @@ import { USER_PAGES, GENERAL_PAGES } from './constants';
 
 function Navbar() {
   const theme = useTheme();
-  const userInfo = useUserInfo();
   const [user] = useAuthState(auth);
+  const userInfo = useUserInfo();
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
   const navigate = useNavigate();
   const location = useLocation().pathname;

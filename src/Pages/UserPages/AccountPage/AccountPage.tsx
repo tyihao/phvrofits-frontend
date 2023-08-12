@@ -9,7 +9,6 @@ const AccountPage = () => {
   const [user, loading] = useAuthState(auth);
   const userInfo = useUserInfo();
   const navigate = useNavigate();
-
   useEffect(() => {
     if (loading) return;
     if (!user) return navigate('/');

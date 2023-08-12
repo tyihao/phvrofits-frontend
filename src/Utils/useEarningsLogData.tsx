@@ -10,7 +10,7 @@ const useEarningsLogData = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (loading) return console.info('Data is loading, please wait.');
+    if (loading && user) return console.info('Data is loading, please wait.');
     if (!user) return navigate('/');
 
     const fetchData = async () => {

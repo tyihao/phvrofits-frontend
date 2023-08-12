@@ -25,8 +25,8 @@ const useUserInfo = () => {
   }, [user]);
 
   useEffect(() => {
-    if (loading) return console.info('Data is loading, please wait.');
-    fetchUserName();
+    if (loading && user) return console.info('Data is loading, please wait.');
+    if (user) fetchUserName();
   }, [fetchUserName, loading, navigate, user]);
 
   return userInfo;
