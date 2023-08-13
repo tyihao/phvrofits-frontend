@@ -107,13 +107,13 @@ function Register() {
         <TextField
           id="fuel-efficiency"
           variant="standard"
-          label="Fuel Efficiency (Litre/100km)"
+          label="Fuel Efficiency (km/L)"
           required
           className="register_input"
           value={fuelEfficiency}
           onChange={(e) => setFuelEfficiency(e.target.value)}
           sx={{ marginBottom: '7px' }}
-          placeholder="8.3"
+          placeholder="10.6"
         />
         <FormControl
           variant="standard"

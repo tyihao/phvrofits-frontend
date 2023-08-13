@@ -1,4 +1,4 @@
-// TODO convert type to relevant type instead of string 
+// TODO convert type to relevant type instead of string
 
 export type UserInfo = {
   authProvider: string;
@@ -45,3 +45,10 @@ export type FuelLogFormType = {
   totalCost: number;
   mileage?: number;
 };
+
+export type AccountProfileData = Pick<UserInfo, 'email' | 'name'>;
+
+export type AccountSettingsData = Omit<
+  UserInfo,
+  'authProvider' | 'email' | 'name' | 'uid' | 'autoFuelEfficiency'
+>;

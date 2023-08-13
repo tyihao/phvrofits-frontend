@@ -101,15 +101,19 @@ const submitFuelLogToFirebase = async (data: FuelLogFormType) => {
           totalCost /
           (petrolPumped *
             parseFloat(
-              userInfo.fuelEfficiencyCalculationMethod === 'auto' && userInfo.autoFuelEfficiency
+              userInfo.fuelEfficiencyCalculationMethod === 'auto' &&
+                userInfo.autoFuelEfficiency
                 ? userInfo.autoFuelEfficiency
                 : userInfo.fuelEfficiency
             )),
         mileage: mileage || null,
-        fuelEfficency: userInfo.fuelEfficiencyCalculationMethod === 'auto' && userInfo.autoFuelEfficiency
-        ? userInfo.autoFuelEfficiency
-        : userInfo.fuelEfficiency,
-        fuelEfficiencyCalculationMethod: userInfo.fuelEfficiencyCalculationMethod
+        fuelEfficency:
+          userInfo.fuelEfficiencyCalculationMethod === 'auto' &&
+          userInfo.autoFuelEfficiency
+            ? userInfo.autoFuelEfficiency
+            : userInfo.fuelEfficiency,
+        fuelEfficiencyCalculationMethod:
+          userInfo.fuelEfficiencyCalculationMethod,
       }
     );
   } catch (err) {
@@ -173,6 +177,19 @@ const submitEarningsLogToFirebase = async (
             : userInfo.fuelEfficiency
         ));
 
+    console.log({
+      gojekEarnings,
+      tadaEarnings,
+      grabEarnings,
+      rydeEarnings,
+      date: date.toDate().getTime(),
+      distance,
+      totalRevenue,
+      fuelEfficiency: parseFloat(userInfo.fuelEfficiency),
+      discountedLitrePetrol,
+      petrolCost,
+      totalProfit: totalRevenue - petrolCost,
+    });
     setDoc(doc(db, 'users/' + userId + '/logs', date.format('YYYYMMDD')), {
       gojekEarnings,
       tadaEarnings,
